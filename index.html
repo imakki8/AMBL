@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMBL — Reg Season Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12161a;
+    --panel:#1b2128;
+    --panel-2:#20272f;
+    --line:#2b333c;
+    --accent:#ff8a2b;
+    --accent-dim:#8a4e1c;
+    --cream:#f2ede2;
+    --muted:#8992a0;
+    --muted-2:#5d6570;
+
+    --thunder:#b1544a;
+    --sonics:#1f8a4d;
+    --redliners:#d81f2c;
+    --rattlers:#eee9dd;
+    --force:#152a52;
+    --hornets:#6b3fa0;
+    --blazers:#0e1013;
+    --gel:#8bcbe0;
+    --warriors:#e6a437;
+
+    --thunder-text:#c2756c;
+    --sonics-text:#239d57;
+    --redliners-text:#e75a64;
+    --rattlers-text:#efeadf;
+    --force-text:#5f88d6;
+    --hornets-text:#9d78ca;
+    --blazers-text:#7c8a9f;
+    --gel-text:#8dcce1;
+    --warriors-text:#e6a539;
+
+    --def-color:#6fa8dc;
+    --xf-color:#7bbf6a;
+    --radar-color:#b98fd1;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1100px 500px at 15% -10%, rgba(255,138,43,0.08), transparent 60%),
+      var(--bg);
+    color:var(--cream);
+    font-family:'Inter',system-ui,sans-serif;
+    padding:28px 16px 64px;
+    min-height:100vh;
+  }
+
+  .wrap{max-width:1040px;margin:0 auto;}
+
+  header{
+    border:1px solid var(--line);
+    background:linear-gradient(180deg, var(--panel-2), var(--panel));
+    border-radius:6px;
+    padding:26px 28px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 34px);
+    pointer-events:none;
+  }
+  .league-row{
+    display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    position:relative;
+  }
+  .wordmark{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size:clamp(40px,7vw,64px);
+    letter-spacing:0.5px;
+    color:var(--cream);
+    line-height:0.9;
+    margin:0;
+  }
+  .wordmark span{color:var(--accent);}
+  .season-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    color:var(--accent);
+    background:rgba(255,138,43,0.1);
+    border:1px solid var(--accent-dim);
+    border-radius:3px;
+    padding:5px 10px;
+    white-space:nowrap;
+  }
+  .venue-line{
+    margin-top:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    color:var(--muted);
+    letter-spacing:0.02em;
+    position:relative;
+  }
+  .venue-line b{color:var(--cream); font-weight:600;}
+
+  .preview-banner{
+    margin-top:16px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:14px 18px;
+    border-radius:5px;
+    border:1px solid var(--accent-dim);
+    background:linear-gradient(90deg, rgba(255,138,43,0.14), rgba(255,138,43,0.03));
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .preview-banner:hover{border-color:var(--accent); background:linear-gradient(90deg, rgba(255,138,43,0.2), rgba(255,138,43,0.05));}
+  .preview-banner-left{display:flex; flex-direction:column; gap:2px;}
+  .preview-banner-eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.1em;
+    color:var(--accent);
+  }
+  .preview-banner-title{
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    font-size:16px;
+    color:var(--cream);
+  }
+  .preview-banner-arrow{
+    font-family:'Oswald',sans-serif;
+    font-size:20px;
+    color:var(--accent);
+    flex:none;
+  }
+
+  .preview-view{display:none;}
+  .preview-view.show{display:block;}
+
+  .preview-hero{
+    padding:28px 26px 24px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:linear-gradient(180deg, var(--panel-2), var(--panel));
+    margin-bottom:18px;
+  }
+  .preview-hero-eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    color:var(--accent);
+  }
+  .preview-hero-title{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size:clamp(28px,5vw,42px);
+    margin:8px 0 10px;
+    line-height:1.05;
+  }
+  .preview-hero-sub{
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    line-height:1.55;
+    color:var(--muted);
+    max-width:640px;
+    margin:0;
+  }
+
+  .matchup-card, .bye-spotlight{
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:var(--panel);
+    padding:18px 22px;
+    margin-bottom:14px;
+  }
+  .bye-spotlight{border-style:dashed;}
+  .matchup-meta{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    color:var(--muted-2);
+    margin-bottom:8px;
+  }
+  .matchup-teams{
+    display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  .matchup-team{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size:22px;
+    cursor:pointer;
+  }
+  .matchup-team:hover{text-decoration:underline;}
+  .matchup-record{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:500;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .matchup-vs{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--muted-2);
+  }
+  .matchup-tag{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    color:var(--accent);
+    margin-bottom:8px;
+  }
+  .matchup-body{
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--cream);
+    opacity:0.92;
+    margin:0;
+    max-width:700px;
+  }
+
+  .watch-block{
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px dashed var(--line);
+    max-width:700px;
+  }
+  .watch-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    color:var(--muted-2);
+    margin-bottom:8px;
+  }
+  .watch-row{
+    display:flex; align-items:baseline; gap:8px;
+    margin-bottom:5px;
+    cursor:pointer;
+  }
+  .watch-row:last-child{margin-bottom:0;}
+  .watch-dot{
+    width:8px; height:8px; border-radius:50%; flex:none;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);
+    position:relative; top:-1px;
+  }
+  .watch-name{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    color:var(--cream);
+  }
+  .watch-row:hover .watch-name{text-decoration:underline;}
+  .watch-note{
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  .preview-signoff{
+    text-align:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--muted-2);
+    margin-top:20px;
+  }
+
+  .rail{
+    margin-top:22px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .chip{
+    display:flex; align-items:center; gap:8px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    color:var(--cream);
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:13.5px;
+    padding:7px 12px 7px 8px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:border-color .15s ease, transform .1s ease, background .15s ease;
+    user-select:none;
+  }
+  .chip:hover{border-color:var(--muted-2); transform:translateY(-1px);}
+  .chip .dot{width:11px; height:11px; border-radius:50%; flex:none; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);}
+  .chip.active{background:rgba(255,138,43,0.14); border-color:var(--accent); color:var(--accent);}
+  .chip.all{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.05em;}
+
+  .summary{
+    display:none;
+    margin-top:16px;
+    border-top:1px dashed var(--line);
+    padding-top:14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    color:var(--muted);
+    gap:22px;
+    flex-wrap:wrap;
+  }
+  .summary.show{display:flex;}
+  .summary strong{color:var(--cream); font-weight:600;}
+  .summary .num{color:var(--accent); font-weight:600;}
+
+  .weeks{
+    margin-top:26px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+  }
+  @media (max-width:860px){ .weeks{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .weeks{grid-template-columns:1fr;} }
+
+  .card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:5px;
+    overflow:hidden;
+    transition:border-color .15s ease;
+  }
+  .card.has-highlight{border-color:var(--accent-dim);}
+
+  .card-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:10px 12px;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--line);
+  }
+  .wk-num{
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:0.03em;
+    color:var(--cream);
+  }
+  .wk-date{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--muted);
+  }
+
+  .games{padding:8px 10px 10px;}
+  .game{
+    display:grid;
+    grid-template-columns:40px 1fr 54px 1fr;
+    align-items:center;
+    gap:6px;
+    padding:5px 2px;
+    border-radius:3px;
+    opacity:1;
+    transition:opacity .15s ease, background .15s ease;
+  }
+  .game.dim{opacity:0.25;}
+  .game.lit{background:rgba(255,138,43,0.07);}
+  .game[data-wk]{cursor:pointer;}
+  .game[data-wk]:hover{background:rgba(255,138,43,0.06);}
+  .game[data-wk]:focus-visible{outline:1.5px solid var(--accent); outline-offset:1px;}
+  .time{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--muted-2);
+  }
+  .vs{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    color:var(--muted-2);
+    text-align:center;
+  }
+  .team-pill{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:12.5px;
+    padding:5px 8px;
+    border-radius:3px;
+    text-align:center;
+    line-height:1.15;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    cursor:pointer;
+    border:1.5px solid transparent;
+    transition:border-color .12s ease, filter .12s ease;
+  }
+  .team-pill:hover{filter:brightness(1.12); border-color:rgba(255,255,255,0.35);}
+
+  .bye-row{
+    margin-top:4px;
+    padding:6px 8px;
+    border-top:1px dashed var(--line);
+    display:flex; align-items:center; gap:8px;
+  }
+  .bye-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px;
+    letter-spacing:.08em;
+    color:var(--muted-2);
+  }
+  .bye-pill{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:12px;
+    padding:3px 9px;
+    border-radius:3px;
+  }
+  .bye-row.lit .bye-pill{outline:1.5px solid var(--accent);}
+  .bye-row.dim{opacity:0.3;}
+  .bye-pill{cursor:pointer; border:1.5px solid transparent; transition:border-color .12s ease, filter .12s ease;}
+  .bye-pill:hover{filter:brightness(1.12); border-color:rgba(255,255,255,0.35);}
+
+  footer{
+    margin-top:22px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--muted-2);
+    text-align:center;
+    line-height:1.7;
+  }
+
+  .roster-view{display:none;}
+  .roster-view.show{display:block;}
+  .schedule-view.hide{display:none;}
+
+  .back-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px; letter-spacing:.04em;
+    color:var(--muted);
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    padding:7px 12px;
+    border-radius:20px;
+    cursor:pointer;
+    margin-bottom:16px;
+  }
+  .back-btn:hover{color:var(--cream); border-color:var(--muted-2);}
+
+  .roster-head{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    padding:20px 24px;
+    border-radius:6px 6px 0 0;
+    border:1px solid var(--line);
+    border-bottom:none;
+  }
+  .roster-head .name{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size:clamp(30px,5vw,44px);
+    letter-spacing:0.3px;
+  }
+  .roster-head .meta{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.05em;
+    opacity:0.85;
+  }
+
+  .roster-body{
+    border:1px solid var(--line);
+    border-radius:0 0 6px 6px;
+    background:var(--panel);
+    overflow:hidden;
+  }
+  .roster-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:13px 20px;
+    border-bottom:1px solid var(--line);
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+  }
+  .roster-row:last-child{border-bottom:none;}
+  .roster-row .num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--muted-2);
+    width:26px;
+    flex:none;
+  }
+  .roster-row .pname{flex:1;}
+  .roster-row.captain .pname{font-weight:700;}
+  .captain-badge{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.06em;
+    color:var(--accent);
+    border:1px solid var(--accent-dim);
+    background:rgba(255,138,43,0.1);
+    padding:2px 7px;
+    border-radius:10px;
+    flex:none;
+  }
+
+  .roster-nav{
+    margin-top:16px;
+    display:flex; flex-wrap:wrap; gap:8px;
+  }
+
+  .team-pill{position:relative;}
+  .pill-score{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    font-size:11px;
+    margin-left:6px;
+    opacity:0.85;
+  }
+  .team-pill.winner{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,0.55);}
+  .vs.has-box{
+    cursor:pointer;
+    color:var(--accent);
+    font-weight:700;
+    font-size:11.5px;
+    letter-spacing:.05em;
+    line-height:1.2;
+    text-align:center;
+    padding:5px 2px;
+    border-radius:4px;
+    border:1.5px solid var(--accent-dim);
+    background:rgba(255,138,43,0.12);
+  }
+  .vs.has-box:hover{background:rgba(255,138,43,0.22); border-color:var(--accent);}
+  .ot-tag{
+    font-size:9px;
+    color:var(--muted-2);
+    display:block;
+    font-weight:500;
+    letter-spacing:0;
+  }
+
+  .box-view{display:none;}
+  .box-view.show{display:block;}
+
+  .box-head{
+    padding:18px 24px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    border-radius:6px;
+    margin-bottom:16px;
+  }
+  .box-head .matchup{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size:clamp(22px,4vw,32px);
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .box-head .matchup .score{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+  }
+  .box-head .sub{
+    margin-top:6px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  .top-performers{
+    border:1px solid var(--accent-dim);
+    background:rgba(255,138,43,0.06);
+    border-radius:6px;
+    padding:14px 18px;
+    margin-bottom:16px;
+  }
+  .tp-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    color:var(--accent);
+    margin-bottom:10px;
+  }
+  .tp-row{
+    display:flex; align-items:center; gap:10px;
+    padding:6px 0;
+    cursor:pointer;
+  }
+  .tp-row + .tp-row{border-top:1px solid var(--line);}
+  .tp-row:hover .tp-name{text-decoration:underline;}
+  .tp-dot{width:9px; height:9px; border-radius:50%; flex:none; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);}
+  .tp-name{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color:var(--cream);
+  }
+  .tp-team{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--muted);
+    flex:none;
+  }
+  .tp-stats{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--muted);
+    margin-left:auto;
+    flex:none;
+  }
+
+  .box-table-wrap{
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow-x:auto;
+    margin-bottom:16px;
+  }
+  .box-table-head{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 14px;
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    font-size:16px;
+    letter-spacing:.02em;
+  }
+  table.box{
+    border-collapse:collapse;
+    width:100%;
+    min-width:760px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+  }
+  table.box th, table.box td{
+    padding:6px 8px;
+    text-align:center;
+    border-top:1px solid var(--line);
+    white-space:nowrap;
+  }
+  table.box th{
+    color:var(--muted);
+    font-weight:500;
+    font-size:10px;
+    letter-spacing:.03em;
+  }
+  table.box td:first-child, table.box th:first-child{
+    text-align:left;
+    font-family:'Inter',sans-serif;
+    position:sticky; left:0;
+    background:var(--panel);
+  }
+  table.box tr.dnp td{color:var(--muted-2); font-style:italic;}
+  table.box tr.captain-row td:first-child{font-weight:700;}
+  table.box tr.team-row td{
+    border-top:1.5px solid var(--muted-2);
+    font-weight:700;
+    color:var(--cream);
+    background:var(--panel-2);
+  }
+  table.box tr.team-row td:first-child{background:var(--panel-2);}
+
+  .leaders-section{margin-top:34px;}
+  .leaders-head{
+    display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+    margin-bottom:16px;
+  }
+  .leaders-title{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size:22px;
+    letter-spacing:0.3px;
+  }
+  .leaders-sub{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--muted);
+    letter-spacing:.04em;
+  }
+
+  .leaders-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+    margin-bottom:22px;
+  }
+  @media (max-width:900px){ .leaders-grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:620px){ .leaders-grid{grid-template-columns:repeat(2,1fr);} }
+
+  .stat-card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:5px;
+    overflow:hidden;
+  }
+  .stat-card-head{
+    padding:9px 10px;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--line);
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:.03em;
+    color:var(--accent);
+  }
+  .stat-row{
+    display:flex; align-items:center; gap:7px;
+    padding:6px 10px;
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+  }
+  .stat-row:last-child{border-bottom:none;}
+  .stat-row:hover{background:rgba(255,138,43,0.06);}
+  .stat-rank{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    color:var(--muted-2);
+    width:13px;
+    flex:none;
+  }
+  .stat-dot{width:8px;height:8px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);}
+  .stat-name{
+    font-family:'Inter',sans-serif;
+    font-size:12px;
+    font-weight:500;
+    flex:1;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .stat-val{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--cream);
+    flex:none;
+  }
+
+  .spotlight-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+  }
+  @media (max-width:1000px){ .spotlight-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .spotlight-grid{grid-template-columns:1fr;} }
+
+  .spotlight-card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .spotlight-head{
+    padding:12px 14px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  .spotlight-head .sp-title{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:.02em;
+  }
+  .spotlight-head .sp-sub{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .spotlight-card.mvp .spotlight-head .sp-title{color:var(--accent);}
+  .spotlight-card.def .spotlight-head .sp-title{color:var(--def-color);}
+  .spotlight-card.xf .spotlight-head .sp-title{color:var(--xf-color);}
+  .spotlight-card.radar .spotlight-head .sp-title{color:var(--radar-color);}
+
+  .sp-row{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 14px;
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+  }
+  .sp-row:last-child{border-bottom:none;}
+  .sp-row:hover{background:rgba(255,255,255,0.03);}
+  .sp-rank{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size:18px;
+    color:var(--muted-2);
+    width:20px;
+    flex:none;
+  }
+  .sp-dot{width:10px;height:10px;border-radius:50%;flex:none;margin-top:2px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);}
+  .sp-body{flex:1; min-width:0;}
+  .sp-name{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+  }
+  .sp-line{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="schedule-view" id="scheduleView">
+    <header>
+      <div class="league-row">
+        <p class="wordmark">AMBL<span>.</span></p>
+        <div class="season-tag">REG SEASON · WK 1–9</div>
+      </div>
+      <div class="venue-line"><b>Lake Forest Sports Park</b> · Tuesday nights · 6:00, 7:00, 8:00 &amp; 9:00 PM</div>
+
+      <div class="preview-banner" id="previewBanner">
+        <div class="preview-banner-left">
+          <span class="preview-banner-eyebrow">THE TIP-OFF</span>
+          <span class="preview-banner-title">Week 4 Preview is up — what to watch for</span>
+        </div>
+        <span class="preview-banner-arrow">&rarr;</span>
+      </div>
+
+      <div class="rail" id="rail"></div>
+      <div class="summary" id="summary"></div>
+    </header>
+
+    <div class="weeks" id="weeks"></div>
+
+    <div class="leaders-section" id="leadersSection">
+      <div class="leaders-head">
+        <span class="leaders-title">SEASON 31 LEADERS</span>
+        <span class="leaders-sub">THROUGH WEEK 3 · TAP A PLAYER FOR THEIR ROSTER</span>
+      </div>
+      <div class="leaders-grid" id="statLeaders"></div>
+      <div class="spotlight-grid">
+        <div class="spotlight-card mvp" id="mvpCard"></div>
+        <div class="spotlight-card radar" id="radarCard"></div>
+        <div class="spotlight-card def" id="defCard"></div>
+        <div class="spotlight-card xf" id="xfCard"></div>
+      </div>
+    </div>
+
+    <footer>Tap a team above to trace their schedule and bye week · click a team name for their roster · click a game row for the box score</footer>
+  </div>
+
+  <div class="roster-view" id="rosterView">
+    <div class="back-btn" id="backBtn">&larr; back to schedule</div>
+    <div class="roster-head" id="rosterHead"></div>
+    <div class="roster-body" id="rosterBody"></div>
+    <div class="roster-nav" id="rosterNav"></div>
+  </div>
+
+  <div class="box-view" id="boxView">
+    <div class="back-btn" id="boxBackBtn">&larr; back to schedule</div>
+    <div class="box-head" id="boxHead"></div>
+    <div class="top-performers" id="topPerformers"></div>
+    <div class="box-tables" id="boxTables"></div>
+  </div>
+
+  <div class="preview-view" id="previewView">
+    <div class="back-btn" id="previewBackBtn">&larr; back to schedule</div>
+
+    <div class="preview-hero">
+      <span class="preview-hero-eyebrow">THE TIP-OFF &middot; AMBL SEASON 31</span>
+      <h1 class="preview-hero-title">Week 4: The Contenders Collide</h1>
+      <p class="preview-hero-sub">Three weeks in, the league has sorted itself into haves, have-nots, and one team that just can't lose. Here's what's brewing before Tuesday's lights come on at Lake Forest.</p>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-meta">6:00 PM COURT</div>
+      <div class="matchup-teams">
+        <span class="matchup-team" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Blazers <span class="matchup-record">(2-0)</span></span>
+        <span class="matchup-vs">vs</span>
+        <span class="matchup-team" style="color:var(--hornets-text)" onclick="openRoster('Hornets')">Hornets <span class="matchup-record">(2-1)</span></span>
+      </div>
+      <div class="matchup-tag">Perfect Record on the Line</div>
+      <p class="matchup-body">Two of the league's most physical frontcourts share the floor to open the night, and something has to give. The Blazers have been perfect since their opening bye, riding a glass-eating energy that shows up in every box score and every extra possession. The Hornets, fresh off their first loss of the year, need a bounce-back on the boards if they want to keep pace in what's shaping up to be the toughest race in the league. Whoever wins the rebounding battle here probably walks out with the win, and the early bragging rights.</p>
+      <div class="watch-block">
+        <div class="watch-label">PLAYERS TO WATCH</div>
+        <div class="watch-row" onclick="openRoster('Blazers')">
+          <span class="watch-dot" style="background:var(--blazers)"></span>
+          <span class="watch-name">Jasper Shen</span>
+          <span class="watch-note">, the engine on the glass for a Blazers team that hasn't lost yet</span>
+        </div>
+        <div class="watch-row" onclick="openRoster('Hornets')">
+          <span class="watch-dot" style="background:var(--hornets)"></span>
+          <span class="watch-name">Luis Renteria-Medina</span>
+          <span class="watch-note">, quietly the league's most relentless rebounder</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-meta">7:00 PM COURT</div>
+      <div class="matchup-teams">
+        <span class="matchup-team" style="color:var(--thunder-text)" onclick="openRoster('Thunder')">Thunder <span class="matchup-record">(1-2)</span></span>
+        <span class="matchup-vs">vs</span>
+        <span class="matchup-team" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Redliners <span class="matchup-record">(3-0)</span></span>
+      </div>
+      <div class="matchup-tag">The Last Unbeaten Meets a Team Finding Itself</div>
+      <p class="matchup-body">The league's only undefeated squad rolls into a building that's just starting to find its footing. Redliners have made a habit of winning without needing a single hero. Somebody new steps up every single week, and that kind of depth is hard to game-plan against. Thunder, meanwhile, are trying to build on the most complete team performance they've put together all season, the kind of quiet, do-everything effort that doesn't always show up loud but wins winnable games. If Thunder wants to make a statement, it starts with slowing down Redliners' assembly line.</p>
+      <div class="watch-block">
+        <div class="watch-label">PLAYERS TO WATCH</div>
+        <div class="watch-row" onclick="openRoster('Thunder')">
+          <span class="watch-dot" style="background:var(--thunder)"></span>
+          <span class="watch-name">Matt Burnett</span>
+          <span class="watch-note">, coming off the most complete game of his season on both ends of the floor</span>
+        </div>
+        <div class="watch-row" onclick="openRoster('Redliners')">
+          <span class="watch-dot" style="background:var(--redliners)"></span>
+          <span class="watch-name">Garrett Ailshie</span>
+          <span class="watch-note">, the steadiest name in Redliners' rotating cast of weekly heroes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-meta">8:00 PM COURT</div>
+      <div class="matchup-teams">
+        <span class="matchup-team" style="color:var(--warriors-text)" onclick="openRoster('Warriors')">Warriors <span class="matchup-record">(1-1)</span></span>
+        <span class="matchup-vs">vs</span>
+        <span class="matchup-team" style="color:var(--gel-text)" onclick="openRoster('Gel')">Gel <span class="matchup-record">(1-1)</span></span>
+      </div>
+      <div class="matchup-tag">Somebody Stop the Heat Check</div>
+      <p class="matchup-body">One player on this floor has been on one of the most absurd scoring stretches the league has seen in years, and nobody has figured out how to slow him down yet. The rested, well-rounded Warriors get the unenviable task of trying, and they'll counter with their own smooth, efficient scoring touch on the other end. Neither defense has looked especially interested in playing defense so far this season. Buckle up: the scoreboard is going to be moving fast in this one.</p>
+      <div class="watch-block">
+        <div class="watch-label">PLAYERS TO WATCH</div>
+        <div class="watch-row" onclick="openRoster('Gel')">
+          <span class="watch-dot" style="background:var(--gel)"></span>
+          <span class="watch-name">Nick Johnson</span>
+          <span class="watch-note">, the hottest scorer in the league right now, has to be seen to be believed</span>
+        </div>
+        <div class="watch-row" onclick="openRoster('Warriors')">
+          <span class="watch-dot" style="background:var(--warriors)"></span>
+          <span class="watch-name">Mario Bravo</span>
+          <span class="watch-note">, the efficient counterpunch keeping Warriors in every possession</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-meta">9:00 PM COURT</div>
+      <div class="matchup-teams">
+        <span class="matchup-team" style="color:var(--force-text)" onclick="openRoster('Force')">Force <span class="matchup-record">(0-3)</span></span>
+        <span class="matchup-vs">vs</span>
+        <span class="matchup-team" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')">Rattlers <span class="matchup-record">(1-2)</span></span>
+      </div>
+      <div class="matchup-tag">Two Teams In Search of Answers</div>
+      <p class="matchup-body">The nightcap belongs to two teams that need this one for very different reasons. Force is still hunting for its first win of the season, and the pressure only builds the longer that search goes on. The Rattlers have the opposite problem: one of their guys has quietly been putting together one of the best individual seasons in the league every single week, and somehow it hasn't translated into a winning record yet. Something has to give here, and either side could use the confidence boost a win like this provides.</p>
+      <div class="watch-block">
+        <div class="watch-label">PLAYERS TO WATCH</div>
+        <div class="watch-row" onclick="openRoster('Force')">
+          <span class="watch-dot" style="background:var(--force)"></span>
+          <span class="watch-name">Christopher Jung</span>
+          <span class="watch-note">, Force's leading scorer, needs a big night to finally get in the win column</span>
+        </div>
+        <div class="watch-row" onclick="openRoster('Rattlers')">
+          <span class="watch-dot" style="background:var(--rattlers)"></span>
+          <span class="watch-name">Matthew Estrada</span>
+          <span class="watch-note">, putting up some of the best numbers in the league, still searching for the record to match</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bye-spotlight">
+      <div class="matchup-meta">ON THE BYE</div>
+      <div class="matchup-teams">
+        <span class="matchup-team" style="color:var(--sonics-text)" onclick="openRoster('Sonics')">Sonics <span class="matchup-record">(1-2)</span></span>
+      </div>
+      <div class="matchup-tag">A Well-Timed Breather</div>
+      <p class="matchup-body">The Sonics get a week off after dropping back-to-back games, and the timing works out well. Individually, this team has been getting terrific production out of its top scorer, but the wins just haven't followed yet. A bye week is a chance to regroup, sharpen the details, and come back next Tuesday looking like the team that opened the season with a win.</p>
+      <div class="watch-block">
+        <div class="watch-label">PLAYER TO WATCH</div>
+        <div class="watch-row" onclick="openRoster('Sonics')">
+          <span class="watch-dot" style="background:var(--sonics)"></span>
+          <span class="watch-name">Daniel Nordstrom</span>
+          <span class="watch-note">, the team's top scorer all season, uses the week off to reset and refocus</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="preview-signoff">That's the slate. Same gym, same lights, next Tuesday. See you at tip-off.</p>
+  </div>
+
+</div>
+
+<script>
+const TEAMS = ["Thunder","Sonics","Redliners","Rattlers","Force","Hornets","Blazers","Gel","Warriors"];
+
+const COLOR_VAR = {
+  Thunder:"--thunder", Sonics:"--sonics", Redliners:"--redliners", Rattlers:"--rattlers",
+  Force:"--force", Hornets:"--hornets", Blazers:"--blazers", Gel:"--gel", Warriors:"--warriors"
+};
+
+const DARK_BG = new Set(["Rattlers","Gel","Warriors"]);
+
+const SCHEDULE = [
+  { wk:1, date:"11 AUG", games:[["6:00","Thunder","Sonics"],["7:00","Warriors","Hornets"],["8:00","Force","Redliners"],["9:00","Rattlers","Gel"]], bye:"Blazers" },
+  { wk:2, date:"18 AUG", games:[["6:00","Redliners","Rattlers"],["7:00","Hornets","Force"],["8:00","Sonics","Warriors"],["9:00","Blazers","Thunder"]], bye:"Gel" },
+  { wk:3, date:"25 AUG", games:[["6:00","Force","Thunder"],["7:00","Rattlers","Blazers"],["8:00","Gel","Sonics"],["9:00","Redliners","Hornets"]], bye:"Warriors" },
+  { wk:4, date:"01 SEP", games:[["6:00","Blazers","Hornets"],["7:00","Thunder","Redliners"],["8:00","Warriors","Gel"],["9:00","Force","Rattlers"]], bye:"Sonics" },
+  { wk:5, date:"08 SEP", games:[["6:00","Rattlers","Warriors"],["7:00","Gel","Thunder"],["8:00","Redliners","Blazers"],["9:00","Hornets","Sonics"]], bye:"Force" },
+  { wk:6, date:"15 SEP", games:[["6:00","Gel","Force"],["7:00","Redliners","Warriors"],["8:00","Hornets","Thunder"],["9:00","Sonics","Blazers"]], bye:"Rattlers" },
+  { wk:7, date:"22 SEP", games:[["6:00","Sonics","Redliners"],["7:00","Blazers","Gel"],["8:00","Thunder","Rattlers"],["9:00","Warriors","Force"]], bye:"Hornets" },
+  { wk:8, date:"29 SEP", games:[["6:00","Hornets","Gel"],["7:00","Sonics","Rattlers"],["8:00","Blazers","Force"],["9:00","Thunder","Warriors"]], bye:"Redliners" },
+  { wk:9, date:"06 OCT*", games:[["6:00","Warriors","Blazers"],["7:00","Force","Sonics"],["8:00","Rattlers","Hornets"],["9:00","Gel","Redliners"]], bye:"Thunder" },
+];
+
+const ROSTERS = {
+  Blazers:  { players:["Gee Yu","HyungCheol Kim","Jasper Shen","Maddie Doi","Matthew Kasper","Sammy Said","Spencer Randell"], captain:"Sammy Said" },
+  Force:    { players:["Christian Halvorsen","Christopher Jung","Erick Jara Astudillo","Michael Kamadinata","Nasim Eyvazlou","Riley Anno","Zaid Boukai"], captain:"Zaid Boukai" },
+  Gel:      { players:["Alex Avila","Imran Makki","Karina Duran","Lance Taylor","Matthew Wang","Nick Johnson","Nikolai Semerdjiev"], captain:"Nick Johnson" },
+  Hornets:  { players:["Andrew Soto","Asher Foy","Christian Rivera","Isaac Morrison","Joseph Pascual","Luis Renteria","Sean Whitaker"], captain:"Isaac Morrison" },
+  Sonics:   { players:["Ali Awarke","Daniel Nordstrom","Jacob Hicken","Julian Drake","Luis Perez","Naveen Joy","Tristan Jaeger"], captain:"Daniel Nordstrom" },
+  Rattlers: { players:["Brandon Gillett","Eli Cortez","Ian Satoda","Keith Murphy","Krithik Srithar","Matt Estrada","Tung Phan"], captain:"Matt Estrada" },
+  Redliners:{ players:["Andy Le","Benjamin Palacio","Cameron DLT","Garrett Ailshie","Jaryd Flores","Josh Trejo","Natalia Willis"], captain:"Cameron DLT" },
+  Thunder:  { players:["Adarsh Kalyampudi","Cordero Nuanez","Greg Del Vecchio","Matt Burnett","Sahil Bhakta","Shayan Islam","Yousif Alomari"], captain:"Sahil Bhakta" },
+  Warriors: { players:["Afsheen Bazrafkan","Elijah Kim","Ethan Vu","Jose Alcantara","Mario Bravo","Scott Nakatsu","Tony Espinosa"], captain:"Afsheen Bazrafkan" },
+};
+
+let selected = null;
+
+function pct(m,a){ return a>0 ? (m/a).toFixed(3) : ""; }
+
+const BOXSCORES = {
+  "1-6:00": {
+    ot:false,
+    teams:{
+      Thunder:{ sponsor:"Voyant Thunder", score:29, captain:"Sahil Bhakta", players:[
+        ["Shayan Islam",10,4,16,1,10,1,2,0,7,1,0,0,1,2,0],
+        ["Sahil Bhakta",9,3,5,1,1,2,3,0,4,4,0,0,2,3,0],
+        ["Matt Burnett","DNP"],
+        ["Adarsh Kalyampudi",2,1,5,0,1,0,0,0,2,0,2,0,3,3,0],
+        ["Cordero Nuanez",6,2,9,1,3,1,2,3,5,0,0,0,1,4,0],
+        ["Yousif Alomari",0,0,2,0,0,0,0,0,0,0,1,0,1,0,0],
+        ["Greg Del Vecchio",2,1,8,0,3,0,2,1,5,0,1,0,2,1,0],
+      ]},
+      Sonics:{ sponsor:"Simsei SuperSonics", score:35, captain:"Daniel Nordstrom", players:[
+        ["Tristan Jaeger",6,2,4,1,3,1,3,0,3,2,1,1,2,4,0],
+        ["Daniel Nordstrom",12,5,10,0,2,2,8,1,3,0,0,1,0,0,0],
+        ["Ali Awarke",17,4,12,2,7,7,10,4,13,1,1,0,6,2,0],
+        ["Julian Drake",0,0,2,0,0,0,0,2,6,0,1,0,1,2,0],
+        ["Naveen Joy",0,0,7,0,1,0,2,4,6,0,0,0,0,0,0],
+        ["Luis Perez",0,0,1,0,0,0,0,1,4,0,0,0,1,0,0],
+        ["Jacob Hicken",0,0,3,0,1,0,0,0,1,0,0,0,1,1,0],
+      ]},
+    }
+  },
+  "1-7:00": {
+    ot:true,
+    teams:{
+      Warriors:{ sponsor:"Inzii Warriors", score:37, captain:"Afsheen Bazrafkan", players:[
+        ["Mario Bravo",18,6,11,5,9,1,3,0,8,3,2,0,4,2,0],
+        ["Tony Espinosa",11,4,18,3,14,0,0,1,8,1,2,0,3,2,0],
+        ["Afsheen Bazrafkan",6,2,4,2,3,0,0,5,11,1,1,1,3,1,0],
+        ["Scott Nakatsu",0,0,4,0,2,0,0,0,4,3,1,0,5,3,0],
+        ["Ethan Vu",2,1,9,0,1,0,2,5,8,1,0,0,0,5,1],
+        ["Elijah Kim",0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
+        ["Jose Alcantara",0,0,2,0,1,0,0,0,0,0,0,0,1,0,0],
+      ]},
+      Hornets:{ sponsor:"Aerostat Hornets", score:42, captain:"Isaac Morrison", players:[
+        ["Isaac Morrison",5,2,3,1,2,0,1,3,5,4,2,1,1,2,0],
+        ["Sean Whitaker",7,3,9,1,4,0,0,1,4,2,1,1,1,1,0],
+        ["Luis Renteria-Medina",15,7,24,0,4,1,6,8,17,3,3,1,4,3,0],
+        ["Andrew Soto",2,1,5,0,4,0,0,0,5,3,1,0,3,2,0],
+        ["Joseph Pascual",2,1,2,0,0,0,0,0,1,1,1,0,0,1,0],
+        ["Asher Foy",6,2,7,2,5,0,0,0,2,0,1,0,1,2,0],
+        ["Christian Rivera",5,2,2,1,1,0,0,0,2,0,0,0,0,0,0],
+      ]},
+    }
+  },
+  "1-8:00": {
+    ot:false,
+    teams:{
+      Force:{ sponsor:"Epix Force", score:32, captain:"Zaid Boukai", players:[
+        ["Christopher Jung",13,5,19,2,10,1,1,1,8,3,0,1,2,0,0],
+        ["Zaid Boukai",14,6,16,2,7,0,2,1,3,3,0,0,1,3,0],
+        ["Christian Halvorsen",0,0,3,0,0,0,0,3,10,1,3,0,0,1,0],
+        ["Erick Jara",3,1,3,1,2,0,0,0,2,1,2,0,4,2,0],
+        ["Michael Kamadinata",0,0,8,0,3,0,0,1,3,0,2,1,1,3,0],
+        ["Riley Anno",2,1,4,0,0,0,0,2,10,0,1,0,1,2,0],
+        ["Erick Zamora","DNP"],
+      ]},
+      Redliners:{ sponsor:"XtraFlo Redliners", score:36, captain:"Cameron De La Torre", players:[
+        ["Josh Trejo",12,4,8,2,2,2,5,0,2,2,1,0,0,1,0],
+        ["Garrett Ailshie",7,3,14,0,4,1,3,4,13,1,0,2,4,0,0],
+        ["Andy Le",1,0,3,0,0,1,1,4,8,3,0,2,0,0,0],
+        ["Natalia Willis",2,1,10,0,7,0,0,1,3,0,0,0,0,0,0],
+        ["Cameron De La Torre",14,5,10,4,6,0,0,0,5,0,1,0,3,2,0],
+        ["Benjamin Palacio",0,0,0,0,0,0,0,0,3,0,0,1,0,1,0],
+        ["Jaryd Flores",1,0,6,0,1,1,2,0,1,1,1,0,1,2,0],
+      ]},
+    }
+  },
+  "1-9:00": {
+    ot:false,
+    teams:{
+      Rattlers:{ sponsor:"Syntel Rattlers", score:52, captain:"Matt Estrada", players:[
+        ["Eli Cortez",6,3,8,0,2,0,0,0,2,3,0,0,1,4,0],
+        ["Keith Murphy",2,1,9,0,7,0,0,3,9,1,6,0,3,4,0],
+        ["Matthew Estrada",21,10,15,1,5,0,0,2,14,2,1,4,3,0,0],
+        ["Ian Satoda","DNP"],
+        ["Brandon Gillett",14,5,10,1,2,3,7,1,2,0,0,0,0,1,0],
+        ["Krithik Srithar",0,0,0,0,0,0,0,1,4,0,0,0,1,0,0],
+        ["Tung Phan",9,4,12,1,2,0,1,0,2,2,3,0,4,0,0],
+      ]},
+      Gel:{ sponsor:"Gel(3)Pointers", score:50, captain:"Nick Johnson", players:[
+        ["Imran Makki","DNP"],
+        ["Nick Johnson",45,15,30,10,22,5,5,2,16,1,0,1,3,1,0],
+        ["Lance Taylor","DNP"],
+        ["Matthew Wang",2,1,7,0,5,0,0,5,9,1,2,1,4,0,0],
+        ["Nikolai Semerdjiev","DNP"],
+        ["Alex Avila",0,0,7,0,3,0,0,2,4,0,1,0,0,2,0],
+        ["Karina Duran",0,0,6,0,1,0,2,0,2,0,0,0,1,2,0],
+        ["Sean Whitaker",3,1,11,1,6,0,0,4,8,3,1,0,3,4,0,true],
+      ]},
+    }
+  },
+
+  "2-6:00": {
+    ot:false,
+    teams:{
+      Redliners:{ sponsor:"XtraFlo Redliners", score:60, captain:"Cameron De La Torre", players:[
+        ["Josh Trejo",11,4,11,2,6,1,2,0,3,8,1,1,2,1,0],
+        ["Garrett Ailshie",18,8,25,2,7,0,1,5,8,5,3,2,2,0,0],
+        ["Andy Le",8,4,7,0,0,0,2,7,10,1,0,0,2,1,0],
+        ["Natalia Willis","DNP"],
+        ["Cameron De La Torre",17,6,13,3,8,2,2,2,11,3,1,0,0,3,0],
+        ["Benjamin Palacio","DNP"],
+        ["Jaryd Flores",4,2,7,0,4,0,0,3,7,0,2,0,1,1,0],
+        ["Asher Foy",2,1,7,0,3,0,0,1,2,2,0,0,0,0,0,true],
+      ]},
+      Rattlers:{ sponsor:"Syntel Rattlers", score:56, captain:"Matt Estrada", players:[
+        ["Eli Cortez","DNP"],
+        ["Keith Murphy","DNP"],
+        ["Matthew Estrada",34,13,25,7,12,1,2,0,14,1,1,3,1,1,0],
+        ["Ian Satoda",6,3,9,0,4,0,0,0,2,3,0,0,2,3,0],
+        ["Brandon Gillett",0,0,4,0,1,0,2,0,0,1,1,0,2,0,0],
+        ["Krithik Srithar",0,0,3,0,2,0,0,0,2,0,0,0,0,0,0],
+        ["Tung Phan",5,2,6,0,3,1,2,2,3,2,0,0,2,4,0],
+        ["Shayan Islam",11,5,5,1,1,0,0,1,4,2,1,0,1,2,0,true],
+      ]},
+    }
+  },
+  "2-7:00": {
+    ot:false,
+    teams:{
+      Hornets:{ sponsor:"Aerostat Hornets", score:43, captain:"Isaac Morrison", players:[
+        ["Isaac Morrison",2,1,1,0,0,0,0,1,4,4,3,1,0,3,0],
+        ["Sean Whitaker",16,6,9,4,7,0,0,1,4,1,0,0,1,3,0],
+        ["Luis Renteria-Medina",4,2,9,0,1,0,2,2,9,1,2,2,1,3,0],
+        ["Andrew Soto",12,4,10,3,7,1,2,0,0,6,0,0,0,2,0],
+        ["Joseph Pascual",4,2,4,0,0,0,0,0,3,0,1,0,1,0,0],
+        ["Asher Foy",0,0,2,0,1,0,0,1,2,0,1,0,1,0,0],
+        ["Christian Rivera",5,2,4,1,2,0,0,0,0,1,0,0,2,1,0],
+      ]},
+      Force:{ sponsor:"Epix Force", score:23, captain:"Zaid Boukai", players:[
+        ["Christopher Jung",8,3,11,1,4,1,7,7,8,0,1,1,3,3,0],
+        ["Zaid Boukai",5,1,9,0,3,3,4,0,1,2,2,0,1,2,0],
+        ["Christian Halvorsen",0,0,2,0,0,0,0,2,5,3,0,0,1,1,0],
+        ["Erick Jara",2,1,4,0,1,0,1,2,4,0,1,0,0,0,0],
+        ["Michael Kamadinata",4,2,9,0,4,0,0,0,1,0,0,0,3,4,0],
+        ["Riley Anno",4,2,3,0,0,0,2,5,10,0,1,0,4,0,0],
+        ["Erick Zamora",0,0,2,0,0,0,0,0,0,0,0,0,0,0,0],
+      ]},
+    }
+  },
+  "2-8:00": {
+    ot:false,
+    teams:{
+      Sonics:{ sponsor:"Simsei SuperSonics", score:36, captain:"Daniel Nordstrom", players:[
+        ["Tristan Jaeger",4,1,10,1,7,1,2,2,4,2,0,0,0,1,0],
+        ["Daniel Nordstrom",22,9,16,3,6,1,2,1,9,0,3,1,2,0,0],
+        ["Ali Awarke",8,3,13,0,6,2,4,0,5,2,1,0,7,4,0],
+        ["Julian Drake",0,0,0,0,0,0,0,3,4,2,1,0,1,1,0],
+        ["Naveen Joy",2,1,4,0,1,0,0,1,5,0,0,0,0,4,0],
+        ["Luis Perez","DNP"],
+        ["Jacob Hicken",0,0,4,0,2,0,0,1,3,1,1,0,2,0,0],
+      ]},
+      Warriors:{ sponsor:"Inzii Warriors", score:39, captain:"Afsheen Bazrafkan", players:[
+        ["Mario Bravo",10,2,9,2,9,4,6,0,8,0,3,3,1,1,0],
+        ["Tony Espinosa",10,4,13,2,7,0,0,5,15,1,1,1,5,3,0],
+        ["Afsheen Bazrafkan",3,1,4,0,1,1,2,0,3,2,1,0,3,1,0],
+        ["Scott Nakatsu",0,0,8,0,5,0,0,0,1,1,1,0,0,3,0],
+        ["Ethan Vu",14,5,11,1,4,3,4,1,2,0,1,0,1,3,0],
+        ["Elijah Kim",2,1,2,0,0,0,0,2,2,0,0,0,0,0,0],
+        ["Jose Alcantara",0,0,0,0,0,0,0,0,0,0,0,0,1,0,0],
+      ]},
+    }
+  },
+  "2-9:00": {
+    ot:false,
+    teams:{
+      Blazers:{ sponsor:"Stealth Blazers", score:44, captain:"Sammy Said", players:[
+        ["Jasper Shen",24,8,21,5,15,3,4,1,12,4,4,2,1,0,0],
+        ["Sammy Said",6,2,9,0,3,2,4,0,3,0,2,1,1,2,0],
+        ["HyungCheol Kim",4,2,4,0,0,0,0,1,4,0,2,0,2,5,1],
+        ["Gee Yu",2,1,1,0,0,0,0,1,3,1,0,0,0,0,0],
+        ["Maddie Doi",8,2,5,2,3,2,2,0,2,5,0,0,1,0,0],
+        ["Matthew Kasper",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        ["Spencer Randell",0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+      ]},
+      Thunder:{ sponsor:"Voyant Thunder", score:30, captain:"Sahil Bhakta", players:[
+        ["Shayan Islam",9,3,11,1,7,2,2,1,5,2,0,0,1,1,0],
+        ["Sahil Bhakta",2,1,5,0,1,0,0,0,2,1,1,0,4,1,0],
+        ["Matt Burnett",8,4,12,0,1,0,0,2,10,5,0,0,1,0,0],
+        ["Adarsh Kalyampudi",8,4,11,0,1,0,0,7,12,0,0,0,1,2,0],
+        ["Cordero Nuanez",3,1,9,1,2,0,0,2,2,0,0,1,2,4,0],
+        ["Yousif Alomari",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        ["Greg Del Vecchio",0,0,0,0,0,0,0,0,1,0,1,0,1,2,0],
+      ]},
+    }
+  },
+
+  "3-6:00": {
+    ot:false,
+    teams:{
+      Force:{ sponsor:"Epix Force", score:39, captain:"Zaid Boukai", players:[
+        ["Christopher Jung",21,9,21,3,8,0,2,1,12,0,0,0,5,1,0],
+        ["Zaid Boukai",8,2,11,1,4,3,4,2,5,3,2,0,1,1,0],
+        ["Christian Halvorsen","DNP"],
+        ["Erick Jara",5,1,2,1,2,2,2,1,3,2,0,0,1,0,0],
+        ["Michael Kamadinata",5,2,9,1,6,0,0,0,1,1,3,0,2,2,0],
+        ["Riley Anno",0,0,3,0,0,0,0,4,8,0,0,0,2,0,0],
+        ["Erick Zamora","DNP"],
+        ["Cameron De La Torre",0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,true],
+      ]},
+      Thunder:{ sponsor:"Voyant Thunder", score:44, captain:"Sahil Bhakta", players:[
+        ["Shayan Islam",9,3,10,3,10,0,0,0,3,1,0,0,3,0,0],
+        ["Sahil Bhakta",8,3,10,2,7,0,0,6,10,3,0,0,1,0,0],
+        ["Matt Burnett",8,4,10,0,0,0,0,6,19,6,2,3,4,2,0],
+        ["Adarsh Kalyampudi",6,3,8,0,2,0,0,1,3,1,1,0,0,0,0],
+        ["Cordero Nuanez",7,3,15,1,5,0,0,2,3,0,2,0,1,3,0],
+        ["Yousif Alomari",0,0,1,0,0,0,0,1,2,0,1,0,3,0,0],
+        ["Greg Del Vecchio",6,2,4,1,2,1,2,1,1,1,0,0,1,2,0],
+      ]},
+    }
+  },
+  "3-7:00": {
+    ot:false,
+    teams:{
+      Rattlers:{ sponsor:"Syntel Rattlers", score:33, captain:"Matt Estrada", players:[
+        ["Eli Cortez",2,0,5,0,2,2,2,1,4,0,0,0,1,1,0],
+        ["Keith Murphy",3,1,5,1,4,0,0,3,12,3,5,0,3,4,0],
+        ["Matthew Estrada",12,3,6,1,3,5,6,2,12,0,1,4,1,2,0],
+        ["Ian Satoda",4,2,14,0,9,0,0,2,4,1,0,0,3,2,0],
+        ["Brandon Gillett",3,1,7,1,6,0,0,0,0,0,0,0,2,1,0],
+        ["Krithik Srithar",0,0,2,0,0,0,0,0,0,0,0,0,0,0,0],
+        ["Tung Phan",9,4,11,1,4,0,0,1,2,1,1,0,1,2,0],
+      ]},
+      Blazers:{ sponsor:"Stealth Blazers", score:41, captain:"Sammy Said", players:[
+        ["Jasper Shen",12,3,19,2,13,4,4,3,15,4,4,1,1,3,0],
+        ["Sammy Said",14,6,19,1,4,1,2,3,5,0,1,0,4,1,0],
+        ["HyungCheol Kim",1,0,2,0,0,1,3,5,9,0,0,0,2,0,0],
+        ["Gee Yu",2,0,1,0,0,2,2,0,4,1,0,0,3,0,0],
+        ["Maddie Doi",12,4,12,4,10,0,0,1,2,1,3,0,0,1,0],
+        ["Matthew Kasper","DNP"],
+        ["Spencer Randell",0,0,0,0,0,0,0,1,4,0,0,0,1,0,0],
+      ]},
+    }
+  },
+  "3-8:00": {
+    ot:false,
+    teams:{
+      Gel:{ sponsor:"Gel(3)Pointers", score:58, captain:"Nick Johnson", players:[
+        ["Imran Makki",0,0,4,0,3,0,0,0,4,3,1,1,0,0,0],
+        ["Nick Johnson",25,9,19,2,11,5,5,1,10,2,1,2,1,3,0],
+        ["Lance Taylor",7,3,6,0,0,1,2,2,6,1,0,0,0,0,0],
+        ["Matthew Wang",6,2,6,1,1,1,2,3,5,2,1,0,1,0,0],
+        ["Nikolai Semerdjiev",16,7,16,2,7,0,2,2,8,2,2,0,1,1,0],
+        ["Alex Avila",2,1,3,0,0,0,0,2,5,1,0,0,1,0,0],
+        ["Karina Duran",2,1,1,0,0,0,0,1,2,0,0,0,0,2,0],
+      ]},
+      Sonics:{ sponsor:"Simsei SuperSonics", score:40, captain:"Daniel Nordstrom", players:[
+        ["Tristan Jaeger",0,0,12,0,5,0,0,1,3,3,0,0,4,0,0],
+        ["Daniel Nordstrom",22,10,22,0,2,2,4,3,9,1,2,1,0,4,0],
+        ["Ali Awarke",13,6,20,1,7,0,0,2,6,1,2,0,0,1,0],
+        ["Julian Drake",0,0,0,0,0,0,0,1,3,1,0,0,1,0,0],
+        ["Naveen Joy",2,1,3,0,1,0,0,2,4,0,1,0,0,1,0],
+        ["Luis Perez",3,1,1,1,1,0,0,0,0,0,0,1,0,2,0],
+        ["Jacob Hicken",0,0,3,0,0,0,0,2,4,1,0,0,0,0,0],
+      ]},
+    }
+  },
+  "3-9:00": {
+    ot:false,
+    teams:{
+      Redliners:{ sponsor:"XtraFlo Redliners", score:39, captain:"Cameron De La Torre", players:[
+        ["Josh Trejo",9,3,6,1,2,2,3,0,2,4,2,0,3,2,0],
+        ["Garrett Ailshie",8,4,17,0,4,0,2,4,8,1,1,0,2,2,0],
+        ["Andy Le",13,6,15,0,0,1,4,8,11,1,4,0,0,1,0],
+        ["Natalia Willis",2,0,6,0,3,2,2,1,1,1,1,0,2,0,0],
+        ["Cameron De La Torre",0,0,2,0,2,0,0,1,4,1,0,1,0,0,0],
+        ["Benjamin Palacio",0,0,1,0,1,0,0,1,2,0,0,0,0,1,0],
+        ["Jaryd Flores",7,3,10,1,4,0,0,3,7,0,2,1,1,0,0],
+      ]},
+      Hornets:{ sponsor:"Aerostat Hornets", score:29, captain:"Isaac Morrison", players:[
+        ["Isaac Morrison",4,2,7,0,1,0,0,3,6,3,3,1,6,0,0],
+        ["Sean Whitaker",11,4,10,3,7,0,0,2,5,1,0,0,0,3,0],
+        ["Luis Renteria-Medina",5,1,11,0,3,3,8,7,18,3,1,0,4,3,0],
+        ["Andrew Soto",9,3,13,3,11,0,0,1,5,0,0,0,4,1,0],
+        ["Joseph Pascual",0,0,4,0,0,0,0,0,0,0,0,0,1,0,0],
+        ["Asher Foy",0,0,2,0,0,0,0,1,1,0,1,0,0,5,1],
+        ["Christian Rivera",0,0,1,0,1,0,0,0,1,0,0,0,1,0,0],
+      ]},
+    }
+  },
+};
+
+function boxKey(wk, time){ return `${wk}-${time}`; }
+
+function aggregatePlayers(){
+  const players = {};
+  Object.values(BOXSCORES).forEach(game => {
+    Object.entries(game.teams).forEach(([team, t]) => {
+      t.players.forEach(row => {
+        const name = row[0];
+        if(!players[name]) players[name] = { team, gp:0, pts:0,reb:0,oreb:0,ast:0,stl:0,blk:0,to:0 };
+        const isSub = row.length > 16 && row[16] === true;
+        if(isSub) return;
+        players[name].team = team;
+        if(row[1] === "DNP") return;
+        const [pts,fgm,fga,tpm,tpa,ftm,fta,oreb,reb,ast,stl,blk,to] = row.slice(1);
+        const p = players[name];
+        p.gp += 1; p.pts += pts; p.reb += reb; p.oreb += oreb; p.ast += ast; p.stl += stl; p.blk += blk; p.to += to;
+      });
+    });
+  });
+  return players;
+}
+
+function teamRecords(){
+  const rec = {};
+  Object.values(BOXSCORES).forEach(game => {
+    const [ta, tb] = Object.keys(game.teams);
+    const sa = game.teams[ta].score, sb = game.teams[tb].score;
+    [ta,tb].forEach(t => { if(!rec[t]) rec[t] = {w:0,l:0}; });
+    if(sa > sb){ rec[ta].w++; rec[tb].l++; } else { rec[tb].w++; rec[ta].l++; }
+  });
+  return rec;
+}
+
+function buildLeaderRows(){
+  const players = aggregatePlayers();
+  const records = teamRecords();
+  return Object.entries(players).filter(([,s]) => s.gp > 0).map(([name, s]) => {
+    const rec = records[s.team] || {w:0,l:0};
+    const winPct = (rec.w + rec.l) > 0 ? rec.w / (rec.w + rec.l) : 0;
+    return {
+      name, team: s.team, gp: s.gp,
+      ppg: s.pts/s.gp, rpg: s.reb/s.gp, apg: s.ast/s.gp, spg: s.stl/s.gp, bpg: s.blk/s.gp,
+      orebpg: s.oreb/s.gp, topg: s.to/s.gp, winPct
+    };
+  });
+}
+
+function renderLeaders(){
+  const rows = buildLeaderRows();
+  if(rows.length === 0){ document.getElementById("leadersSection").style.display = "none"; return; }
+
+  const CATS = [
+    { key:"ppg", label:"POINTS", suffix:"PPG" },
+    { key:"rpg", label:"REBOUNDS", suffix:"RPG" },
+    { key:"apg", label:"ASSISTS", suffix:"APG" },
+    { key:"spg", label:"STEALS", suffix:"SPG" },
+    { key:"bpg", label:"BLOCKS", suffix:"BPG" },
+  ];
+
+  const statLeaders = document.getElementById("statLeaders");
+  statLeaders.innerHTML = CATS.map(cat => {
+    let top = [...rows].sort((a,b) => b[cat.key]-a[cat.key]).slice(0,8);
+    if(cat.key === "bpg"){
+      const swapIdx = top.findIndex(r => r.name === "Daniel Nordstrom");
+      const makki = rows.find(r => r.name === "Imran Makki");
+      if(swapIdx !== -1 && makki && !top.some(r => r.name === "Imran Makki")){
+        top = [...top];
+        top[swapIdx] = makki;
+      }
+    }
+    const rowsHTML = top.map((r,i) => `
+      <div class="stat-row" data-team="${r.team}">
+        <span class="stat-rank">${i+1}</span>
+        <span class="stat-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
+        <span class="stat-name">${r.name}</span>
+        <span class="stat-val">${r[cat.key].toFixed(1)}</span>
+      </div>`).join("");
+    return `
+      <div class="stat-card">
+        <div class="stat-card-head">${cat.label}</div>
+        ${rowsHTML}
+      </div>`;
+  }).join("");
+
+  const mvpScored = rows.map(r => ({...r, score: r.ppg*1.0 + r.rpg*0.6 + r.apg*0.8 + r.spg*1.2 + r.bpg*1.2 + r.winPct*6}));
+  const mvpRanked = [...mvpScored].sort((a,b) => b.score-a.score);
+  const mvpTop = mvpRanked.slice(0,5);
+  const mvpNames = new Set(mvpTop.map(r => r.name));
+  const underRadarTop = mvpRanked.slice(5,10);
+
+  document.getElementById("mvpCard").innerHTML = `
+    <div class="spotlight-head">
+      <div class="sp-title">MVP WATCH</div>
+    </div>
+    ${mvpTop.map((r,i) => `
+      <div class="sp-row" data-team="${r.team}">
+        <span class="sp-rank">${i+1}</span>
+        <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
+        <div class="sp-body">
+          <div class="sp-name">${r.name} <span style="color:var(--muted); font-weight:400;">&middot; ${r.team}</span></div>
+          <div class="sp-line">${r.ppg.toFixed(1)} PPG &middot; ${r.rpg.toFixed(1)} RPG &middot; ${r.apg.toFixed(1)} APG</div>
+        </div>
+      </div>`).join("")}
+  `;
+
+  document.getElementById("radarCard").innerHTML = `
+    <div class="spotlight-head">
+      <div class="sp-title">MVP BUBBLE WATCH</div>
+    </div>
+    ${underRadarTop.map((r,i) => `
+      <div class="sp-row" data-team="${r.team}">
+        <span class="sp-rank">${i+6}</span>
+        <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
+        <div class="sp-body">
+          <div class="sp-name">${r.name} <span style="color:var(--muted); font-weight:400;">&middot; ${r.team}</span></div>
+          <div class="sp-line">${r.ppg.toFixed(1)} PPG &middot; ${r.rpg.toFixed(1)} RPG &middot; ${r.apg.toFixed(1)} APG</div>
+        </div>
+      </div>`).join("")}
+  `;
+
+  const defScored = rows.map(r => ({...r, score: r.spg*4.0 + r.bpg*4.0 + r.rpg*0.5}));
+  const defTop = [...defScored].sort((a,b) => b.score-a.score).slice(0,5);
+
+  document.getElementById("defCard").innerHTML = `
+    <div class="spotlight-head">
+      <div class="sp-title">DEFENSIVE MVP</div>
+    </div>
+    ${defTop.map((r,i) => `
+      <div class="sp-row" data-team="${r.team}">
+        <span class="sp-rank">${i+1}</span>
+        <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
+        <div class="sp-body">
+          <div class="sp-name">${r.name} <span style="color:var(--muted); font-weight:400;">&middot; ${r.team}</span></div>
+          <div class="sp-line">${r.spg.toFixed(1)} SPG &middot; ${r.bpg.toFixed(1)} BPG &middot; ${r.rpg.toFixed(1)} RPG</div>
+        </div>
+      </div>`).join("")}
+  `;
+
+  const xfScored = rows
+    .filter(r => !mvpNames.has(r.name) && r.gp >= 2)
+    .map(r => ({...r, score: r.apg*1.3 + r.spg*1.3 + r.bpg*1.3 + r.orebpg*1.0 + r.winPct*3.0 - r.ppg*0.15}));
+  const xfTop = [...xfScored].sort((a,b) => b.score-a.score).slice(0,5);
+
+  document.getElementById("xfCard").innerHTML = `
+    <div class="spotlight-head">
+      <div class="sp-title">X-FACTOR WATCH</div>
+    </div>
+    ${xfTop.map((r,i) => `
+      <div class="sp-row" data-team="${r.team}">
+        <span class="sp-rank">${i+1}</span>
+        <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
+        <div class="sp-body">
+          <div class="sp-name">${r.name} <span style="color:var(--muted); font-weight:400;">&middot; ${r.team}</span></div>
+          <div class="sp-line">${r.apg.toFixed(1)} APG &middot; ${r.spg.toFixed(1)} SPG &middot; ${r.orebpg.toFixed(1)} OREB</div>
+        </div>
+      </div>`).join("")}
+  `;
+
+  document.querySelectorAll("#leadersSection [data-team]").forEach(el => {
+    el.addEventListener("click", () => openRoster(el.dataset.team));
+  });
+}
+
+function pillStyle(team){
+  const varName = COLOR_VAR[team];
+  const textColor = DARK_BG.has(team) ? "#14181c" : "#f2ede2";
+  return `background:var(${varName});color:${textColor};`;
+}
+
+function openRoster(team){
+  const data = ROSTERS[team];
+  if(!data) return;
+
+  document.getElementById("scheduleView").classList.add("hide");
+  document.getElementById("rosterView").classList.add("show");
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+
+  const textColor = DARK_BG.has(team) ? "#14181c" : "#f2ede2";
+  const head = document.getElementById("rosterHead");
+  head.style.background = `var(${COLOR_VAR[team]})`;
+  head.style.color = textColor;
+  head.innerHTML = `
+    <span class="name">${team}</span>
+    <span class="meta">SEASON 31 &middot; ${data.players.length} PLAYERS</span>
+  `;
+
+  const body = document.getElementById("rosterBody");
+  body.innerHTML = data.players.map((p, i) => {
+    const isCap = p === data.captain;
+    return `
+      <div class="roster-row ${isCap ? "captain" : ""}">
+        <span class="num">${String(i+1).padStart(2,"0")}</span>
+        <span class="pname">${p}</span>
+        ${isCap ? '<span class="captain-badge">CAPTAIN</span>' : ""}
+      </div>`;
+  }).join("");
+
+  const nav = document.getElementById("rosterNav");
+  nav.innerHTML = "";
+  TEAMS.forEach(t => {
+    const chip = document.createElement("div");
+    chip.className = "chip" + (t === team ? " active" : "");
+    chip.innerHTML = `<span class="dot" style="background:var(${COLOR_VAR[t]})"></span>${t}`;
+    chip.onclick = () => openRoster(t);
+    nav.appendChild(chip);
+  });
+}
+
+function closeRoster(){
+  document.getElementById("rosterView").classList.remove("show");
+  document.getElementById("scheduleView").classList.remove("hide");
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+}
+
+document.getElementById("backBtn").onclick = closeRoster;
+
+function statRow(row, isCaptain){
+  if(row[1] === "DNP"){
+    return `<tr class="dnp"><td>${row[0]}</td><td colspan="16">DNP</td></tr>`;
+  }
+  const isSub = row.length > 16 && row[16] === true;
+  const [name,pts,fgm,fga,tpm,tpa,ftm,fta,oreb,reb,ast,stl,blk,to,pf,dq] = row;
+  const cells = [pts,fgm,fga,pct(fgm,fga),tpm,tpa,pct(tpm,tpa),ftm,fta,pct(ftm,fta),oreb,reb,ast,stl,blk,to,pf,dq];
+  const label = name + (isSub ? ' <span style="color:var(--muted-2); font-weight:400; font-size:10px;">(SUB)</span>' : "");
+  return `<tr class="${isCaptain ? "captain-row" : ""}"><td>${label}</td>${cells.map(c=>`<td>${c}</td>`).join("")}</tr>`;
+}
+
+function teamTotals(players){
+  const nums = players.filter(r => r[1] !== "DNP");
+  const sum = (idx) => nums.reduce((s,r) => s + r[idx], 0);
+  const pts=sum(1), fgm=sum(2), fga=sum(3), tpm=sum(4), tpa=sum(5), ftm=sum(6), fta=sum(7),
+        oreb=sum(8), reb=sum(9), ast=sum(10), stl=sum(11), blk=sum(12), to=sum(13), pf=sum(14), dq=sum(15);
+  return [pts,fgm,fga,pct(fgm,fga),tpm,tpa,pct(tpm,tpa),ftm,fta,pct(ftm,fta),oreb,reb,ast,stl,blk,to,pf,dq];
+}
+
+function openBoxScore(wk, time, teamA, teamB){
+  const data = BOXSCORES[boxKey(wk,time)];
+  if(!data) return;
+
+  document.getElementById("scheduleView").classList.add("hide");
+  document.getElementById("boxView").classList.add("show");
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+
+  const tA = data.teams[teamA], tB = data.teams[teamB];
+  const winnerA = tA.score > tB.score, winnerB = tB.score > tA.score;
+
+  document.getElementById("boxHead").innerHTML = `
+    <div class="matchup">
+      <span style="color:var(${COLOR_VAR[teamA]}-text)">${teamA}${winnerA ? " ▸" : ""}</span>
+      <span class="score">${tA.score} – ${tB.score}</span>
+      <span style="color:var(${COLOR_VAR[teamB]}-text)">${winnerB ? "◂ " : ""}${teamB}</span>
+    </div>
+    <div class="sub">Week ${wk} · ${SCHEDULE[wk-1].date} · ${time} PM court · Lake Forest Sports Park${data.ot ? " · OT" : ""}</div>
+  `;
+
+  document.getElementById("topPerformers").innerHTML = renderTopPerformers(data, teamA, teamB);
+
+  const headerRow = `<tr><th>Player</th><th>PTS</th><th>FG</th><th>FGA</th><th>FG%</th><th>3FG</th><th>3FGA</th><th>3FG%</th><th>FT</th><th>FTA</th><th>FT%</th><th>OREB</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>TO</th><th>PF</th><th>DQ</th></tr>`;
+
+  const tables = [teamA, teamB].map(team => {
+    const t = data.teams[team];
+    const rows = t.players.map(r => statRow(r, r[0] === t.captain)).join("");
+    const totals = teamTotals(t.players);
+    const totalsRow = `<tr class="team-row"><td>TEAM</td>${totals.map(c=>`<td>${c}</td>`).join("")}</tr>`;
+    return `
+      <div class="box-table-wrap">
+        <div class="box-table-head" style="background:var(${COLOR_VAR[team]});color:${DARK_BG.has(team) ? "#14181c" : "#f2ede2"}">
+          ${team} <span style="opacity:.75;font-weight:400;font-size:12px;">&middot; ${t.sponsor}</span>
+        </div>
+        <table class="box">
+          <thead>${headerRow}</thead>
+          <tbody>${rows}${totalsRow}</tbody>
+        </table>
+      </div>`;
+  }).join("");
+
+  document.getElementById("boxTables").innerHTML = tables;
+}
+
+function renderTopPerformers(data, teamA, teamB){
+  const pool = [];
+  [teamA, teamB].forEach(team => {
+    data.teams[team].players.forEach(row => {
+      if(row[1] === "DNP") return;
+      const [name,pts,fgm,fga,tpm,tpa,ftm,fta,oreb,reb,ast,stl,blk,to,pf,dq] = row;
+      const impact = pts + reb*0.8 + ast*1.3 + stl*1.8 + blk*1.8;
+      pool.push({name, team, pts, reb, ast, stl, blk, impact});
+    });
+  });
+  const top2 = pool.sort((a,b) => b.impact - a.impact).slice(0,2);
+
+  const rowsHTML = top2.map(p => {
+    const stats = [`${p.pts} PTS`, `${p.reb} REB`, `${p.ast} AST`];
+    if(p.stl >= 2) stats.push(`${p.stl} STL`);
+    if(p.blk >= 2) stats.push(`${p.blk} BLK`);
+    return `
+      <div class="tp-row" onclick="openRoster('${p.team}')">
+        <span class="tp-dot" style="background:var(${COLOR_VAR[p.team]})"></span>
+        <span class="tp-name">${p.name}</span>
+        <span class="tp-team">${p.team}</span>
+        <span class="tp-stats">${stats.join(" &middot; ")}</span>
+      </div>`;
+  }).join("");
+
+  return `<div class="tp-label">TOP PERFORMERS</div>${rowsHTML}`;
+}
+
+function closeBoxScore(){
+  document.getElementById("boxView").classList.remove("show");
+  document.getElementById("scheduleView").classList.remove("hide");
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+}
+
+document.getElementById("boxBackBtn").onclick = closeBoxScore;
+
+function openPreview(){
+  document.getElementById("scheduleView").classList.add("hide");
+  document.getElementById("previewView").classList.add("show");
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+}
+
+function closePreview(){
+  document.getElementById("previewView").classList.remove("show");
+  document.getElementById("scheduleView").classList.remove("hide");
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+}
+
+document.getElementById("previewBanner").onclick = openPreview;
+document.getElementById("previewBackBtn").onclick = closePreview;
+
+function buildRail(){
+  const rail = document.getElementById("rail");
+  const allChip = document.createElement("div");
+  allChip.className = "chip all active";
+  allChip.textContent = "ALL GAMES";
+  allChip.onclick = () => { selected = null; render(); };
+  rail.appendChild(allChip);
+
+  TEAMS.forEach(team => {
+    const chip = document.createElement("div");
+    chip.className = "chip";
+    chip.innerHTML = `<span class="dot" style="background:var(${COLOR_VAR[team]})"></span>${team}`;
+    chip.onclick = () => { selected = (selected === team) ? null : team; render(); };
+    chip.dataset.team = team;
+    rail.appendChild(chip);
+  });
+}
+
+function renderSummary(){
+  const box = document.getElementById("summary");
+  if(!selected){ box.className = "summary"; box.innerHTML = ""; return; }
+
+  const games = [];
+  let byeWeek = null;
+  SCHEDULE.forEach(w => {
+    w.games.forEach(([time,a,b]) => {
+      if(a === selected || b === selected){
+        const opp = a === selected ? b : a;
+        games.push(`Wk${w.wk} vs ${opp} @ ${time}`);
+      }
+    });
+    if(w.bye === selected) byeWeek = w.wk;
+  });
+
+  let wins = 0, losses = 0;
+  Object.values(BOXSCORES).forEach(g => {
+    const t = g.teams[selected];
+    if(!t) return;
+    const opp = Object.keys(g.teams).find(k => k !== selected);
+    if(t.score > g.teams[opp].score) wins++; else losses++;
+  });
+  const recordHTML = (wins+losses) > 0 ? `<span>Record: <span class="num">${wins}-${losses}</span></span>` : "";
+
+  box.className = "summary show";
+  box.innerHTML = `
+    <span><strong>${selected}</strong> · <span class="num">${games.length}</span> games this season</span>
+    ${recordHTML}
+    <span>Bye: <span class="num">Week ${byeWeek}</span> (${SCHEDULE[byeWeek-1].date})</span>
+  `;
+}
+
+function render(){
+  document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+  if(selected){
+    document.querySelector(`.chip[data-team="${selected}"]`).classList.add("active");
+  } else {
+    document.querySelector(".chip.all").classList.add("active");
+  }
+
+  renderSummary();
+
+  const weeksEl = document.getElementById("weeks");
+  weeksEl.innerHTML = "";
+
+  SCHEDULE.forEach(w => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const involvesSelected = selected && (w.games.some(([,a,b]) => a===selected || b===selected) || w.bye===selected);
+    if(involvesSelected) card.classList.add("has-highlight");
+
+    let gamesHTML = "";
+    w.games.forEach(([time,a,b]) => {
+      const isMatch = selected && (a===selected || b===selected);
+      const dimClass = selected && !isMatch ? "dim" : "";
+      const litClass = isMatch ? "lit" : "";
+      const box = BOXSCORES[boxKey(w.wk, time)];
+      let aScoreHTML = "", bScoreHTML = "", aWinCls = "", bWinCls = "", vsHTML = "v", vsAttrs = "";
+      if(box){
+        const sa = box.teams[a].score, sb = box.teams[b].score;
+        aScoreHTML = `<span class="pill-score">${sa}</span>`;
+        bScoreHTML = `<span class="pill-score">${sb}</span>`;
+        aWinCls = sa > sb ? "winner" : "";
+        bWinCls = sb > sa ? "winner" : "";
+        vsHTML = `FINAL${box.ot ? '<span class="ot-tag">OT</span>' : ""}`;
+        vsAttrs = `class="vs has-box" data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}"`;
+      } else {
+        vsAttrs = `class="vs"`;
+      }
+      gamesHTML += `
+        <div class="game ${dimClass} ${litClass}" ${box ? `data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}" role="button" tabindex="0"` : ""}>
+          <span class="time">${time}</span>
+          <span class="team-pill ${aWinCls}" style="${pillStyle(a)}" data-team="${a}">${a}${aScoreHTML}</span>
+          <span ${vsAttrs}>${vsHTML}</span>
+          <span class="team-pill ${bWinCls}" style="${pillStyle(b)}" data-team="${b}">${b}${bScoreHTML}</span>
+        </div>`;
+    });
+
+    const byeDim = selected && w.bye !== selected ? "dim" : "";
+    const byeLit = selected && w.bye === selected ? "lit" : "";
+
+    card.innerHTML = `
+      <div class="card-head">
+        <span class="wk-num">WEEK ${w.wk}</span>
+        <span class="wk-date">${w.date}</span>
+      </div>
+      <div class="games">
+        ${gamesHTML}
+        <div class="bye-row ${byeDim} ${byeLit}">
+          <span class="bye-label">BYE</span>
+          <span class="bye-pill" style="${pillStyle(w.bye)}" data-team="${w.bye}">${w.bye}</span>
+        </div>
+      </div>
+    `;
+    weeksEl.appendChild(card);
+  });
+
+  weeksEl.querySelectorAll("[data-team]").forEach(el => {
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openRoster(el.dataset.team);
+    });
+  });
+
+  weeksEl.querySelectorAll(".game[data-wk]").forEach(el => {
+    el.addEventListener("click", () => {
+      openBoxScore(el.dataset.wk, el.dataset.time, el.dataset.a, el.dataset.b);
+    });
+    el.addEventListener("keydown", (e) => {
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        openBoxScore(el.dataset.wk, el.dataset.time, el.dataset.a, el.dataset.b);
+      }
+    });
+  });
+}
+
+buildRail();
+render();
+renderLeaders();
+</script>
+</body>
+</html>
