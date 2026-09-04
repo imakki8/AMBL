@@ -532,14 +532,17 @@
   table.box{
     border-collapse:collapse;
     width:100%;
-    min-width:740px;
+    table-layout:fixed;
     font-size:12px;
   }
   table.box th, table.box td{
-    padding:8px 9px;
+    padding:8px 6px;
     text-align:center;
     white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
+  table.box th:first-child, table.box td:first-child{width:17%;}
   table.box th{
     color:var(--ink-faint);
     font-weight:700;
@@ -558,13 +561,13 @@
   }
   table.box tr.dnp td{color:var(--ink-faint); font-style:italic; font-weight:400;}
   table.box tr.captain-row td:first-child::after{content:" (C)"; color:var(--accent); font-weight:700;}
-  table.box tr.team-row td{
+  table.box tr.totals-row td{
     border-top:1px solid var(--line-soft);
     font-weight:800;
     color:var(--ink);
     background:var(--panel-2);
   }
-  table.box tr.team-row td:first-child{background:var(--panel-2);}
+  table.box tr.totals-row td:first-child{background:var(--panel-2);}
 
   /* ---------- Leaderboard section ---------- */
   .leaders-grid{
@@ -1556,7 +1559,7 @@ function openRoster(team){
 
 function statRow(row, isCaptain){
   if(row[1] === "DNP"){
-    return `<tr class="dnp"><td>${row[0]}</td><td colspan="16">DNP</td></tr>`;
+    return `<tr class="dnp"><td>${row[0]}</td><td colspan="18">DNP</td></tr>`;
   }
   const isSub = row.length > 16 && row[16] === true;
   const [name,pts,fgm,fga,tpm,tpa,ftm,fta,oreb,reb,ast,stl,blk,to,pf,dq] = row;
@@ -1599,7 +1602,7 @@ function openBoxScore(wk, time, teamA, teamB){
     const t = data.teams[team];
     const rows = t.players.map(r => statRow(r, r[0] === t.captain)).join("");
     const totals = teamTotals(t.players);
-    const totalsRow = `<tr class="team-row"><td>TEAM</td>${totals.map(c=>`<td>${c}</td>`).join("")}</tr>`;
+    const totalsRow = `<tr class="totals-row"><td>TEAM</td>${totals.map(c=>`<td>${c}</td>`).join("")}</tr>`;
     return `
       <div class="box-table-wrap">
         <div class="box-table-head" style="color:var(${teamTextVar(team)})">
