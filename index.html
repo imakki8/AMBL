@@ -141,30 +141,19 @@
   }
   .hero-bball{
     position:absolute;
-    top:50%; right:50px;
-    transform:translateY(-50%);
-    width:400px; height:400px;
+    top:0; right:0;
+    width:60%; height:100%;
     z-index:0;
     pointer-events:none;
-    -webkit-mask-image:radial-gradient(circle closest-side, black 56%, transparent 82%);
-    mask-image:radial-gradient(circle closest-side, black 56%, transparent 82%);
+    overflow:hidden;
   }
-  .hero-bball::before{
+  .hero-bball svg{width:100%; height:100%; display:block;}
+  .hero-bball::after{
     content:"";
-    position:absolute;
-    inset:-60px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(110,231,183,0.20), transparent 68%);
-    z-index:-1;
-  }
-  .hero-bball-spin{
-    width:100%; height:100%;
-    animation:bball-spin 48s linear infinite;
-  }
-  .hero-bball-spin svg{width:100%; height:100%; display:block; filter:drop-shadow(0 30px 55px rgba(0,0,0,0.55));}
-  @keyframes bball-spin{
-    from{transform:rotate(0deg);}
-    to{transform:rotate(360deg);}
+    position:absolute; inset:0;
+    background:
+      radial-gradient(120% 90% at 88% 12%, transparent 40%, rgba(0,0,0,0.4) 100%),
+      linear-gradient(100deg, var(--bg) 0%, var(--bg) 4%, transparent 48%);
   }
   .hero-big-inner{position:relative; z-index:1; max-width:600px;}
   .hero-live-badge{
@@ -999,31 +988,28 @@
 
   <div class="hero-big">
     <div class="hero-bball" aria-hidden="true">
-      <div class="hero-bball-spin">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="bballGrad" cx="35%" cy="30%" r="80%">
-              <stop offset="0%" stop-color="#f5a05f"/>
-              <stop offset="32%" stop-color="#df7c38"/>
-              <stop offset="68%" stop-color="#a8481c"/>
-              <stop offset="100%" stop-color="#54200d"/>
-            </radialGradient>
-            <radialGradient id="bballShine" cx="32%" cy="25%" r="26%">
-              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/>
-              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <circle cx="100" cy="100" r="97" fill="url(#bballGrad)"/>
-          <g stroke="#170d05" stroke-width="3.4" fill="none" stroke-linecap="round" opacity="0.88">
-            <path d="M100 3 V197"/>
-            <path d="M3 100 H197"/>
-            <path d="M28 26 C 64 68, 64 132, 28 174"/>
-            <path d="M172 26 C 136 68, 136 132, 172 174"/>
-          </g>
-          <circle cx="100" cy="100" r="97" fill="url(#bballShine)"/>
-          <circle cx="100" cy="100" r="97" fill="none" stroke="#6ee7b7" stroke-width="1.6" opacity="0.4"/>
-        </svg>
-      </div>
+      <svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bballGrad" cx="30%" cy="16%" r="95%">
+            <stop offset="0%" stop-color="#f7ac68"/>
+            <stop offset="24%" stop-color="#e3813f"/>
+            <stop offset="48%" stop-color="#b1541f"/>
+            <stop offset="72%" stop-color="#6b2a10"/>
+            <stop offset="100%" stop-color="#160a05"/>
+          </radialGradient>
+          <filter id="bballGrain" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="n"/>
+            <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0"/>
+          </filter>
+        </defs>
+        <rect width="600" height="900" fill="url(#bballGrad)"/>
+        <rect width="600" height="900" filter="url(#bballGrain)" opacity="0.5"/>
+        <g stroke="#0f0703" stroke-width="14" fill="none" stroke-linecap="round" opacity="0.8">
+          <path d="M -80 760 Q 220 430 700 90"/>
+          <path d="M 60 -60 Q 330 340 260 950"/>
+        </g>
+        <rect width="600" height="900" fill="#000" opacity="0.05"/>
+      </svg>
     </div>
     <div class="hero-big-inner">
       <span class="hero-live-badge"><span class="live-dot"></span>Season 31 &middot; Live</span>
