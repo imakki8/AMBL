@@ -17,11 +17,14 @@
     --ink:#ffffff;
     --ink-soft:#a3a3ab;
     --ink-faint:#6b6b74;
-    --accent:#d4fb08;
-    --on-accent:#0a0a0a;
-    --accent-dim:#42500a;
-    --accent-soft:rgba(212,251,8,0.14);
+    --accent:#6ee7b7;
+    --on-accent:#06170f;
+    --accent-dim:#234a3a;
+    --accent-soft:rgba(110,231,183,0.14);
     --accent-2:#e63950;
+    --gold:#f5c451;
+    --on-gold:#231903;
+    --gold-soft:rgba(245,196,81,0.14);
     --font-display:'Space Grotesk', 'Inter', system-ui, sans-serif;
 
     --thunder:#b1544a;
@@ -127,8 +130,131 @@
     transition:background .15s ease, color .15s ease, border-color .15s ease;
   }
   .hero-nav-item:hover{background:var(--panel-2); color:var(--ink); border-color:var(--ink-faint);}
-  .hero-nav-item.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent); box-shadow:0 0 18px rgba(212,251,8,0.3);}
+  .hero-nav-item.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent); box-shadow:0 0 18px rgba(110,231,183,0.3);}
   .nav-icon{width:16px; height:16px; flex:none; opacity:.9;}
+
+  /* ---------- Big hero ---------- */
+  .hero-big{
+    position:relative;
+    overflow:hidden;
+    isolation:isolate;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:52px 44px;
+    margin:16px 0 0;
+  }
+  .hero-bball{
+    position:absolute;
+    top:50%; right:-100px;
+    transform:translateY(-50%);
+    width:520px; height:520px;
+    z-index:0;
+    pointer-events:none;
+    -webkit-mask-image:linear-gradient(to left, black 32%, transparent 86%);
+    mask-image:linear-gradient(to left, black 32%, transparent 86%);
+  }
+  .hero-bball svg{width:100%; height:100%; display:block; filter:drop-shadow(0 30px 55px rgba(0,0,0,0.55));}
+  .hero-big-inner{position:relative; z-index:1; max-width:600px;}
+  .hero-live-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-weight:700; font-size:11.5px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border:1px solid var(--accent-dim);
+    padding:6px 14px 6px 10px;
+    border-radius:20px;
+    margin-bottom:24px;
+  }
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent);}
+  .hero-big-title{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:54px;
+    line-height:1.06;
+    letter-spacing:-.02em;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+  .hero-big-title .accent-ink{color:var(--accent);}
+  .hero-big-sub{font-size:16px; color:var(--ink-soft); max-width:460px; margin:0 0 30px; line-height:1.55;}
+  .hero-big-cta{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn-primary, .btn-secondary{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:14px;
+    padding:13px 24px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .btn-primary{background:var(--accent); color:var(--on-accent); border:none;}
+  .btn-primary:hover{box-shadow:0 0 20px rgba(110,231,183,0.35); transform:translateY(-1px);}
+  .btn-secondary{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-secondary:hover{border-color:var(--ink-faint); background:var(--panel-2);}
+  .hero-score-card{
+    position:absolute;
+    top:44px; right:44px;
+    z-index:2;
+    width:250px;
+    background:rgba(8,9,10,0.72);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 18px;
+    cursor:pointer;
+    transition:border-color .15s ease;
+  }
+  .hero-score-card:hover{border-color:var(--ink-faint);}
+  .hero-score-card .hsc-tag{display:flex; align-items:center; gap:6px; font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;}
+  .hsc-dot{width:6px; height:6px; border-radius:50%; background:var(--gold);}
+  .hero-score-card .hsc-row{display:flex; align-items:center; justify-content:space-between; padding:2px 0;}
+  .hero-score-card .hsc-team{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+  .hero-score-card .hsc-score{font-family:var(--font-display); font-weight:700; font-size:22px; color:var(--ink);}
+  .hero-score-card .hsc-score.win{color:var(--accent);}
+  .hero-score-card .hsc-meta{font-size:10px; letter-spacing:.02em; color:var(--ink-faint); margin-top:10px; line-height:1.4;}
+  @media (max-width:900px){
+    .hero-big{padding:36px 24px;}
+    .hero-big-title{font-size:36px;}
+    .hero-bball{display:none;}
+    .hero-score-card{position:static; width:auto; margin-top:26px;}
+  }
+
+  /* ---------- Auto-scrolling game ticker ---------- */
+  .ticker{
+    overflow:hidden;
+    background:var(--panel-2);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:13px 0;
+    width:100vw;
+    margin:0 calc(50% - 50vw) 24px;
+  }
+  .ticker-track{
+    display:flex;
+    width:max-content;
+    animation:ticker-scroll 100s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker-track{animation:none;}
+  }
+  .ticker-item{
+    display:flex; align-items:center; gap:8px;
+    padding:0 24px;
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:13px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    border-right:1px solid var(--line);
+  }
+  .ticker-item b{color:var(--ink); font-weight:700;}
+  .ticker-item .tk-wk{color:var(--accent); font-weight:700; font-size:11px; letter-spacing:.03em;}
+  @keyframes ticker-scroll{
+    from{transform:translateX(-50%);}
+    to{transform:translateX(0%);}
+  }
 
   /* ---------- Main content ---------- */
   .content{
@@ -184,7 +310,7 @@
   }
   .chip:hover{border-color:var(--ink-faint); color:var(--ink);}
   .chip .dot{width:8px; height:8px; border-radius:50%; flex:none;}
-  .chip.active{background:var(--accent); border-color:var(--accent); color:var(--on-accent); box-shadow:0 0 18px rgba(212,251,8,0.35);}
+  .chip.active{background:var(--accent); border-color:var(--accent); color:var(--on-accent); box-shadow:0 0 18px rgba(110,231,183,0.35);}
   .chip.all{font-weight:700;}
 
   /* ---------- Selected team summary ---------- */
@@ -268,7 +394,7 @@
     transition:border-color .15s ease, transform .1s ease, background .15s ease;
   }
   .game.dim{opacity:0.32;}
-  .game.lit{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 0 24px rgba(212,251,8,0.12);}
+  .game.lit{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 0 24px rgba(110,231,183,0.12);}
   .game[data-wk]{cursor:pointer;}
   .game[data-wk]:hover{border-color:var(--ink-faint); transform:translateY(-1px);}
   .game[data-wk]:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
@@ -654,6 +780,9 @@
   }
   .spotlight-card.mvp .spotlight-head{border-top:3px solid var(--accent);}
   .spotlight-card.mvp .spotlight-head .sp-title{color:var(--accent);}
+  .spotlight-card.mvp .sp-row:first-child{background:var(--gold-soft);}
+  .spotlight-card.mvp .sp-row:first-child .sp-rank{color:var(--gold); font-size:15px;}
+  .spotlight-card.mvp .sp-row:first-child .sp-name{color:var(--gold);}
   .spotlight-card.def .spotlight-head{border-top:3px solid var(--def-color);}
   .spotlight-card.def .spotlight-head .sp-title{color:var(--def-color);}
   .spotlight-card.xf .spotlight-head{border-top:3px solid var(--xf-color);}
@@ -680,6 +809,47 @@
   .sp-body{flex:1; min-width:0;}
   .sp-name{font-weight:700; font-size:13.5px; color:var(--ink);}
   .sp-line{font-size:11px; color:var(--ink-faint); margin-top:2px;}
+
+  /* ---------- Plays of the Night ---------- */
+  .plays-section{margin:30px 0 4px;}
+  .plays-video{
+    position:relative;
+    aspect-ratio:16/6;
+    border-radius:16px;
+    background:
+      radial-gradient(600px 300px at 50% 50%, rgba(110,231,183,0.10), transparent 70%),
+      var(--panel);
+    border:1px solid var(--accent-dim);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .plays-badge{
+    position:absolute; top:16px; left:18px;
+    display:flex; align-items:center; gap:7px;
+    font-weight:700; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--ink); background:rgba(0,0,0,0.5);
+    padding:6px 12px; border-radius:20px;
+  }
+  .plays-sound{
+    position:absolute; bottom:16px; right:18px;
+    font-weight:600; font-size:11.5px; letter-spacing:.02em;
+    color:var(--ink-soft);
+  }
+  .play-btn{
+    width:74px; height:74px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.18);
+    color:var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .play-btn:hover{background:rgba(110,231,183,0.18); transform:scale(1.05);}
+  .play-btn svg{width:26px; height:26px; margin-left:3px;}
+  @media (max-width:640px){ .plays-video{aspect-ratio:16/9;} }
 
   /* ---------- Preview / Tip-Off feature page ---------- */
   .preview-view{display:none;}
@@ -827,6 +997,41 @@
     </div>
   </div>
 
+  <div class="hero-big">
+    <div class="hero-bball" aria-hidden="true">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bballGrad" cx="38%" cy="32%" r="75%">
+            <stop offset="0%" stop-color="#e2793f"/>
+            <stop offset="55%" stop-color="#b8541f"/>
+            <stop offset="100%" stop-color="#7a3512"/>
+          </radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="98" fill="url(#bballGrad)"/>
+        <g stroke="#1a1006" stroke-width="3.4" fill="none" stroke-linecap="round">
+          <path d="M100 2 V198"/>
+          <path d="M2 100 H198"/>
+          <path d="M28 26 C 64 68, 64 132, 28 174"/>
+          <path d="M172 26 C 136 68, 136 132, 172 174"/>
+        </g>
+      </svg>
+    </div>
+    <div class="hero-big-inner">
+      <span class="hero-live-badge"><span class="live-dot"></span>Season 31 &middot; Live</span>
+      <h1 class="hero-big-title">Where rivals<br><span class="accent-ink">become family.</span></h1>
+      <p class="hero-big-sub" id="heroBigSub">Season 31 is live at Lake Forest Sports Park.</p>
+      <div class="hero-big-cta">
+        <button class="btn-primary" id="heroCtaSchedule">View Full Schedule</button>
+        <button class="btn-secondary" id="heroCtaLeaders">Season Leaders</button>
+      </div>
+    </div>
+    <div class="hero-score-card" id="heroScoreCard"></div>
+  </div>
+
+  <div class="ticker" id="tickerBar">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
   <div class="hero-nav">
     <div class="hero-nav-item active" id="navSchedule">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
@@ -869,6 +1074,20 @@
         <div class="spotlight-card radar" id="radarCard"></div>
         <div class="spotlight-card def" id="defCard"></div>
         <div class="spotlight-card xf" id="xfCard"></div>
+      </div>
+    </div>
+
+    <div class="plays-section">
+      <div class="section-head">
+        <span class="title">Plays of the Night</span>
+        <span class="sub">Highlight reel &middot; footage coming soon</span>
+      </div>
+      <div class="plays-video">
+        <span class="plays-badge">&#9679; Highlight</span>
+        <button class="play-btn" id="playsBtn" aria-label="Play highlight reel" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <span class="plays-sound">&#128266; Sound On</span>
       </div>
     </div>
 
@@ -1459,7 +1678,7 @@ function renderLeaders(){
     <div class="spotlight-head"><div class="sp-title">MVP Watch</div></div>
     ${mvpTop.map((r,i) => `
       <div class="sp-row" data-team="${r.team}">
-        <span class="sp-rank">${i+1}</span>
+        <span class="sp-rank">${i===0 ? "&#9733;" : i+1}</span>
         <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
         <div class="sp-body">
           <div class="sp-name">${r.name}</div>
@@ -1851,10 +2070,76 @@ function decorateStaticLogos(){
   });
 }
 
+// ---------- Big hero: live subcopy + latest-result card ----------
+function totalPlayerCount(){
+  return TEAMS.reduce((sum,t) => sum + (ROSTERS[t] ? ROSTERS[t].players.length : 0), 0);
+}
+
+function latestCompletedGame(){
+  const keys = Object.keys(BOXSCORES);
+  let best = null;
+  keys.forEach(k => {
+    const [wkStr, time] = k.split("-");
+    const wkNum = parseInt(wkStr,10);
+    if(!best || wkNum > best.wkNum || (wkNum === best.wkNum && time > best.time)){
+      best = {wkNum, time, key:k};
+    }
+  });
+  return best;
+}
+
+function renderHeroExtras(){
+  document.getElementById("heroBigSub").textContent =
+    `${TEAMS.length} teams. ${totalPlayerCount()}+ players. One court. Season 31 is live.`;
+
+  const card = document.getElementById("heroScoreCard");
+  const latest = latestCompletedGame();
+  if(!latest){ card.style.display = "none"; return; }
+
+  const data = BOXSCORES[latest.key];
+  const [teamA, teamB] = Object.keys(data.teams);
+  const scoreA = data.teams[teamA].score, scoreB = data.teams[teamB].score;
+  const wk = SCHEDULE[latest.wkNum - 1];
+
+  card.innerHTML = `
+    <div class="hsc-tag"><span class="hsc-dot"></span>Final &middot; Week ${latest.wkNum}</div>
+    <div class="hsc-row"><span class="hsc-team">${teamA}</span><span class="hsc-score ${scoreA>scoreB?"win":""}">${scoreA}</span></div>
+    <div class="hsc-row"><span class="hsc-team">${teamB}</span><span class="hsc-score ${scoreB>scoreA?"win":""}">${scoreB}</span></div>
+    <div class="hsc-meta">${wk ? wk.date : ""} &middot; ${latest.time} PM court &middot; tap for box score</div>
+  `;
+  card.onclick = () => openBoxScore(latest.wkNum, latest.time, teamA, teamB);
+}
+
+// ---------- Auto-scrolling schedule ticker ----------
+function buildTicker(){
+  const items = [];
+  SCHEDULE.forEach(w => {
+    w.games.forEach(([time, a, b]) => {
+      items.push(`<span class="ticker-item"><span class="tk-wk">WK${w.wk}</span><b>${a}</b>&nbsp;vs&nbsp;<b>${b}</b> &middot; ${time} PM</span>`);
+    });
+  });
+  const html = items.join("");
+  document.getElementById("tickerTrack").innerHTML = html + html;
+}
+
+document.getElementById("heroCtaSchedule").onclick = () => {
+  showOnly("scheduleView");
+  requestAnimationFrame(() => {
+    document.getElementById("rail").scrollIntoView({behavior:"smooth", block:"start"});
+  });
+};
+document.getElementById("heroCtaLeaders").onclick = () => document.getElementById("navLeaders").click();
+
+document.getElementById("playsBtn").addEventListener("click", () => {
+  document.querySelector(".plays-badge").textContent = "Highlight reel coming soon";
+});
+
 buildRail();
 render();
 renderLeaders();
 decorateStaticLogos();
+renderHeroExtras();
+buildTicker();
 </script>
 </body>
 </html>
