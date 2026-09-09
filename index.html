@@ -76,12 +76,9 @@
     display:flex;
     align-items:center;
     gap:28px;
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:20px;
-    padding:26px 34px;
-    margin-bottom:16px;
-    background-image:radial-gradient(700px 320px at 92% -20%, rgba(59,111,237,0.10), transparent 60%);
+    padding:10px 4px 22px;
+    margin-bottom:0;
+    border-bottom:1px solid var(--line-soft);
   }
   .hero-logo{
     height:78px;
@@ -138,11 +135,8 @@
     position:relative;
     overflow:hidden;
     isolation:isolate;
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:20px;
-    padding:52px 44px;
-    margin:16px 0 0;
+    padding:40px 4px 44px;
+    margin:0;
   }
   .hero-bball{
     position:absolute;
@@ -278,13 +272,11 @@
   .preview-banner{
     margin:18px 0 22px;
     display:flex; align-items:center; justify-content:space-between; gap:14px;
-    padding:15px 20px;
-    border-radius:14px;
-    background:var(--panel);
-    border:1px solid var(--line);
+    padding:15px 18px;
+    border-radius:10px;
     border-left:3px solid var(--accent);
     cursor:pointer;
-    transition:background .15s ease, border-color .15s ease;
+    transition:background .15s ease;
   }
   .preview-banner:hover{background:var(--panel-2);}
   .preview-banner-left{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
@@ -540,10 +532,8 @@
   .schedule-view.hide{display:none;}
 
   .roster-head{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:16px;
-    padding:22px 26px;
+    padding:8px 4px 22px;
+    border-bottom:1px solid var(--line-soft);
     display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
   }
   .roster-head .name{
@@ -601,10 +591,8 @@
   .box-view.show{display:block;}
 
   .box-head{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:16px;
-    padding:22px 26px;
+    padding:8px 4px 22px;
+    border-bottom:1px solid var(--line-soft);
   }
   .box-head .matchup{
     font-family:var(--font-display);
@@ -869,11 +857,9 @@
   .preview-view.show{display:block;}
 
   .preview-hero{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:16px;
-    padding:30px 28px;
+    padding:10px 4px 26px;
     margin-bottom:22px;
+    border-bottom:1px solid var(--line-soft);
   }
   .preview-hero-eyebrow{
     font-weight:700;
