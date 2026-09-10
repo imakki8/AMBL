@@ -891,6 +891,19 @@
   .play-btn svg{width:26px; height:26px; margin-left:3px;}
   @media (max-width:640px){ .plays-video{aspect-ratio:16/9;} }
 
+  /* ---------- Box Scores archive & Awards Race pages ---------- */
+  .boxscores-view{display:none;}
+  .boxscores-view.show{display:block;}
+  .awards-view{display:none;}
+  .awards-view.show{display:block;}
+  .race-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:22px;
+  }
+  @media (max-width:900px){ .race-grid{grid-template-columns:1fr;} }
+
   /* ---------- Preview / Tip-Off feature page ---------- */
   .preview-view{display:none;}
   .preview-view.show{display:block;}
@@ -1062,9 +1075,17 @@
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
       Full Schedule
     </div>
+    <div class="hero-nav-item" id="navBoxScores">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+      Box Scores
+    </div>
     <div class="hero-nav-item" id="navLeaders">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3a2 2 0 0 1-2 5M7 5H4a2 2 0 0 0 2 5"/></svg>
       Season Leaders
+    </div>
+    <div class="hero-nav-item" id="navAwards">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M8.5 13 7 22l5-3 5 3-1.5-9"/></svg>
+      Awards Race
     </div>
     <div class="hero-nav-item" id="navTipoff">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v3a1 1 0 0 0 1 1h3l4 4V6L7 10H4a1 1 0 0 0-1 1Z"/><path d="M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14"/></svg>
@@ -1105,7 +1126,17 @@
       </div>
     </div>
 
-    <div id="weeks"></div>
+    <div class="section-head">
+      <span class="title">Recent Results</span>
+      <span class="sub">Weeks 4&ndash;5 &middot; tap a game for the box score</span>
+    </div>
+    <div id="recentWeeks"></div>
+
+    <div class="section-head">
+      <span class="title">Upcoming Games</span>
+      <span class="sub">Weeks 6&ndash;7</span>
+    </div>
+    <div id="upcomingWeeks"></div>
 
     <div class="leaders-section" id="leadersSection">
       <div class="section-head">
@@ -1150,6 +1181,37 @@
     <div class="box-head" id="boxHead"></div>
     <div class="top-performers" id="topPerformers"></div>
     <div class="box-tables" id="boxTables"></div>
+  </div>
+
+  <div class="boxscores-view" id="boxScoresView">
+    <div class="back-btn" id="boxScoresBackBtn">&larr; Back to schedule</div>
+    <div class="section-head">
+      <span class="title">All Box Scores</span>
+      <span class="sub">Every completed week &middot; tap a game for the full box score</span>
+    </div>
+    <div id="boxScoresList"></div>
+  </div>
+
+  <div class="awards-view" id="awardsView">
+    <div class="back-btn" id="awardsBackBtn">&larr; Back to schedule</div>
+    <div class="section-head">
+      <span class="title">Awards Race</span>
+      <span class="sub">Through week 5 &middot; tap a name for their roster</span>
+    </div>
+    <div class="race-grid">
+      <div class="spotlight-card mvp">
+        <div class="spotlight-head"><div class="sp-title">MVP Race</div></div>
+        <div id="mvpRaceList"></div>
+      </div>
+      <div class="spotlight-card def">
+        <div class="spotlight-head"><div class="sp-title">Defensive MVP Race</div></div>
+        <div id="defRaceList"></div>
+      </div>
+      <div class="spotlight-card xf">
+        <div class="spotlight-head"><div class="sp-title">X-Factor Race</div></div>
+        <div id="xfRaceList"></div>
+      </div>
+    </div>
   </div>
 
   <div class="preview-view" id="previewView">
@@ -2012,6 +2074,52 @@ function renderLeaders(){
   });
 }
 
+const X_FACTOR_EXCLUDED = new Set([
+  "Mario Bravo","Nick Johnson","Jasper Shen","Matt Burnett","Matthew Estrada",
+  "Garrett Ailshie","Daniel Nordstrom","Christopher Jung","Luis Renteria-Medina",
+]);
+
+function renderAwardsRace(){
+  const rows = buildLeaderRows();
+  if(rows.length === 0) return;
+
+  const raceRowsHTML = (list, lineFn) => list.map((r,i) => `
+    <div class="sp-row" data-team="${r.team}">
+      <span class="sp-rank">${i===0 ? "&#9733;" : i+1}</span>
+      <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
+      <div class="sp-body">
+        <div class="sp-name">${r.name}</div>
+        <div class="sp-line">${lineFn(r)}</div>
+      </div>
+    </div>`).join("");
+
+  const mvpScored = rows.map(r => ({...r, score: r.ppg*1.0 + r.rpg*0.6 + r.apg*0.8 + r.spg*1.2 + r.bpg*1.2 + r.winPct*6}));
+  const mvpRanked = [...mvpScored].sort((a,b) => b.score-a.score);
+  const mvpTop = mvpRanked.slice(0,10);
+  const mvpNames = new Set(mvpRanked.slice(0,5).map(r => r.name));
+
+  document.getElementById("mvpRaceList").innerHTML = raceRowsHTML(mvpTop,
+    r => `${r.ppg.toFixed(1)} PPG / ${r.rpg.toFixed(1)} RPG / ${r.apg.toFixed(1)} APG`);
+
+  const defScored = rows.map(r => ({...r, score: r.spg*4.0 + r.bpg*4.0 + r.rpg*0.5}));
+  const defTop = [...defScored].sort((a,b) => b.score-a.score).slice(0,10);
+
+  document.getElementById("defRaceList").innerHTML = raceRowsHTML(defTop,
+    r => `${r.spg.toFixed(1)} SPG / ${r.bpg.toFixed(1)} BPG / ${r.rpg.toFixed(1)} RPG`);
+
+  const xfScored = rows
+    .filter(r => !mvpNames.has(r.name) && !X_FACTOR_EXCLUDED.has(r.name) && r.gp >= 2)
+    .map(r => ({...r, score: r.apg*1.3 + r.spg*1.3 + r.bpg*1.3 + r.orebpg*1.0 + r.winPct*3.0 - r.ppg*0.15}));
+  const xfTop = [...xfScored].sort((a,b) => b.score-a.score).slice(0,10);
+
+  document.getElementById("xfRaceList").innerHTML = raceRowsHTML(xfTop,
+    r => `${r.apg.toFixed(1)} APG / ${r.spg.toFixed(1)} SPG / ${r.orebpg.toFixed(1)} OREB`);
+
+  document.querySelectorAll("#awardsView [data-team]").forEach(el => {
+    el.addEventListener("click", () => openRoster(el.dataset.team));
+  });
+}
+
 function openRoster(team){
   const data = ROSTERS[team];
   if(!data) return;
@@ -2139,7 +2247,7 @@ function renderTopPerformers(data, teamA, teamB){
 }
 
 function showOnly(viewId){
-  ["scheduleView","rosterView","boxView","previewView"].forEach(id => {
+  ["scheduleView","rosterView","boxView","previewView","boxScoresView","awardsView"].forEach(id => {
     const el = document.getElementById(id);
     if(id === "scheduleView"){
       el.classList.toggle("hide", id !== viewId);
@@ -2148,16 +2256,22 @@ function showOnly(viewId){
     }
   });
   document.getElementById("navTipoff").classList.toggle("active", viewId === "previewView");
-  document.getElementById("navSchedule").classList.toggle("active", viewId !== "previewView");
+  document.getElementById("navBoxScores").classList.toggle("active", viewId === "boxScoresView");
+  document.getElementById("navAwards").classList.toggle("active", viewId === "awardsView");
+  document.getElementById("navSchedule").classList.toggle("active", !["previewView","boxScoresView","awardsView"].includes(viewId));
   window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
 }
 
 document.getElementById("backBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("boxBackBtn").onclick = () => showOnly("scheduleView");
+document.getElementById("boxScoresBackBtn").onclick = () => showOnly("scheduleView");
+document.getElementById("awardsBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("previewBanner").onclick = () => showOnly("previewView");
 document.getElementById("previewBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("navSchedule").onclick = () => showOnly("scheduleView");
 document.getElementById("navTipoff").onclick = () => showOnly("previewView");
+document.getElementById("navBoxScores").onclick = () => { showOnly("boxScoresView"); renderBoxScoresArchive(); };
+document.getElementById("navAwards").onclick = () => { showOnly("awardsView"); renderAwardsRace(); };
 document.getElementById("navLeaders").onclick = () => {
   showOnly("scheduleView");
   requestAnimationFrame(() => {
@@ -2216,115 +2330,84 @@ function renderSummary(){
   `;
 }
 
-function render(){
-  document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
-  if(selected){
-    document.querySelector(`.chip[data-team="${selected}"]`).classList.add("active");
-  } else {
-    document.querySelector(".chip.all").classList.add("active");
-  }
+function weekHasBoxData(w){
+  return w.games.some(([time]) => BOXSCORES[boxKey(w.wk, time)]);
+}
+function completedWeekNumbers(){
+  return SCHEDULE.filter(weekHasBoxData).map(w => w.wk);
+}
+function upcomingWeekList(){
+  return SCHEDULE.filter(w => !weekHasBoxData(w));
+}
 
-  renderSummary();
-
-  const weeksEl = document.getElementById("weeks");
-  weeksEl.innerHTML = "";
-
-  const latestWk = latestBoxWeek();
-
-  SCHEDULE.forEach(w => {
-    const block = document.createElement("div");
-    block.className = "week-block";
-
-    let gamesHTML = "";
-    w.games.forEach(([time,a,b]) => {
-      const isMatch = selected && (a===selected || b===selected);
-      const dimClass = selected && !isMatch ? "dim" : "";
-      const litClass = isMatch ? "lit" : "";
-      const box = BOXSCORES[boxKey(w.wk, time)];
-      const clickable = box && w.wk === latestWk;
-      let aScoreHTML = "", bScoreHTML = "", aWinCls = "", bWinCls = "", vsHTML = "Scheduled", vsAttrs = `class="vs"`;
-      if(box){
-        const sa = box.teams[a].score, sb = box.teams[b].score;
-        aScoreHTML = `<span class="pill-score">${sa}</span>`;
-        bScoreHTML = `<span class="pill-score">${sb}</span>`;
-        aWinCls = sa > sb ? "winner" : "";
-        bWinCls = sb > sa ? "winner" : "";
-        vsHTML = `FINAL${box.ot ? '<span class="ot-tag">/OT</span>' : ""}`;
-        if(clickable){
-          vsAttrs = `class="vs has-box" data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}"`;
-        }
-      }
-      gamesHTML += `
-        <div class="game ${dimClass} ${litClass}" ${clickable ? `data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}" role="button" tabindex="0"` : ""}>
-          <div class="game-status">
-            <span class="time">${time} PM</span>
-            <span ${vsAttrs}>${vsHTML}</span>
-          </div>
-          <div class="team-row">
-            <span class="team-pill ${aWinCls} ${LOGOS[a] ? "has-logo" : ""}" style="${swatch(a)}" data-team="${a}">${crestBadge(a,"crest-sm")}${a}</span>
-            ${aScoreHTML}
-          </div>
-          <div class="team-row">
-            <span class="team-pill ${bWinCls} ${LOGOS[b] ? "has-logo" : ""}" style="${swatch(b)}" data-team="${b}">${crestBadge(b,"crest-sm")}${b}</span>
-            ${bScoreHTML}
-          </div>
-        </div>`;
-    });
-
-    const byeDim = selected && w.bye !== selected ? "dim" : "";
-    const byeLit = selected && w.bye === selected ? "lit" : "";
-
-    block.innerHTML = `
-      <div class="week-head">
-        <span class="wk-num">Week ${w.wk}</span>
-        <span class="wk-date">${w.date}</span>
-      </div>
-      <div class="games">
-        ${gamesHTML}
-      </div>
-      <div class="bye-row ${byeDim} ${byeLit}">
-        <span class="bye-label">Bye</span>
-        <span class="bye-pill ${LOGOS[w.bye] ? "has-logo" : ""}" style="${swatch(w.bye)}" data-team="${w.bye}">${crestBadge(w.bye,"crest-sm")}${w.bye}</span>
-      </div>
-    `;
-    weeksEl.appendChild(block);
-  });
-
-  // collapse to completed weeks + the next 2 upcoming weeks, with a link to reveal the rest
-  if(!selected){
-    const blocks = [...weeksEl.querySelectorAll(".week-block")];
-    let upcomingSeen = 0;
-    const extraBlocks = [];
-    SCHEDULE.forEach((w, i) => {
-      const weekIsUpcoming = w.games.every(([time]) => !BOXSCORES[boxKey(w.wk, time)]);
-      if(weekIsUpcoming){
-        upcomingSeen++;
-        if(upcomingSeen > 2){
-          blocks[i].style.display = "none";
-          extraBlocks.push(blocks[i]);
-        }
-      }
-    });
-    if(extraBlocks.length > 0){
-      const moreLink = document.createElement("div");
-      moreLink.className = "show-more-link";
-      moreLink.textContent = `Show ${extraBlocks.length} more upcoming week${extraBlocks.length > 1 ? "s" : ""} →`;
-      moreLink.onclick = () => {
-        extraBlocks.forEach(b => { b.style.display = ""; });
-        moreLink.remove();
-      };
-      weeksEl.appendChild(moreLink);
+function buildGameCard(w, time, a, b, opts){
+  const allowClick = opts.allowClick;
+  const filterActive = opts.highlightSelected && selected;
+  const isMatch = filterActive && (a===selected || b===selected);
+  const dimClass = filterActive && !isMatch ? "dim" : "";
+  const litClass = isMatch ? "lit" : "";
+  const box = BOXSCORES[boxKey(w.wk, time)];
+  const clickable = allowClick && !!box;
+  let aScoreHTML = "", bScoreHTML = "", aWinCls = "", bWinCls = "", vsHTML = "Scheduled", vsAttrs = `class="vs"`;
+  if(box){
+    const sa = box.teams[a].score, sb = box.teams[b].score;
+    aScoreHTML = `<span class="pill-score">${sa}</span>`;
+    bScoreHTML = `<span class="pill-score">${sb}</span>`;
+    aWinCls = sa > sb ? "winner" : "";
+    bWinCls = sb > sa ? "winner" : "";
+    vsHTML = `FINAL${box.ot ? '<span class="ot-tag">/OT</span>' : ""}`;
+    if(clickable){
+      vsAttrs = `class="vs has-box" data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}"`;
     }
   }
+  return `
+    <div class="game ${dimClass} ${litClass}" ${clickable ? `data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}" role="button" tabindex="0"` : ""}>
+      <div class="game-status">
+        <span class="time">${time} PM</span>
+        <span ${vsAttrs}>${vsHTML}</span>
+      </div>
+      <div class="team-row">
+        <span class="team-pill ${aWinCls} ${LOGOS[a] ? "has-logo" : ""}" style="${swatch(a)}" data-team="${a}">${crestBadge(a,"crest-sm")}${a}</span>
+        ${aScoreHTML}
+      </div>
+      <div class="team-row">
+        <span class="team-pill ${bWinCls} ${LOGOS[b] ? "has-logo" : ""}" style="${swatch(b)}" data-team="${b}">${crestBadge(b,"crest-sm")}${b}</span>
+        ${bScoreHTML}
+      </div>
+    </div>`;
+}
 
-  weeksEl.querySelectorAll("[data-team]").forEach(el => {
+function buildWeekBlock(w, opts){
+  const block = document.createElement("div");
+  block.className = "week-block";
+  const gamesHTML = w.games.map(([time,a,b]) => buildGameCard(w, time, a, b, opts)).join("");
+  const filterActive = opts.highlightSelected && selected;
+  const byeDim = filterActive && w.bye !== selected ? "dim" : "";
+  const byeLit = filterActive && w.bye === selected ? "lit" : "";
+  block.innerHTML = `
+    <div class="week-head">
+      <span class="wk-num">Week ${w.wk}</span>
+      <span class="wk-date">${w.date}</span>
+    </div>
+    <div class="games">
+      ${gamesHTML}
+    </div>
+    <div class="bye-row ${byeDim} ${byeLit}">
+      <span class="bye-label">Bye</span>
+      <span class="bye-pill ${LOGOS[w.bye] ? "has-logo" : ""}" style="${swatch(w.bye)}" data-team="${w.bye}">${crestBadge(w.bye,"crest-sm")}${w.bye}</span>
+    </div>
+  `;
+  return block;
+}
+
+function wireWeekBlockEvents(container){
+  container.querySelectorAll("[data-team]").forEach(el => {
     el.addEventListener("click", (e) => {
       e.stopPropagation();
       openRoster(el.dataset.team);
     });
   });
-
-  weeksEl.querySelectorAll(".game[data-wk]").forEach(el => {
+  container.querySelectorAll(".game[data-wk]").forEach(el => {
     el.addEventListener("click", () => {
       openBoxScore(el.dataset.wk, el.dataset.time, el.dataset.a, el.dataset.b);
     });
@@ -2335,6 +2418,71 @@ function render(){
       }
     });
   });
+}
+
+function renderRecentResults(){
+  const el = document.getElementById("recentWeeks");
+  el.innerHTML = "";
+  const recentWks = completedWeekNumbers().slice(-2);
+  SCHEDULE.filter(w => recentWks.includes(w.wk)).forEach(w => {
+    el.appendChild(buildWeekBlock(w, {allowClick:true, highlightSelected:true}));
+  });
+  wireWeekBlockEvents(el);
+}
+
+function renderUpcomingGames(){
+  const el = document.getElementById("upcomingWeeks");
+  el.innerHTML = "";
+  const upcoming = upcomingWeekList();
+
+  if(selected){
+    upcoming.forEach(w => el.appendChild(buildWeekBlock(w, {allowClick:false, highlightSelected:true})));
+    wireWeekBlockEvents(el);
+    return;
+  }
+
+  const visible = upcoming.slice(0, 2);
+  const extra = upcoming.slice(2);
+  visible.forEach(w => el.appendChild(buildWeekBlock(w, {allowClick:false, highlightSelected:true})));
+  wireWeekBlockEvents(el);
+
+  if(extra.length > 0){
+    const moreLink = document.createElement("div");
+    moreLink.className = "show-more-link";
+    moreLink.textContent = `Show ${extra.length} more upcoming week${extra.length > 1 ? "s" : ""} →`;
+    moreLink.onclick = () => {
+      extra.forEach(w => {
+        const block = buildWeekBlock(w, {allowClick:false, highlightSelected:true});
+        el.insertBefore(block, moreLink);
+        wireWeekBlockEvents(block);
+      });
+      moreLink.remove();
+    };
+    el.appendChild(moreLink);
+  }
+}
+
+function renderBoxScoresArchive(){
+  const el = document.getElementById("boxScoresList");
+  el.innerHTML = "";
+  const completedWks = completedWeekNumbers();
+  SCHEDULE.filter(w => completedWks.includes(w.wk)).forEach(w => {
+    el.appendChild(buildWeekBlock(w, {allowClick:true, highlightSelected:false}));
+  });
+  wireWeekBlockEvents(el);
+}
+
+function render(){
+  document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+  if(selected){
+    document.querySelector(`.chip[data-team="${selected}"]`).classList.add("active");
+  } else {
+    document.querySelector(".chip.all").classList.add("active");
+  }
+
+  renderSummary();
+  renderRecentResults();
+  renderUpcomingGames();
 }
 
 function decorateStaticLogos(){
