@@ -141,27 +141,22 @@
   }
   .hero-bball{
     position:absolute;
-    top:0; right:0;
-    width:60%; height:100%;
+    top:50%; right:50px;
+    transform:translateY(-50%);
+    width:420px; height:420px;
     z-index:0;
     pointer-events:none;
-    overflow:hidden;
+    -webkit-mask-image:radial-gradient(circle closest-side, black 60%, transparent 86%);
+    mask-image:radial-gradient(circle closest-side, black 60%, transparent 86%);
   }
   .hero-bball-spin{
     width:100%; height:100%;
     animation:bball-spin 70s linear infinite;
   }
-  .hero-bball-spin img{width:100%; height:100%; display:block; object-fit:cover; object-position:50% 30%;}
+  .hero-bball-spin img{width:100%; height:100%; display:block; object-fit:contain;}
   @keyframes bball-spin{
     from{transform:rotate(0deg);}
     to{transform:rotate(360deg);}
-  }
-  .hero-bball::after{
-    content:"";
-    position:absolute; inset:0;
-    background:
-      radial-gradient(120% 90% at 88% 12%, transparent 40%, rgba(0,0,0,0.4) 100%),
-      linear-gradient(100deg, var(--bg) 0%, var(--bg) 4%, transparent 48%);
   }
   .hero-big-inner{position:relative; z-index:1; max-width:600px;}
   .hero-live-badge{
