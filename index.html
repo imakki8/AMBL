@@ -891,11 +891,13 @@
   .play-btn svg{width:26px; height:26px; margin-left:3px;}
   @media (max-width:640px){ .plays-video{aspect-ratio:16/9;} }
 
-  /* ---------- Box Scores archive & Awards Race pages ---------- */
+  /* ---------- Box Scores archive, Awards Race & Playoff Race pages ---------- */
   .boxscores-view{display:none;}
   .boxscores-view.show{display:block;}
   .awards-view{display:none;}
   .awards-view.show{display:block;}
+  .playoff-view{display:none;}
+  .playoff-view.show{display:block;}
   .race-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -903,6 +905,59 @@
     margin-bottom:22px;
   }
   @media (max-width:900px){ .race-grid{grid-template-columns:1fr;} }
+
+  .prediction-block{
+    margin-top:14px;
+    padding:12px 14px;
+    background:var(--panel-2);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.5;
+  }
+  .prediction-label{
+    display:block;
+    font-weight:700;
+    font-size:10.5px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:4px;
+  }
+
+  .storylines-head{margin:34px 0 14px;}
+  .storylines-head .title{
+    font-family:var(--font-display);
+    font-size:19px;
+    font-weight:700;
+    letter-spacing:-.01em;
+  }
+  .candidate-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-bottom:8px;
+  }
+  @media (max-width:700px){ .candidate-grid{grid-template-columns:1fr;} }
+  .candidate-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 16px;
+  }
+  .candidate-head{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    margin-bottom:6px;
+    flex-wrap:wrap;
+  }
+  .candidate-rank{font-family:var(--font-display); font-weight:700; color:var(--ink-faint); font-size:13px; flex:none;}
+  .candidate-name{font-family:var(--font-display); font-weight:700; font-size:15px; cursor:pointer;}
+  .candidate-name:hover{color:var(--accent);}
+  .candidate-stat{font-size:11px; color:var(--ink-faint); margin-left:auto;}
+  .candidate-body{font-size:13px; color:var(--ink-soft); line-height:1.55; margin:0;}
 
   /* ---------- Preview / Tip-Off feature page ---------- */
   .preview-view{display:none;}
@@ -1087,6 +1142,10 @@
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M8.5 13 7 22l5-3 5 3-1.5-9"/></svg>
       Awards Race
     </div>
+    <div class="hero-nav-item" id="navPlayoffs">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v6a8 8 0 0 0 16 0V4"/><path d="M4 4h16M9 21h6M12 17v4"/></svg>
+      Playoff Race
+    </div>
     <div class="hero-nav-item" id="navTipoff">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v3a1 1 0 0 0 1 1h3l4 4V6L7 10H4a1 1 0 0 0-1 1Z"/><path d="M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14"/></svg>
       The Tip-Off
@@ -1212,6 +1271,205 @@
         <div id="xfRaceList"></div>
       </div>
     </div>
+
+    <div class="storylines-head"><span class="title">MVP Race: The Case for Each Contender</span></div>
+    <div class="candidate-grid">
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">1</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openRoster('Gel')">Nick Johnson</span><span class="candidate-stat">29.5 PPG / 11.5 RPG / 1.3 APG</span></div>
+        <p class="candidate-body">Nick Johnson isn't just leading the league in scoring, he's lapping it. Nobody else in AMBL is averaging within nine points of him, and he's doing it while still snagging double-digit boards a night. At this point the MVP race isn't a race &mdash; it's Johnson, and then everybody chasing the taillights.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">2</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openRoster('Rattlers')">Matthew Estrada</span><span class="candidate-stat">21.8 PPG / 12.8 RPG / 1.2 APG</span></div>
+        <p class="candidate-body">Matthew Estrada is putting up a stat line that would headline most seasons &mdash; 20-and-12 as a matter of routine &mdash; and he's doing it on a Rattlers team fighting for playoff positioning every single week. If Rattlers finish where the schedule says they should, Estrada's case only gets louder.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">3</span><span class="sp-dot" style="background:var(--blazers)"></span><span class="candidate-name" onclick="openRoster('Blazers')">Jasper Shen</span><span class="candidate-stat">16.5 PPG / 10.3 RPG / 3.3 APG</span></div>
+        <p class="candidate-body">Jasper Shen is the engine behind the league's only unbeaten team, and he does it without needing to dominate any single category &mdash; he's simply everywhere, a top-10 threat in points, boards, assists and steals. Winning cures a lot of MVP arguments, and Shen's r&eacute;sum&eacute; is built on exactly that.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">4</span><span class="sp-dot" style="background:var(--thunder)"></span><span class="candidate-name" onclick="openRoster('Thunder')">Matt Burnett</span><span class="candidate-stat">10.8 PPG / 16.8 RPG / 5.0 APG</span></div>
+        <p class="candidate-body">Forget the scoring average &mdash; Matt Burnett is doing something nobody else in this league is doing, leading it outright in both rebounds and assists. He's the rare player who makes winning plays without needing the ball to go through the net himself, and Thunder's whole season runs through him.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">5</span><span class="sp-dot" style="background:var(--warriors)"></span><span class="candidate-name" onclick="openRoster('Warriors')">Mario Bravo</span><span class="candidate-stat">13.0 PPG / 11.0 RPG / 3.0 APG</span></div>
+        <p class="candidate-body">Mario Bravo's numbers would look at home on a top-four team, not a 1-3 one &mdash; which is exactly the problem with judging MVP purely on the standings. Bravo shows up in the box score every single night regardless of the scoreboard, and that kind of consistency deserves its own line in the conversation.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">6</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openRoster('Redliners')">Garrett Ailshie</span><span class="candidate-stat">14.6 PPG / 7.8 RPG / 2.4 APG</span></div>
+        <p class="candidate-body">Garrett Ailshie has been the steadiest bucket-getter on a Redliners team that's found a way to win without ever needing a single go-to hero &mdash; until now. Quietly, weekly, Ailshie has become that guy.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">7</span><span class="sp-dot" style="background:var(--hornets)"></span><span class="candidate-name" onclick="openRoster('Hornets')">Luis Renteria-Medina</span><span class="candidate-stat">10.0 PPG / 13.6 RPG / 2.8 APG</span></div>
+        <p class="candidate-body">Luis Renteria-Medina might be the league's most punishing presence on the glass, and Hornets' playoff push runs directly through his ability to control the boards on both ends. He won't lead the league in points, but ask anyone who's boxed him out how much that matters.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">8</span><span class="sp-dot" style="background:var(--sonics)"></span><span class="candidate-name" onclick="openRoster('Sonics')">Daniel Nordstrom</span><span class="candidate-stat">16.3 PPG / 6.5 RPG / 0.8 APG</span></div>
+        <p class="candidate-body">Daniel Nordstrom has been Sonics' one true offensive lifeline all season, a top-five scorer carrying a team still fighting for its playoff life. If Sonics somehow complete the climb, Nordstrom's fingerprints will be all over it.</p>
+      </div>
+    </div>
+
+    <div class="storylines-head"><span class="title">Defensive MVP Race: The Case for Each Contender</span></div>
+    <div class="candidate-grid">
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">1</span><span class="sp-dot" style="background:var(--warriors)"></span><span class="candidate-name" onclick="openRoster('Warriors')">Mario Bravo</span><span class="candidate-stat">2.7 SPG / 2.0 BPG / 11.0 RPG</span></div>
+        <p class="candidate-body">Mario Bravo doesn't just clog passing lanes, he ends possessions &mdash; steals, blocks, and boards all at once, from a Warriors team that needs every stop it can find. He's the total defensive package, and it's not close.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">2</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openRoster('Rattlers')">Keith Murphy</span><span class="candidate-stat">4.5 SPG / 0.0 BPG / 11.5 RPG</span></div>
+        <p class="candidate-body">Nobody in the league is getting their hands on the ball more than Keith Murphy, whose 4.5 steals a night is the single most disruptive number in AMBL this season. Add in double-digit rebounding, and Murphy is a walking turnover for whoever's unlucky enough to bring the ball up against Rattlers.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">3</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openRoster('Rattlers')">Matthew Estrada</span><span class="candidate-stat">1.2 SPG / 3.0 BPG / 12.8 RPG</span></div>
+        <p class="candidate-body">Matthew Estrada leads the entire league in blocked shots, which is a wild fact for a player also putting up MVP-caliber scoring numbers. Rattlers' defense has a legitimate rim protector, and he happens to also be their best offensive weapon.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">4</span><span class="sp-dot" style="background:var(--blazers)"></span><span class="candidate-name" onclick="openRoster('Blazers')">Jasper Shen</span><span class="candidate-stat">3.0 SPG / 1.5 BPG / 10.3 RPG</span></div>
+        <p class="candidate-body">Jasper Shen's fingerprints are on both ends of Blazers' unbeaten start &mdash; he's a top-two thief in the league and still finds his way to double-digit boards. The best defenses usually have a guy like this; Blazers happen to have theirs also leading their offense.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">5</span><span class="sp-dot" style="background:var(--hornets)"></span><span class="candidate-name" onclick="openRoster('Hornets')">Luis Renteria-Medina</span><span class="candidate-stat">2.0 SPG / 1.0 BPG / 13.6 RPG</span></div>
+        <p class="candidate-body">Luis Renteria-Medina's rebounding numbers alone would carry a Defensive MVP case, and the steals and blocks on top of it just pile on. Hornets' interior defense starts and ends with him.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">6</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openRoster('Redliners')">Garrett Ailshie</span><span class="candidate-stat">2.0 SPG / 1.4 BPG / 7.8 RPG</span></div>
+        <p class="candidate-body">Garrett Ailshie doing damage on both ends is exactly why Redliners have quietly become one of the league's most complete teams &mdash; he's a scoring engine who also shows up on the other end of the floor.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">7</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openRoster('Gel')">Nick Johnson</span><span class="candidate-stat">1.0 SPG / 1.8 BPG / 11.5 RPG</span></div>
+        <p class="candidate-body">The league's runaway scoring leader also happens to be a top-tier shot-blocker and elite rebounder. Nick Johnson's defensive numbers would be someone else's whole season; for him, they're a footnote to an MVP case.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">8</span><span class="sp-dot" style="background:var(--thunder)"></span><span class="candidate-name" onclick="openRoster('Thunder')">Matt Burnett</span><span class="candidate-stat">0.8 SPG / 1.3 BPG / 16.8 RPG</span></div>
+        <p class="candidate-body">Matt Burnett's defensive r&eacute;sum&eacute; starts with the league's best rebounding number, full stop. Add in a steady stream of blocks and steals, and Thunder's defense runs through the same player who runs their offense.</p>
+      </div>
+    </div>
+
+    <div class="storylines-head"><span class="title">X-Factor Race: The Case for Each Contender</span></div>
+    <div class="candidate-grid">
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">1</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openRoster('Rattlers')">Keith Murphy</span><span class="candidate-stat">2.3 APG / 4.5 SPG / 3.3 OREB</span></div>
+        <p class="candidate-body">Keith Murphy is the definition of a game-changer nobody's talking about enough &mdash; a league-leading thief who also creates second chances on the glass and finds teammates. If Rattlers make a real playoff push, Murphy's fingerprints are on every key possession, on both ends.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">2</span><span class="sp-dot" style="background:var(--hornets)"></span><span class="candidate-name" onclick="openRoster('Hornets')">Isaac Morrison</span><span class="candidate-stat">3.6 APG / 2.4 SPG / 2.2 OREB</span></div>
+        <p class="candidate-body">Isaac Morrison is the connective tissue that makes Hornets' offense work, setting the table for everyone else while still causing havoc defensively. He's the kind of player whose value shows up in the standings before it shows up on a stat sheet.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">3</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openRoster('Redliners')">Andy Le</span><span class="candidate-stat">1.2 APG / 1.0 SPG / 5.0 OREB</span></div>
+        <p class="candidate-body">Andy Le might be the league's most persistent offensive rebounder, a guy who turns busted possessions into extra chances for a Redliners team built on depth over stars. Second-chance points are hidden gold, and Le is mining them every week.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">4</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openRoster('Gel')">Matthew Wang</span><span class="candidate-stat">1.5 APG / 1.5 SPG / 4.0 OREB</span></div>
+        <p class="candidate-body">Matthew Wang doesn't chase the box score, but Gel's margins in close games often trace back to the extra possessions and hustle plays he provides. In a playoff race decided by inches, that kind of contribution matters more than ever.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">5</span><span class="sp-dot" style="background:var(--warriors)"></span><span class="candidate-name" onclick="openRoster('Warriors')">Afsheen Bazrafkan</span><span class="candidate-stat">2.3 APG / 1.5 SPG / 4.0 OREB</span></div>
+        <p class="candidate-body">Afsheen Bazrafkan does a little bit of everything for a Warriors team searching for answers, setting up teammates and fighting for extra possessions on the glass. He's the kind of steady, all-around piece every X-Factor conversation should start with.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">6</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openRoster('Gel')">Nikolai Semerdjiev</span><span class="candidate-stat">2.0 APG / 2.3 SPG / 2.7 OREB</span></div>
+        <p class="candidate-body">Nikolai Semerdjiev's fingerprints are all over Gel's disruptive possessions &mdash; he's second on the roster in steals and a constant presence chasing loose balls. Role players win playoff games, and Semerdjiev has quietly built the r&eacute;sum&eacute; for exactly that.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">7</span><span class="sp-dot" style="background:var(--thunder)"></span><span class="candidate-name" onclick="openRoster('Thunder')">Sahil Bhakta</span><span class="candidate-stat">3.4 APG / 0.4 SPG / 1.2 OREB</span></div>
+        <p class="candidate-body">Sahil Bhakta runs the offense for a Thunder team built on ball movement, and his assist numbers back it up. In a league full of scorers, Bhakta's value is in making sure the right guy gets the ball at the right time.</p>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-head"><span class="candidate-rank">8</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openRoster('Redliners')">Josh Trejo</span><span class="candidate-stat">3.2 APG / 1.4 SPG / 0.2 OREB</span></div>
+        <p class="candidate-body">Josh Trejo is the steady hand running Redliners' offense, distributing at a near-elite clip for a team that's made winning without a go-to scorer its whole identity. Trejo is the reason that formula works.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="playoff-view" id="playoffView">
+    <div class="back-btn" id="playoffBackBtn">&larr; Back to schedule</div>
+    <div class="section-head">
+      <span class="title">Playoff Race</span>
+      <span class="sub">Through week 5 &middot; top 6 make the postseason</span>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Blazers" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Blazers <span class="matchup-record">(4-0)</span></span>
+      </div>
+      <div class="matchup-tag">The Only Unbeaten, and the Softest Runway Left</div>
+      <p class="matchup-body">Blazers haven't lost yet, and the schedule gods just handed them the easiest closing stretch in the league: Sonics, Gel, Force and Warriors, none of them currently above .550. Nobody controls their own playoff math more than Blazers right now &mdash; the only real question is whether they're playing for seeding or already circling the trophy.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Blazers cruise into the playoffs as the top seed, and an undefeated regular season is squarely in play.</div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Hornets" style="color:var(--hornets-text)" onclick="openRoster('Hornets')">Hornets <span class="matchup-record">(3-2)</span></span>
+      </div>
+      <div class="matchup-tag">Locked Into Second, But the Hardest Finish Left</div>
+      <p class="matchup-body">Hornets sit second, but their final three games &mdash; Thunder, Gel, Rattlers &mdash; carry the toughest combined strength of schedule left in the league, all three against fellow top-six teams. A week 7 bye gives them one breather in the middle of the gauntlet, but this stretch will decide exactly how high they finish.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>A bumpy finish, but Hornets do enough to hold a top-four seed.</div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Rattlers" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')">Rattlers <span class="matchup-record">(3-2)</span></span>
+      </div>
+      <div class="matchup-tag">Survive Thunder, and the Rest Opens Up</div>
+      <p class="matchup-body">Rattlers' remaining slate &mdash; Thunder, Sonics, Hornets &mdash; front-loads the danger. Win at Thunder and the back half of their schedule gets a lot friendlier. Matthew Estrada has quietly been a top-two MVP case all season, and with their bye already banked, Rattlers close the year fresh.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Rattlers take care of business late and land a top-four seed.</div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Redliners" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Redliners <span class="matchup-record">(3-2)</span></span>
+      </div>
+      <div class="matchup-tag">The Softest Landing Spot Among the Contenders</div>
+      <p class="matchup-body">Of the five teams jammed at .600 or better, nobody's closing schedule &mdash; Warriors, Sonics, Gel &mdash; is friendlier than Redliners'. Garrett Ailshie has been automatic all season, and this roster has proven all year it doesn't need one hero to win. A week 8 bye sets up nicely for a late push.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Redliners cash in on the schedule and climb into the top three by season's end.</div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Thunder" style="color:var(--thunder-text)" onclick="openRoster('Thunder')">Thunder <span class="matchup-record">(3-2)</span></span>
+      </div>
+      <div class="matchup-tag">Right on the Comfortable Side of the Bubble</div>
+      <p class="matchup-body">Thunder sit fifth, and their closing stretch &mdash; Hornets, Rattlers, Warriors &mdash; includes two fellow top-six teams, no gimmes. Matt Burnett has been the engine of this team all year, leading the league in both rebounds and assists, and a week 9 bye gives Thunder a little extra gas in the tank for the stretch run.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>It's a dogfight, but Thunder do just enough to hold their seed and make the field.</div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Gel" style="color:var(--gel-text)" onclick="openRoster('Gel')">Gel <span class="matchup-record">(2-2)</span></span>
+      </div>
+      <div class="matchup-tag">The Sixth Seed, Leaning on Experience</div>
+      <p class="matchup-body">Gel currently holds the last playoff spot, and their closing schedule &mdash; Force, Blazers, Hornets, Redliners &mdash; doesn't do them many favors, with two of those against top-six teams. What Gel has that nobody else in the league can claim is Imran Makki, an eight-time champion and the closest thing this league has to a legend, now sharing the floor with Nick Johnson, this season's MVP front-runner. Makki's regular-season snaps have been limited at 41 and banged up, but AMBL history says never count him out once the calendar turns toward the playoffs.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Gel survives a shaky close and sneaks into the six-seed &mdash; and if Father Time takes even one night off for Makki in the postseason, this is a team nobody wants to draw in round one.</div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Warriors" style="color:var(--warriors-text)" onclick="openRoster('Warriors')">Warriors <span class="matchup-record">(1-3)</span></span>
+      </div>
+      <div class="matchup-tag">Long Odds, Tougher Draw</div>
+      <p class="matchup-body">Warriors need to make up real ground on Gel, and their remaining opponents &mdash; Redliners, Force, Thunder, Blazers &mdash; include two current top-six teams. Mario Bravo has kept this team competitive across the board even during the losing stretch, but competitive isn't the same as winning, and Warriors are running out of season to close the gap.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Warriors finish just on the outside, watching the playoffs from the seven-spot.</div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Sonics" style="color:var(--sonics-text)" onclick="openRoster('Sonics')">Sonics <span class="matchup-record">(1-3)</span></span>
+      </div>
+      <div class="matchup-tag">A Tall Order, Even With a Favorable Slate</div>
+      <p class="matchup-body">Sonics actually land one of the gentler closing schedules on paper &mdash; Blazers is the only currently-ranked team left on it &mdash; but jumping from eighth to the top six in four weeks is a lot to ask no matter who's across the court. Daniel Nordstrom has carried the scoring load all season; he'll need real help finishing games if this run is going to happen.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Sonics play their way into relevance down the stretch but fall just short of the six-team field.</div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Force" style="color:var(--force-text)" onclick="openRoster('Force')">Force <span class="matchup-record">(0-4)</span></span>
+      </div>
+      <div class="matchup-tag">Math That Doesn't Add Up Yet</div>
+      <p class="matchup-body">Force still haven't found the win column, and at 0-4 with four games to go, the playoff math is about as unforgiving as it gets. Christopher Jung remains their most reliable shot-creator, and a manageable slate &mdash; Gel, Warriors, Blazers, Sonics &mdash; at least gives them a puncher's chance at ending the season with something to build on.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Force's season wraps up outside the playoff field, but not without at least one signature upset along the way.</div>
+    </div>
+
+    <p class="preview-signoff">That's the picture through week 5. Check back after every round of games &mdash; six spots, nine teams, and the math changes fast.</p>
   </div>
 
   <div class="preview-view" id="previewView">
@@ -2052,7 +2310,7 @@ function renderLeaders(){
   `;
 
   const xfScored = rows
-    .filter(r => !mvpNames.has(r.name) && r.gp >= 2)
+    .filter(r => !mvpNames.has(r.name) && !X_FACTOR_EXCLUDED.has(r.name) && r.gp >= 2)
     .map(r => ({...r, score: r.apg*1.3 + r.spg*1.3 + r.bpg*1.3 + r.orebpg*1.0 + r.winPct*3.0 - r.ppg*0.15}));
   const xfTop = [...xfScored].sort((a,b) => b.score-a.score).slice(0,5);
 
@@ -2247,7 +2505,7 @@ function renderTopPerformers(data, teamA, teamB){
 }
 
 function showOnly(viewId){
-  ["scheduleView","rosterView","boxView","previewView","boxScoresView","awardsView"].forEach(id => {
+  ["scheduleView","rosterView","boxView","previewView","boxScoresView","awardsView","playoffView"].forEach(id => {
     const el = document.getElementById(id);
     if(id === "scheduleView"){
       el.classList.toggle("hide", id !== viewId);
@@ -2258,7 +2516,8 @@ function showOnly(viewId){
   document.getElementById("navTipoff").classList.toggle("active", viewId === "previewView");
   document.getElementById("navBoxScores").classList.toggle("active", viewId === "boxScoresView");
   document.getElementById("navAwards").classList.toggle("active", viewId === "awardsView");
-  document.getElementById("navSchedule").classList.toggle("active", !["previewView","boxScoresView","awardsView"].includes(viewId));
+  document.getElementById("navPlayoffs").classList.toggle("active", viewId === "playoffView");
+  document.getElementById("navSchedule").classList.toggle("active", !["previewView","boxScoresView","awardsView","playoffView"].includes(viewId));
   window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
 }
 
@@ -2272,6 +2531,8 @@ document.getElementById("navSchedule").onclick = () => showOnly("scheduleView");
 document.getElementById("navTipoff").onclick = () => showOnly("previewView");
 document.getElementById("navBoxScores").onclick = () => { showOnly("boxScoresView"); renderBoxScoresArchive(); };
 document.getElementById("navAwards").onclick = () => { showOnly("awardsView"); renderAwardsRace(); };
+document.getElementById("navPlayoffs").onclick = () => showOnly("playoffView");
+document.getElementById("playoffBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("navLeaders").onclick = () => {
   showOnly("scheduleView");
   requestAnimationFrame(() => {
