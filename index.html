@@ -1143,10 +1143,6 @@
       <span class="hero-live-badge"><span class="live-dot"></span>Season 31 &middot; Live</span>
       <h1 class="hero-big-title">Where rivals<br><span class="accent-ink">become family.</span></h1>
       <p class="hero-big-sub" id="heroBigSub">Season 31 is live at Lake Forest Sports Park.</p>
-      <div class="hero-big-cta">
-        <button class="btn-primary" id="heroCtaSchedule">View Full Schedule</button>
-        <button class="btn-secondary" id="heroCtaLeaders">Season Leaders</button>
-      </div>
     </div>
     <div class="hero-score-card" id="heroScoreCard"></div>
   </div>
@@ -2807,14 +2803,6 @@ function buildTicker(){
   const html = items.join("");
   document.getElementById("tickerTrack").innerHTML = html + html;
 }
-
-document.getElementById("heroCtaSchedule").onclick = () => {
-  showOnly("scheduleView");
-  requestAnimationFrame(() => {
-    document.getElementById("rail").scrollIntoView({behavior:"smooth", block:"start"});
-  });
-};
-document.getElementById("heroCtaLeaders").onclick = () => document.getElementById("navLeaders").click();
 
 document.getElementById("playsBtn").addEventListener("click", () => {
   document.querySelector(".plays-badge").textContent = "Highlight reel coming soon";
