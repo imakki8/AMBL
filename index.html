@@ -211,10 +211,14 @@
   .hero-score-card:hover{border-color:var(--ink-faint);}
   .hero-score-card .hsc-tag{display:flex; align-items:center; gap:6px; font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;}
   .hsc-dot{width:6px; height:6px; border-radius:50%; background:var(--gold);}
-  .hero-score-card .hsc-row{display:flex; align-items:center; justify-content:space-between; padding:2px 0;}
+  .hero-score-card .hsc-row{display:flex; align-items:center; justify-content:space-between; padding:4px 0;}
+  .hsc-team-block{display:flex; flex-direction:column; gap:2px;}
   .hero-score-card .hsc-team{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
   .hero-score-card .hsc-score{font-family:var(--font-display); font-weight:700; font-size:22px; color:var(--ink);}
   .hero-score-card .hsc-score.win{color:var(--accent);}
+  .hsc-odds{font-size:10.5px; font-weight:700; letter-spacing:.01em;}
+  .hsc-odds.fav{color:var(--accent);}
+  .hsc-odds.dog{color:var(--ink-faint);}
   .hero-score-card .hsc-meta{font-size:10px; letter-spacing:.02em; color:var(--ink-faint); margin-top:10px; line-height:1.4;}
   @media (max-width:900px){
     .hero-big{padding:36px 24px; min-height:0;}
@@ -493,28 +497,16 @@
     flex:none;
     letter-spacing:.01em;
   }
-  .wl-label{
-    font-size:8px;
-    font-weight:700;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    color:var(--ink-faint);
-    opacity:.7;
-    margin-left:2px;
-  }
-  .game-ou{
-    display:flex; align-items:center; justify-content:space-between;
-    margin-top:8px;
-    padding-top:8px;
-    border-top:1px solid var(--line);
-    font-size:10.5px;
-    color:var(--ink-faint);
-  }
-  .game-ou b{
+  .game-odds{
     font-family:var(--font-display);
-    color:var(--ink-soft);
     font-weight:700;
+    font-size:12px;
+    flex:none;
+    padding:2px 7px;
+    border-radius:8px;
   }
+  .game-odds.fav{color:var(--accent); background:var(--accent-soft);}
+  .game-odds.dog{color:var(--ink-soft); background:var(--panel-2);}
   .team-pill:hover{color:var(--accent);}
   .team-pill::before{
     content:"";
@@ -2631,7 +2623,7 @@ let _recordCache = null;
 function teamRecordMap(){
   if(!_recordCache){
     _recordCache = {};
-    teamStandings().forEach(r => { _recordCache[r.team] = `${r.w}-${r.l}`; });
+    teamStandings().forEach(r => { _recordCache[r.team] = `${r.w}W-${r.l}L`; });
   }
   return _recordCache;
 }
@@ -2654,11 +2646,22 @@ function teamAverageMap(){
   return _avgCache;
 }
 
-function estimateOverUnder(a, b){
+function moneylineFromProb(p){
+  p = Math.min(0.97, Math.max(0.03, p));
+  if(p >= 0.5){
+    const odds = -Math.round((p / (1 - p)) * 100 / 5) * 5;
+    return { str: `${odds}`, cls: "fav" };
+  }
+  const odds = Math.round(((1 - p) / p) * 100 / 5) * 5;
+  return { str: `+${odds}`, cls: "dog" };
+}
+
+function estimateMoneyline(a, b){
   const avg = teamAverageMap();
   const predA = (avg[a].avgPF + avg[b].avgPA) / 2;
   const predB = (avg[b].avgPF + avg[a].avgPA) / 2;
-  return Math.round((predA + predB) * 2) / 2;
+  const pA = 1 / (1 + Math.exp(-(predA - predB) / 10));
+  return { a: moneylineFromProb(pA), b: moneylineFromProb(1 - pA) };
 }
 
 function buildGameCard(w, time, a, b, opts){
@@ -2670,7 +2673,7 @@ function buildGameCard(w, time, a, b, opts){
   const box = BOXSCORES[boxKey(w.wk, time)];
   const clickable = allowClick && !!box;
   const records = teamRecordMap();
-  let aScoreHTML = "", bScoreHTML = "", aWinCls = "", bWinCls = "", vsHTML = "Scheduled", vsAttrs = `class="vs"`, ouHTML = "";
+  let aScoreHTML = "", bScoreHTML = "", aWinCls = "", bWinCls = "", vsHTML = "Scheduled", vsAttrs = `class="vs"`;
   if(box){
     const sa = box.teams[a].score, sb = box.teams[b].score;
     aScoreHTML = `<span class="pill-score">${sa}</span>`;
@@ -2682,7 +2685,9 @@ function buildGameCard(w, time, a, b, opts){
       vsAttrs = `class="vs has-box" data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}"`;
     }
   } else {
-    ouHTML = `<div class="game-ou"><span>Est. Total</span><b>O/U ${estimateOverUnder(a, b)}</b></div>`;
+    const ml = estimateMoneyline(a, b);
+    aScoreHTML = `<span class="game-odds ${ml.a.cls}">${ml.a.str}</span>`;
+    bScoreHTML = `<span class="game-odds ${ml.b.cls}">${ml.b.str}</span>`;
   }
   return `
     <div class="game ${dimClass} ${litClass}" ${clickable ? `data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}" role="button" tabindex="0"` : ""}>
@@ -2692,15 +2697,14 @@ function buildGameCard(w, time, a, b, opts){
       </div>
       <div class="team-row">
         <span class="team-pill ${aWinCls} ${LOGOS[a] ? "has-logo" : ""}" style="${swatch(a)}" data-team="${a}">${crestBadge(a,"crest-sm")}${a}</span>
-        <span class="team-record">${records[a] || "0-0"} <span class="wl-label">W-L</span></span>
+        <span class="team-record">${records[a] || "0W-0L"}</span>
         ${aScoreHTML}
       </div>
       <div class="team-row">
         <span class="team-pill ${bWinCls} ${LOGOS[b] ? "has-logo" : ""}" style="${swatch(b)}" data-team="${b}">${crestBadge(b,"crest-sm")}${b}</span>
-        <span class="team-record">${records[b] || "0-0"} <span class="wl-label">W-L</span></span>
+        <span class="team-record">${records[b] || "0W-0L"}</span>
         ${bScoreHTML}
       </div>
-      ${ouHTML}
     </div>`;
 }
 
@@ -2846,10 +2850,23 @@ function renderHeroExtras(){
   if(!gow){ card.style.display = "none"; return; }
 
   const records = teamRecordMap();
+  const ml = estimateMoneyline(gow.a, gow.b);
   card.innerHTML = `
     <div class="hsc-tag"><span class="hsc-dot"></span>Game of the Week</div>
-    <div class="hsc-row"><span class="hsc-team">${gow.a}</span><span class="hsc-score">${records[gow.a] || "0-0"}</span></div>
-    <div class="hsc-row"><span class="hsc-team">${gow.b}</span><span class="hsc-score">${records[gow.b] || "0-0"}</span></div>
+    <div class="hsc-row">
+      <span class="hsc-team-block">
+        <span class="hsc-team">${gow.a}</span>
+        <span class="hsc-odds ${ml.a.cls}">${ml.a.str}</span>
+      </span>
+      <span class="hsc-score">${records[gow.a] || "0W-0L"}</span>
+    </div>
+    <div class="hsc-row">
+      <span class="hsc-team-block">
+        <span class="hsc-team">${gow.b}</span>
+        <span class="hsc-odds ${ml.b.cls}">${ml.b.str}</span>
+      </span>
+      <span class="hsc-score">${records[gow.b] || "0W-0L"}</span>
+    </div>
     <div class="hsc-meta">Week ${gow.wk.wk} &middot; ${gow.wk.date} &middot; ${gow.time} PM court</div>
   `;
   card.onclick = () => {
