@@ -621,13 +621,6 @@
     font-size:14px;
   }
   .roster-row:last-child{border-bottom:none;}
-  .roster-row .num{
-    font-weight:700;
-    font-size:12px;
-    color:var(--ink-faint);
-    width:22px;
-    flex:none;
-  }
   .roster-row .pname{flex:1; font-weight:500;}
   .roster-row.captain .pname{font-weight:700;}
   .captain-badge{
@@ -2462,11 +2455,10 @@ function openRoster(team){
   `;
 
   const body = document.getElementById("rosterBody");
-  body.innerHTML = data.players.map((p, i) => {
+  body.innerHTML = data.players.map((p) => {
     const isCap = p === data.captain;
     return `
       <div class="roster-row ${isCap ? "captain" : ""}">
-        <span class="num">${String(i+1).padStart(2,"0")}</span>
         <span class="pname">${p}</span>
         ${isCap ? '<span class="captain-badge">CAPTAIN</span>' : ""}
       </div>`;
