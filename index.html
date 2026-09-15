@@ -2828,6 +2828,7 @@ function buildWeekBlock(w, opts){
 
 function wireWeekBlockEvents(container){
   container.querySelectorAll("[data-team]").forEach(el => {
+    if(el.closest(".game[data-preview]")) return;
     el.addEventListener("click", (e) => {
       e.stopPropagation();
       openRoster(el.dataset.team);
