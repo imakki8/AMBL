@@ -469,7 +469,7 @@
   .ot-tag{margin-left:4px; font-weight:600;}
 
   .team-row{
-    display:flex; align-items:center; justify-content:space-between;
+    display:flex; align-items:center;
     padding:5px 0;
     gap:8px;
   }
@@ -484,6 +484,13 @@
     text-overflow:ellipsis;
     cursor:pointer;
     min-width:0;
+    flex:1 1 auto;
+  }
+  .team-record{
+    font-size:11px;
+    font-weight:600;
+    color:var(--ink-faint);
+    flex:none;
   }
   .team-pill:hover{color:var(--accent);}
   .team-pill::before{
@@ -2597,6 +2604,15 @@ function upcomingWeekList(){
   return SCHEDULE.filter(w => !weekHasBoxData(w));
 }
 
+let _recordCache = null;
+function teamRecordMap(){
+  if(!_recordCache){
+    _recordCache = {};
+    teamStandings().forEach(r => { _recordCache[r.team] = `${r.w}-${r.l}`; });
+  }
+  return _recordCache;
+}
+
 function buildGameCard(w, time, a, b, opts){
   const allowClick = opts.allowClick;
   const filterActive = opts.highlightSelected && selected;
@@ -2605,6 +2621,7 @@ function buildGameCard(w, time, a, b, opts){
   const litClass = isMatch ? "lit" : "";
   const box = BOXSCORES[boxKey(w.wk, time)];
   const clickable = allowClick && !!box;
+  const records = teamRecordMap();
   let aScoreHTML = "", bScoreHTML = "", aWinCls = "", bWinCls = "", vsHTML = "Scheduled", vsAttrs = `class="vs"`;
   if(box){
     const sa = box.teams[a].score, sb = box.teams[b].score;
@@ -2625,10 +2642,12 @@ function buildGameCard(w, time, a, b, opts){
       </div>
       <div class="team-row">
         <span class="team-pill ${aWinCls} ${LOGOS[a] ? "has-logo" : ""}" style="${swatch(a)}" data-team="${a}">${crestBadge(a,"crest-sm")}${a}</span>
+        <span class="team-record">${records[a] || "0-0"}</span>
         ${aScoreHTML}
       </div>
       <div class="team-row">
         <span class="team-pill ${bWinCls} ${LOGOS[b] ? "has-logo" : ""}" style="${swatch(b)}" data-team="${b}">${crestBadge(b,"crest-sm")}${b}</span>
+        <span class="team-record">${records[b] || "0-0"}</span>
         ${bScoreHTML}
       </div>
     </div>`;
@@ -2751,23 +2770,20 @@ function decorateStaticLogos(){
   });
 }
 
-// ---------- Big hero: live subcopy + latest-result card ----------
-function latestCompletedGame(){
-  const keys = Object.keys(BOXSCORES);
-  let best = null;
-  keys.forEach(k => {
-    const [wkStr, time] = k.split("-");
-    const wkNum = parseInt(wkStr,10);
-    if(!best || wkNum > best.wkNum || (wkNum === best.wkNum && time > best.time)){
-      best = {wkNum, time, key:k};
-    }
+// ---------- Big hero: live subcopy + Game of the Week card ----------
+function gameOfTheWeek(){
+  const upcoming = upcomingWeekList();
+  if(upcoming.length === 0) return null;
+  const wk = upcoming[0];
+  const pctMap = {};
+  teamStandings().forEach(r => { pctMap[r.team] = r.pct; });
+  let best = null, bestScore = -1;
+  wk.games.forEach(([time, a, b]) => {
+    const pa = pctMap[a] || 0, pb = pctMap[b] || 0;
+    const score = Math.min(pa, pb) * 10 + (pa + pb);
+    if(score > bestScore){ bestScore = score; best = {wk, time, a, b}; }
   });
   return best;
-}
-
-function latestBoxWeek(){
-  const latest = latestCompletedGame();
-  return latest ? latest.wkNum : null;
 }
 
 function renderHeroExtras(){
@@ -2775,21 +2791,22 @@ function renderHeroExtras(){
     `${TEAMS.length} teams. One court. Season 31 is live.`;
 
   const card = document.getElementById("heroScoreCard");
-  const latest = latestCompletedGame();
-  if(!latest){ card.style.display = "none"; return; }
+  const gow = gameOfTheWeek();
+  if(!gow){ card.style.display = "none"; return; }
 
-  const data = BOXSCORES[latest.key];
-  const [teamA, teamB] = Object.keys(data.teams);
-  const scoreA = data.teams[teamA].score, scoreB = data.teams[teamB].score;
-  const wk = SCHEDULE[latest.wkNum - 1];
-
+  const records = teamRecordMap();
   card.innerHTML = `
-    <div class="hsc-tag"><span class="hsc-dot"></span>Final &middot; Week ${latest.wkNum}</div>
-    <div class="hsc-row"><span class="hsc-team">${teamA}</span><span class="hsc-score ${scoreA>scoreB?"win":""}">${scoreA}</span></div>
-    <div class="hsc-row"><span class="hsc-team">${teamB}</span><span class="hsc-score ${scoreB>scoreA?"win":""}">${scoreB}</span></div>
-    <div class="hsc-meta">${wk ? wk.date : ""} &middot; ${latest.time} PM court &middot; tap for box score</div>
+    <div class="hsc-tag"><span class="hsc-dot"></span>Game of the Week</div>
+    <div class="hsc-row"><span class="hsc-team">${gow.a}</span><span class="hsc-score">${records[gow.a] || "0-0"}</span></div>
+    <div class="hsc-row"><span class="hsc-team">${gow.b}</span><span class="hsc-score">${records[gow.b] || "0-0"}</span></div>
+    <div class="hsc-meta">Week ${gow.wk.wk} &middot; ${gow.wk.date} &middot; ${gow.time} PM court</div>
   `;
-  card.onclick = () => openBoxScore(latest.wkNum, latest.time, teamA, teamB);
+  card.onclick = () => {
+    showOnly("scheduleView");
+    requestAnimationFrame(() => {
+      document.getElementById("upcomingWeeks").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  };
 }
 
 // ---------- Auto-scrolling schedule ticker ----------
