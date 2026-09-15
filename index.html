@@ -487,10 +487,33 @@
     flex:1 1 auto;
   }
   .team-record{
-    font-size:11px;
+    font-size:9.5px;
     font-weight:600;
     color:var(--ink-faint);
     flex:none;
+    letter-spacing:.01em;
+  }
+  .wl-label{
+    font-size:8px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    opacity:.7;
+    margin-left:2px;
+  }
+  .game-ou{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px solid var(--line);
+    font-size:10.5px;
+    color:var(--ink-faint);
+  }
+  .game-ou b{
+    font-family:var(--font-display);
+    color:var(--ink-soft);
+    font-weight:700;
   }
   .team-pill:hover{color:var(--accent);}
   .team-pill::before{
@@ -2613,6 +2636,31 @@ function teamRecordMap(){
   return _recordCache;
 }
 
+let _avgCache = null;
+function teamAverageMap(){
+  if(!_avgCache){
+    const standings = teamStandings();
+    let totalPF = 0, totalGP = 0;
+    standings.forEach(r => { totalPF += r.pf; totalGP += r.gp; });
+    const leagueAvg = totalGP > 0 ? totalPF / totalGP : 70;
+    _avgCache = {};
+    standings.forEach(r => {
+      _avgCache[r.team] = {
+        avgPF: r.gp > 0 ? r.pf / r.gp : leagueAvg,
+        avgPA: r.gp > 0 ? r.pa / r.gp : leagueAvg
+      };
+    });
+  }
+  return _avgCache;
+}
+
+function estimateOverUnder(a, b){
+  const avg = teamAverageMap();
+  const predA = (avg[a].avgPF + avg[b].avgPA) / 2;
+  const predB = (avg[b].avgPF + avg[a].avgPA) / 2;
+  return Math.round((predA + predB) * 2) / 2;
+}
+
 function buildGameCard(w, time, a, b, opts){
   const allowClick = opts.allowClick;
   const filterActive = opts.highlightSelected && selected;
@@ -2622,7 +2670,7 @@ function buildGameCard(w, time, a, b, opts){
   const box = BOXSCORES[boxKey(w.wk, time)];
   const clickable = allowClick && !!box;
   const records = teamRecordMap();
-  let aScoreHTML = "", bScoreHTML = "", aWinCls = "", bWinCls = "", vsHTML = "Scheduled", vsAttrs = `class="vs"`;
+  let aScoreHTML = "", bScoreHTML = "", aWinCls = "", bWinCls = "", vsHTML = "Scheduled", vsAttrs = `class="vs"`, ouHTML = "";
   if(box){
     const sa = box.teams[a].score, sb = box.teams[b].score;
     aScoreHTML = `<span class="pill-score">${sa}</span>`;
@@ -2633,6 +2681,8 @@ function buildGameCard(w, time, a, b, opts){
     if(clickable){
       vsAttrs = `class="vs has-box" data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}"`;
     }
+  } else {
+    ouHTML = `<div class="game-ou"><span>Est. Total</span><b>O/U ${estimateOverUnder(a, b)}</b></div>`;
   }
   return `
     <div class="game ${dimClass} ${litClass}" ${clickable ? `data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}" role="button" tabindex="0"` : ""}>
@@ -2642,14 +2692,15 @@ function buildGameCard(w, time, a, b, opts){
       </div>
       <div class="team-row">
         <span class="team-pill ${aWinCls} ${LOGOS[a] ? "has-logo" : ""}" style="${swatch(a)}" data-team="${a}">${crestBadge(a,"crest-sm")}${a}</span>
-        <span class="team-record">${records[a] || "0-0"}</span>
+        <span class="team-record">${records[a] || "0-0"} <span class="wl-label">W-L</span></span>
         ${aScoreHTML}
       </div>
       <div class="team-row">
         <span class="team-pill ${bWinCls} ${LOGOS[b] ? "has-logo" : ""}" style="${swatch(b)}" data-team="${b}">${crestBadge(b,"crest-sm")}${b}</span>
-        <span class="team-record">${records[b] || "0-0"}</span>
+        <span class="team-record">${records[b] || "0-0"} <span class="wl-label">W-L</span></span>
         ${bScoreHTML}
       </div>
+      ${ouHTML}
     </div>`;
 }
 
