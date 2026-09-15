@@ -2970,6 +2970,10 @@ function renderHeroExtras(){
     <div class="hsc-meta">Week ${gow.wk.wk} &middot; ${gow.wk.date} &middot; ${gow.time} PM court</div>
   `;
   card.onclick = () => {
+    if(MATCHUP_PREVIEWS[boxKey(gow.wk.wk, gow.time)]){
+      openMatchupPreview(gow.wk.wk, gow.time, gow.a, gow.b);
+      return;
+    }
     showOnly("scheduleView");
     requestAnimationFrame(() => {
       document.getElementById("upcomingWeeks").scrollIntoView({behavior:"smooth", block:"start"});
