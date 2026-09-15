@@ -650,6 +650,12 @@
   .box-view{display:none;}
   .box-view.show{display:block;}
 
+  /* ---------- Matchup preview page ---------- */
+  .matchup-preview-view{display:none;}
+  .matchup-preview-view.show{display:block;}
+  .mp-odds-row{display:flex; gap:16px; flex-wrap:wrap; margin:0 0 14px;}
+  .mp-odds-pill{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+
   .box-head{
     padding:8px 4px 22px;
     border-bottom:1px solid var(--line-soft);
@@ -1259,6 +1265,15 @@
     <div class="box-tables" id="boxTables"></div>
   </div>
 
+  <div class="matchup-preview-view" id="matchupPreviewView">
+    <div class="back-btn" id="matchupPreviewBackBtn">&larr; Back to schedule</div>
+    <div class="preview-hero">
+      <span class="preview-hero-eyebrow" id="matchupPreviewEyebrow">Matchup Preview &middot; AMBL Season 31</span>
+      <h1 class="preview-hero-title" id="matchupPreviewTitle"></h1>
+    </div>
+    <div class="matchup-card" id="matchupPreviewCard"></div>
+  </div>
+
   <div class="boxscores-view" id="boxScoresView">
     <div class="back-btn" id="boxScoresBackBtn">&larr; Back to schedule</div>
     <div class="section-head">
@@ -1624,6 +1639,41 @@ const TEAMS = ["Thunder","Sonics","Redliners","Rattlers","Force","Hornets","Blaz
 const COLOR_VAR = {
   Thunder:"--thunder", Sonics:"--sonics", Redliners:"--redliners", Rattlers:"--rattlers",
   Force:"--force", Hornets:"--hornets", Blazers:"--blazers", Gel:"--gel", Warriors:"--warriors"
+};
+
+const MATCHUP_PREVIEWS = {
+  "6-6:00": {
+    tag: "Gel Looks to Pull Away From the Pack",
+    body: "Gel sits right in the thick of the middle of the standings at 2W-2L, while Force is still hunting for its first win at 0W-4L. Nick Johnson has been putting up MVP-caliber numbers whenever he's suited up for his own team &mdash; he leads the league in scoring &mdash; and a get-right game against a winless Force squad is exactly the kind of confidence boost Gel needs heading into a tighter back half of the season.",
+    watchers: [
+      { team: "Gel", name: "Nick Johnson", note: "Gel's engine on both ends and the league's leading scorer" },
+      { team: "Force", name: "Christopher Jung", note: "Force's most frequent shot-taker, still hunting the win column" }
+    ]
+  },
+  "6-7:00": {
+    tag: "Redliners Try to Keep Pace in a Crowded Middle",
+    body: "Redliners are bunched with three other teams at 3W-2L, and every game from here counts double in the standings race. Warriors have been competitive but can't quite find the finishing touches, with Mario Bravo doing damage across the box score even in losses. Garrett Ailshie has quietly been one of the league's most consistent scorers for Redliners, and this is a good spot for him to keep building his case.",
+    watchers: [
+      { team: "Redliners", name: "Garrett Ailshie", note: "Redliners' leading scorer and a matchup problem in transition" },
+      { team: "Warriors", name: "Mario Bravo", note: "Warriors' do-it-all forward, top-10 in points, rebounds and steals" }
+    ]
+  },
+  "6-8:00": {
+    tag: "Two 3W-2L Teams Collide With Positioning on the Line",
+    body: "Identical records, very different styles. Hornets lean on Luis Renteria-Medina's rebounding and Isaac Morrison's playmaking, while Thunder run everything through Matt Burnett, who's putting together one of the best two-way seasons in the league &mdash; he leads the league in both rebounds and assists. Whoever wins tonight jumps into a share of second place.",
+    watchers: [
+      { team: "Thunder", name: "Matt Burnett", note: "Thunder's do-everything forward, leading the league in rebounds and assists" },
+      { team: "Hornets", name: "Luis Renteria-Medina", note: "Hornets' rebounding anchor, a load on the glass every night" }
+    ]
+  },
+  "6-9:00": {
+    tag: "Can Anyone Slow Down the League's Last Unbeaten?",
+    body: "Blazers are the only team yet to lose, and they'll be favored again against a Sonics squad still finding its footing at 1W-3L. Daniel Nordstrom has been Sonics' most reliable scorer all season, but Blazers counter with a deep, balanced attack led by Jasper Shen, who shows up everywhere on the stat sheet. A statement week for Blazers keeps them clear at the top heading into the second half of the season.",
+    watchers: [
+      { team: "Blazers", name: "Jasper Shen", note: "Blazers' leading scorer and a top-10 threat in points, rebounds, assists and steals" },
+      { team: "Sonics", name: "Daniel Nordstrom", note: "Sonics' top scoring option all season" }
+    ]
+  }
 };
 
 // dark-background teams need light text; light-background teams need dark text
@@ -2494,6 +2544,43 @@ function openBoxScore(wk, time, teamA, teamB){
   document.getElementById("boxTables").innerHTML = tables;
 }
 
+function openMatchupPreview(wk, time, teamA, teamB){
+  const preview = MATCHUP_PREVIEWS[boxKey(wk, time)];
+  if(!preview) return;
+
+  showOnly("matchupPreviewView");
+
+  const records = teamRecordMap();
+  const ml = estimateMoneyline(teamA, teamB);
+
+  document.getElementById("matchupPreviewEyebrow").textContent = `Matchup Preview · Week ${wk}`;
+  document.getElementById("matchupPreviewTitle").textContent = `${teamA} vs ${teamB}`;
+
+  document.getElementById("matchupPreviewCard").innerHTML = `
+    <div class="matchup-meta">Week ${wk} &middot; ${SCHEDULE[wk-1].date} &middot; ${time} PM court</div>
+    <div class="matchup-teams">
+      <span class="matchup-team" data-team="${teamA}" style="color:var(${teamTextVar(teamA)})" onclick="openRoster('${teamA}')">${teamA} <span class="matchup-record">(${records[teamA] || "0W-0L"})</span></span>
+      <span class="matchup-vs">vs</span>
+      <span class="matchup-team" data-team="${teamB}" style="color:var(${teamTextVar(teamB)})" onclick="openRoster('${teamB}')">${teamB} <span class="matchup-record">(${records[teamB] || "0W-0L"})</span></span>
+    </div>
+    <div class="mp-odds-row">
+      <span class="mp-odds-pill">${teamA} <span class="game-odds ${ml.a.cls}" title="${ml.a.label}">${ml.a.str}</span></span>
+      <span class="mp-odds-pill">${teamB} <span class="game-odds ${ml.b.cls}" title="${ml.b.label}">${ml.b.str}</span></span>
+    </div>
+    <div class="matchup-tag">${preview.tag}</div>
+    <p class="matchup-body">${preview.body}</p>
+    <div class="watch-block">
+      <div class="watch-label">Players to Watch</div>
+      ${preview.watchers.map(w => `
+        <div class="watch-row" onclick="openRoster('${w.team}')">
+          <span class="watch-dot" style="background:var(${COLOR_VAR[w.team]})"></span>
+          <span class="watch-name">${w.name}</span>
+          <span class="watch-note">, ${w.note}</span>
+        </div>`).join("")}
+    </div>
+  `;
+}
+
 function renderTopPerformers(data, teamA, teamB){
   const pool = [];
   [teamA, teamB].forEach(team => {
@@ -2523,7 +2610,7 @@ function renderTopPerformers(data, teamA, teamB){
 }
 
 function showOnly(viewId){
-  ["scheduleView","rosterView","boxView","previewView","boxScoresView","awardsView","playoffView"].forEach(id => {
+  ["scheduleView","rosterView","boxView","matchupPreviewView","previewView","boxScoresView","awardsView","playoffView"].forEach(id => {
     const el = document.getElementById(id);
     if(id === "scheduleView"){
       el.classList.toggle("hide", id !== viewId);
@@ -2541,6 +2628,7 @@ function showOnly(viewId){
 
 document.getElementById("backBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("boxBackBtn").onclick = () => showOnly("scheduleView");
+document.getElementById("matchupPreviewBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("boxScoresBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("awardsBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("previewBanner").onclick = () => showOnly("previewView");
@@ -2671,7 +2759,8 @@ function buildGameCard(w, time, a, b, opts){
   const dimClass = filterActive && !isMatch ? "dim" : "";
   const litClass = isMatch ? "lit" : "";
   const box = BOXSCORES[boxKey(w.wk, time)];
-  const clickable = allowClick && !!box;
+  const preview = !box ? MATCHUP_PREVIEWS[boxKey(w.wk, time)] : null;
+  const clickable = allowClick && (!!box || !!preview);
   const records = teamRecordMap();
   let aScoreHTML = "", bScoreHTML = "", aWinCls = "", bWinCls = "", vsHTML = "Scheduled", vsAttrs = `class="vs"`;
   if(box){
@@ -2688,9 +2777,15 @@ function buildGameCard(w, time, a, b, opts){
     const ml = estimateMoneyline(a, b);
     aScoreHTML = `<span class="game-odds ${ml.a.cls}" title="${ml.a.label}">${ml.a.str}</span>`;
     bScoreHTML = `<span class="game-odds ${ml.b.cls}" title="${ml.b.label}">${ml.b.str}</span>`;
+    if(preview){
+      vsHTML = "Preview";
+      if(clickable){
+        vsAttrs = `class="vs has-box" data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}" data-preview="1"`;
+      }
+    }
   }
   return `
-    <div class="game ${dimClass} ${litClass}" ${clickable ? `data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}" role="button" tabindex="0"` : ""}>
+    <div class="game ${dimClass} ${litClass}" ${clickable ? `data-wk="${w.wk}" data-time="${time}" data-a="${a}" data-b="${b}" ${preview ? 'data-preview="1"' : ""} role="button" tabindex="0"` : ""}>
       <div class="game-status">
         <span class="time">${time} PM</span>
         <span ${vsAttrs}>${vsHTML}</span>
@@ -2739,13 +2834,18 @@ function wireWeekBlockEvents(container){
     });
   });
   container.querySelectorAll(".game[data-wk]").forEach(el => {
-    el.addEventListener("click", () => {
-      openBoxScore(el.dataset.wk, el.dataset.time, el.dataset.a, el.dataset.b);
-    });
+    const open = () => {
+      if(el.dataset.preview){
+        openMatchupPreview(el.dataset.wk, el.dataset.time, el.dataset.a, el.dataset.b);
+      } else {
+        openBoxScore(el.dataset.wk, el.dataset.time, el.dataset.a, el.dataset.b);
+      }
+    };
+    el.addEventListener("click", open);
     el.addEventListener("keydown", (e) => {
       if(e.key === "Enter" || e.key === " "){
         e.preventDefault();
-        openBoxScore(el.dataset.wk, el.dataset.time, el.dataset.a, el.dataset.b);
+        open();
       }
     });
   });
@@ -2767,14 +2867,14 @@ function renderUpcomingGames(){
   const upcoming = upcomingWeekList();
 
   if(selected){
-    upcoming.forEach(w => el.appendChild(buildWeekBlock(w, {allowClick:false, highlightSelected:true})));
+    upcoming.forEach(w => el.appendChild(buildWeekBlock(w, {allowClick:true, highlightSelected:true})));
     wireWeekBlockEvents(el);
     return;
   }
 
   const visible = upcoming.slice(0, 2);
   const extra = upcoming.slice(2);
-  visible.forEach(w => el.appendChild(buildWeekBlock(w, {allowClick:false, highlightSelected:true})));
+  visible.forEach(w => el.appendChild(buildWeekBlock(w, {allowClick:true, highlightSelected:true})));
   wireWeekBlockEvents(el);
 
   if(extra.length > 0){
@@ -2783,7 +2883,7 @@ function renderUpcomingGames(){
     moreLink.textContent = `Show ${extra.length} more upcoming week${extra.length > 1 ? "s" : ""} →`;
     moreLink.onclick = () => {
       extra.forEach(w => {
-        const block = buildWeekBlock(w, {allowClick:false, highlightSelected:true});
+        const block = buildWeekBlock(w, {allowClick:true, highlightSelected:true});
         el.insertBefore(block, moreLink);
         wireWeekBlockEvents(block);
       });
