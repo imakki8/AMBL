@@ -3388,7 +3388,7 @@ function renderHeroExtras(){
 // ---------- Auto-scrolling schedule ticker ----------
 function buildTicker(){
   const items = [];
-  SCHEDULE.filter(w => w.wk === 6 || w.wk === 7).forEach(w => {
+  SCHEDULE.filter(w => w.wk === 7 || w.wk === 8).forEach(w => {
     w.games.forEach(([time, a, b]) => {
       items.push(`<span class="ticker-item"><span class="tk-wk">WK${w.wk}</span><b>${a}</b>&nbsp;vs&nbsp;<b>${b}</b> &middot; ${time} PM</span>`);
     });
