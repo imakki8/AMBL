@@ -1421,8 +1421,8 @@
     <div class="back-btn" id="boxBackBtn">&larr; Back to schedule</div>
     <div class="box-head" id="boxHead"></div>
     <div class="top-performers" id="topPerformers"></div>
-    <div id="gameRecap"></div>
     <div class="box-tables" id="boxTables"></div>
+    <div id="gameRecap"></div>
   </div>
 
   <div class="matchup-preview-view" id="matchupPreviewView">
@@ -3189,7 +3189,7 @@ function buildWeekBlock(w, opts){
 
 function wireWeekBlockEvents(container){
   container.querySelectorAll("[data-team]").forEach(el => {
-    if(el.closest(".game[data-preview]")) return;
+    if(el.closest(".game[data-wk]")) return;
     el.addEventListener("click", (e) => {
       e.stopPropagation();
       openRoster(el.dataset.team);
