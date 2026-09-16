@@ -1021,10 +1021,40 @@
     background:var(--panel);
     max-width:680px;
   }
-  .history-photo-card img{display:block; width:100%; height:auto;}
+  .history-photo-card img{display:block; width:100%; height:auto; cursor:zoom-in;}
   .history-photo-card.portrait{max-width:150px;}
   .history-photo-card.medium{max-width:480px;}
   .history-photo-card.compact{max-width:260px;}
+  .photo-lightbox{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(10,12,16,0.9);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    cursor:zoom-out;
+  }
+  .photo-lightbox.show{display:flex;}
+  .photo-lightbox img{
+    max-width:100%;
+    max-height:100%;
+    border-radius:10px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  }
+  .photo-lightbox-close{
+    position:absolute;
+    top:18px;
+    right:24px;
+    color:#fff;
+    font-size:32px;
+    line-height:1;
+    font-weight:300;
+    cursor:pointer;
+    opacity:.8;
+  }
+  .photo-lightbox-close:hover{opacity:1;}
   .history-intro-row{
     display:flex;
     align-items:flex-start;
@@ -1425,6 +1455,11 @@
     <div class="top-performers" id="topPerformers"></div>
     <div class="box-tables" id="boxTables"></div>
     <div id="gameRecap"></div>
+  </div>
+
+  <div class="photo-lightbox" id="photoLightbox">
+    <span class="photo-lightbox-close">&times;</span>
+    <img id="photoLightboxImg" alt="">
   </div>
 
   <div class="matchup-preview-view" id="matchupPreviewView">
@@ -1940,6 +1975,24 @@ const RECAPS = {
       "Gel got that production while missing two rotation regulars, with Alex Avila and Nikolai Semerdjiev both sidelined. Hornets captain Isaac Morrison and Redliners captain Cameron De La Torre stepped in to fill the gaps, and both delivered: Morrison paced everyone on the floor not named Johnson on the glass with 9 rebounds to go with 7 points and 2 assists, while De La Torre chipped in 5 points and 7 rebounds. Gel did get careless with the ball late, piling up turnovers in the second half, but a comfortable cushion by that point kept the miscues from mattering.",
       "Force got scoring balance of its own, just not enough of it. Christian Halvorsen (9 points), Christopher Jung (8 points, 4 assists) and Michael Kamadinata (8 points) all found the basket, but no one could put together the kind of night needed to keep pace with Gel's perimeter outburst. Erick Jara Astudillo did his damage elsewhere, leading the team with 5 rebounds to go with 4 assists and 2 steals. With regular Nasim Eyvazlou unavailable, Force also turned to outside help, and substitute Aries Gatus logged quiet minutes in his place.",
       "Gel improves to 3-2 and keeps its playoff push alive heading into a brutal closing stretch against Blazers, Hornets and Redliners. Force, meanwhile, drops to 0-5 with the win column still just out of reach."
+    ]
+  },
+  "6-7:00": {
+    headline: "Garrett Ailshie, Josh Trejo Power Redliners Past Warriors, 41-28",
+    paragraphs: [
+      "The Warriors leaned heavily on the three ball to open the game, but Garrett Ailshie answered by attacking downhill again and again, and Redliners carried a narrow 17-16 lead into the break.",
+      "The Warriors caught a tough break early in the second half when captain Afsheen Bazrafkan went down with an ankle injury and did not return. Redliners took full advantage, outscoring Warriors 24-12 the rest of the way. Ailshie kept punishing the paint and finished with a game-high 17 points, while Josh Trejo scored 10 of his 15 points after the break, making 2 free throws down the stretch to help seal it.",
+      "Cameron De La Torre chipped in 6 points and added a little showmanship along the way, and Jaryd Flores scored 3 in relief. For Warriors, Mario Bravo did a bit of everything with 11 points, Scott Nakatsu made 2 threes on his way to 8, and fill-in Erick Jara scored 5, but it wasn't enough to slow down Redliners' balanced attack.",
+      "Redliners improve to 4-2, while Warriors fall to 1-4."
+    ]
+  },
+  "6-9:00": {
+    headline: "Blazers Survive Feisty Sonics to Stay Perfect at 5-0",
+    paragraphs: [
+      "This one got chippy. Sonics switched things up with a 3-2 zone to slow the pace, and the physical, whistle-heavy affair boiled over when Blazers captain Sammy Said picked up a technical foul. Blazers still took a 21-17 edge into the half.",
+      "The margin held steady after the break as Blazers closed it out 36-32. Jasper Shen led all scorers with 15 points, making 2 threes and knocking down 3 free throws, while Said pushed through the frustration to finish with 14 of his own. Gee Yu rounded out a balanced night with 5 points.",
+      "Sonics got a jolt from Tristan Jaeger, who opened the game red hot and finished with a team-high 12 points. Daniel Nordstrom added 10, and Jacob Hicken provided one of the night's best moments, scoring the first points of his AMBL career.",
+      "Blazers improve to 5-0 and remain the league's last unbeaten team, while Sonics drop to 1-4."
     ]
   }
 };
@@ -2483,6 +2536,52 @@ const BOXSCORES = {
         ["Riley Anno",0,0,0,0,0,0,0,1,3,0,0,0,1,0,0],
         ["Nasim Eyvazlou","DNP"],
         ["Aries Gatus",0,0,3,0,1,0,0,0,2,0,0,1,1,0,0,true],
+      ]},
+    }
+  },
+  "6-7:00": {
+    ot:false,
+    teams:{
+      Redliners:{ sponsor:"XtraFlo Redliners", score:41, captain:"Cameron De La Torre", players:[
+        ["Josh Trejo",15,6,12,1,4,2,3,1,3,2,2,0,3,0,0],
+        ["Garrett Ailshie",17,8,20,0,1,1,4,7,14,2,1,0,2,1,0],
+        ["Andy Le",0,0,4,0,0,0,0,1,8,0,0,1,0,0,0],
+        ["Natalia Willis","DNP"],
+        ["Cameron De La Torre",6,3,12,0,8,0,0,1,7,0,0,0,1,2,0],
+        ["Benjamin Palacio",0,0,0,0,0,0,1,0,2,0,0,0,0,0,0],
+        ["Jaryd Flores",3,1,5,0,2,1,2,1,1,1,0,0,0,3,0],
+      ]},
+      Warriors:{ sponsor:"Inzii Warriors", score:28, captain:"Afsheen Bazrafkan", players:[
+        ["Mario Bravo",11,5,18,1,10,0,0,1,9,1,2,1,2,3,0],
+        ["Tony Espinosa",4,1,13,0,7,2,2,4,10,0,1,0,2,2,0],
+        ["Afsheen Bazrafkan",0,0,3,0,1,0,0,6,6,1,0,0,2,0,0],
+        ["Scott Nakatsu",8,3,12,2,9,0,0,0,4,0,2,0,1,2,0],
+        ["Erick Jara",5,2,12,1,6,0,2,4,7,2,3,0,0,4,0,true],
+        ["Elijah Kim","DNP"],
+        ["Jose Alcantara",0,0,0,0,0,0,0,0,0,0,0,0,0,2,0],
+      ]},
+    }
+  },
+  "6-9:00": {
+    ot:false,
+    teams:{
+      Sonics:{ sponsor:"Simsei SuperSonics", score:32, captain:"Daniel Nordstrom", players:[
+        ["Tristan Jaeger",12,4,8,2,4,2,2,0,0,0,0,0,0,0,0],
+        ["Daniel Nordstrom",10,5,16,0,8,0,0,0,0,0,0,0,0,0,0],
+        ["Ali Awarke",4,2,5,0,2,0,2,0,0,0,0,0,0,0,0],
+        ["Julian Drake","DNP"],
+        ["Naveen Joy",2,1,3,0,1,0,0,0,0,0,0,0,0,0,0],
+        ["Luis Perez",0,0,2,0,1,0,0,0,0,0,0,0,0,0,0],
+        ["Jacob Hicken",4,2,4,0,1,0,0,0,0,0,0,0,0,0,0],
+      ]},
+      Blazers:{ sponsor:"Stealth Blazers", score:36, captain:"Sammy Said", players:[
+        ["Jasper Shen",15,5,20,2,10,3,4,0,0,0,0,0,0,0,0],
+        ["Sammy Said",14,6,15,0,4,2,3,0,0,0,0,0,0,0,0],
+        ["HyungCheol Kim",2,1,3,0,0,0,0,0,0,0,0,0,0,0,0],
+        ["Gee Yu",5,2,6,0,1,1,5,0,0,0,0,0,0,0,0],
+        ["Maddie Doi","DNP"],
+        ["Matthew Kasper","DNP"],
+        ["Spencer Randell","DNP"],
       ]},
     }
   },
@@ -3308,6 +3407,17 @@ renderStandings();
 decorateStaticLogos();
 renderHeroExtras();
 buildTicker();
+
+document.querySelectorAll(".history-photo-card img").forEach(img => {
+  img.addEventListener("click", () => {
+    document.getElementById("photoLightboxImg").src = img.src;
+    document.getElementById("photoLightbox").classList.add("show");
+  });
+});
+document.getElementById("photoLightbox").addEventListener("click", () => {
+  document.getElementById("photoLightbox").classList.remove("show");
+  document.getElementById("photoLightboxImg").src = "";
+});
 </script>
 </body>
 </html>
