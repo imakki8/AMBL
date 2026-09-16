@@ -698,6 +698,38 @@
   .tp-team{font-size:11px; color:var(--ink-faint); flex:none;}
   .tp-stats{font-weight:600; font-size:12px; color:var(--ink-soft); margin-left:auto; flex:none;}
 
+  .game-recap{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 20px;
+    margin:0 0 20px;
+  }
+  .recap-eyebrow{
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+  }
+  .recap-headline{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:19px;
+    letter-spacing:-.01em;
+    color:var(--ink);
+    margin:0 0 12px;
+  }
+  .game-recap p{
+    font-size:14px;
+    line-height:1.65;
+    color:var(--ink-soft);
+    margin:0 0 12px;
+    max-width:720px;
+  }
+  .game-recap p:last-child{margin-bottom:0;}
+
   .box-table-wrap{
     background:var(--panel);
     border:1px solid var(--line);
@@ -1389,6 +1421,7 @@
     <div class="back-btn" id="boxBackBtn">&larr; Back to schedule</div>
     <div class="box-head" id="boxHead"></div>
     <div class="top-performers" id="topPerformers"></div>
+    <div id="gameRecap"></div>
     <div class="box-tables" id="boxTables"></div>
   </div>
 
@@ -1956,6 +1989,19 @@ const MATCHUP_PREVIEWS = {
   }
 };
 
+const RECAPS = {
+  "6-6:00": {
+    headline: "Gel Fires on All Cylinders, Buries Winless Force 57-30",
+    paragraphs: [
+      "Gel opened the Week 6 slate exactly the way its stat sheet describes the first half: fast-paced chaos, with Lance Taylor everywhere on the floor. Taylor scored all 6 of his points in the opening half and helped Gel build a 28-18 lead by the break, and by the time the final horn sounded Gel had run away with it, 57-30, over a Force team still hunting its first win of the season.",
+      "The story of the second half was written in three-pointers. Imran Makki and Nick Johnson combined to go 9-for-26 from deep after the break alone, part of a stretch the stat sheet simply labeled \"the 3 barrage has begun.\" Johnson finished with a game-high 21 points on 5-of-14 shooting from three, adding 11 rebounds, 4 assists and 4 steals for good measure. Makki wasn't far behind with 14 points, going 4-of-12 from beyond the arc. As Gel's own bench notes put it at the 8:22 mark of the second half: \"Imran still got it. I guess Nick is good too.\"",
+      "Gel got that production despite missing two rotation regulars — Alex Avila and Nikolai Semerdjiev were both out, with Hornets captain Isaac Morrison and Redliners captain Cameron De La Torre stepping in to fill the gaps. Both subs delivered: Morrison quietly out-rebounded everyone on the floor not named Johnson with 9 boards to go with 7 points and 2 assists, and De La Torre added 5 points and 7 rebounds of his own. It wasn't clean — Gel turned the ball over 13 times in the second half alone, prompting a good-natured note on the sheet blaming Morrison for the sloppiness — but a 17-point cushion at the time made the miscues academic.",
+      "Force got scoring balance of its own, just not enough of it. Christian Halvorsen (9 points), Christopher Jung (8 points, 4 assists) and Michael Kamadinata (8 points) all found the bucket, but no one could put together the kind of night needed to keep pace with Gel's perimeter barrage. Erick Jara Astudillo battled on the glass with a team-high 5 rebounds and added 4 assists and 2 steals but couldn't buy a bucket, finishing scoreless on 0-for-7 shooting. With regular Nasim Eyvazlou unavailable, Force also turned to outside help, and substitute Aries Gatus logged quiet minutes in his place.",
+      "Gel improves to 3-2 and keeps its playoff push alive heading into a brutal closing stretch against Force, Blazers, Hornets and Redliners. Force, meanwhile, drops to 0-5 with the win column still just out of reach."
+    ]
+  }
+};
+
 // dark-background teams need light text; light-background teams need dark text
 const DARK_BG = new Set(["Rattlers","Gel","Warriors"]);
 
@@ -2474,6 +2520,30 @@ const BOXSCORES = {
       ]},
     }
   },
+  "6-6:00": {
+    ot:false,
+    teams:{
+      Gel:{ sponsor:"Gel(3)Pointers", score:57, captain:"Nick Johnson", players:[
+        ["Imran Makki",14,5,14,4,12,0,0,0,4,4,1,1,2,0,0],
+        ["Nick Johnson",21,8,18,5,14,0,0,1,11,4,4,1,5,1,0],
+        ["Lance Taylor",6,3,6,0,0,0,0,2,7,0,3,0,0,2,0],
+        ["Matthew Wang","DNP"],
+        ["Cameron De La Torre",5,2,4,1,2,0,0,2,7,0,1,0,2,2,0,true],
+        ["Isaac Morrison",7,3,4,0,0,1,2,2,9,2,1,0,4,0,0,true],
+        ["Karina Duran",4,2,8,0,0,0,0,0,1,0,0,0,0,0,0],
+      ]},
+      Force:{ sponsor:"Epix Force", score:30, captain:"Zaid Boukai", players:[
+        ["Christopher Jung",8,3,13,0,6,2,2,3,4,4,2,1,4,2,0],
+        ["Zaid Boukai",5,2,5,1,3,0,0,0,1,2,2,2,1,0,0],
+        ["Christian Halvorsen",9,4,12,0,3,1,2,1,3,2,0,0,0,0,0],
+        ["Erick Jara Astudillo",0,0,7,0,3,0,0,0,5,2,2,0,4,0,0],
+        ["Michael Kamadinata",8,4,10,0,3,0,0,1,2,0,3,0,0,2,0],
+        ["Riley Anno",0,0,0,0,0,0,0,1,3,0,0,0,1,0,0],
+        ["Nasim Eyvazlou","DNP"],
+        ["Aries Gatus",0,0,3,0,1,0,0,0,2,0,0,1,1,0,0,true],
+      ]},
+    }
+  },
 };
 
 function boxKey(wk, time){ return `${wk}-${time}`; }
@@ -2800,6 +2870,15 @@ function openBoxScore(wk, time, teamA, teamB){
   `;
 
   document.getElementById("topPerformers").innerHTML = renderTopPerformers(data, teamA, teamB);
+
+  const recap = RECAPS[boxKey(wk, time)];
+  document.getElementById("gameRecap").innerHTML = recap ? `
+    <div class="game-recap">
+      <div class="recap-eyebrow">Game Recap</div>
+      <div class="recap-headline">${recap.headline}</div>
+      ${recap.paragraphs.map(p => `<p>${p}</p>`).join("")}
+    </div>
+  ` : "";
 
   const headerRow = `<tr><th>Player</th><th>PTS</th><th>FG</th><th>FGA</th><th>FG%</th><th>3FG</th><th>3FGA</th><th>3FG%</th><th>FT</th><th>FTA</th><th>FT%</th><th>OREB</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>TO</th><th>PF</th><th>DQ</th></tr>`;
 
