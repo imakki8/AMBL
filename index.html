@@ -1055,6 +1055,117 @@
     opacity:.8;
   }
   .photo-lightbox-close:hover{opacity:1;}
+
+  .feedback-fab{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    color:var(--ink-faint);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:900;
+    box-shadow:0 4px 14px rgba(0,0,0,0.35);
+    transition:background .15s ease, color .15s ease, transform .15s ease;
+  }
+  .feedback-fab:hover{
+    background:var(--accent-soft);
+    color:var(--accent);
+    transform:scale(1.06);
+  }
+  .feedback-fab svg{width:19px; height:19px;}
+  .feedback-modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(10,12,16,0.72);
+    z-index:1001;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .feedback-modal-overlay.show{display:flex;}
+  .feedback-modal{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:22px 24px;
+    max-width:420px;
+    width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  }
+  .feedback-modal-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .feedback-modal-title{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:17px;
+    color:var(--ink);
+  }
+  .feedback-modal-close{
+    cursor:pointer;
+    font-size:24px;
+    line-height:1;
+    color:var(--ink-faint);
+    font-weight:300;
+  }
+  .feedback-modal-close:hover{color:var(--ink);}
+  .feedback-modal-sub{
+    font-size:13px;
+    line-height:1.55;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  .feedback-modal-sub a{color:var(--accent);}
+  .feedback-textarea{
+    width:100%;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    color:var(--ink);
+    font-family:inherit;
+    font-size:13.5px;
+    padding:10px 12px;
+    resize:vertical;
+    min-height:100px;
+  }
+  .feedback-textarea:focus{outline:none; border-color:var(--accent-dim);}
+  .feedback-modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:14px;
+  }
+  .feedback-cancel-btn, .feedback-send-btn{
+    font-family:inherit;
+    font-size:13px;
+    font-weight:600;
+    padding:9px 16px;
+    border-radius:9px;
+    cursor:pointer;
+    border:1px solid var(--line);
+  }
+  .feedback-cancel-btn{
+    background:transparent;
+    color:var(--ink-soft);
+  }
+  .feedback-cancel-btn:hover{background:var(--panel-2);}
+  .feedback-send-btn{
+    background:var(--accent);
+    color:var(--on-accent);
+    border-color:var(--accent);
+  }
+  .feedback-send-btn:hover{opacity:0.9;}
   .history-intro-row{
     display:flex;
     align-items:flex-start;
@@ -1471,6 +1582,25 @@
   <div class="photo-lightbox" id="photoLightbox">
     <span class="photo-lightbox-close">&times;</span>
     <img id="photoLightboxImg" alt="">
+  </div>
+
+  <button class="feedback-fab" id="feedbackFab" aria-label="Contact us / leave feedback" title="Contact us / leave feedback">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+
+  <div class="feedback-modal-overlay" id="feedbackOverlay">
+    <div class="feedback-modal">
+      <div class="feedback-modal-head">
+        <span class="feedback-modal-title">Contact &amp; Feedback</span>
+        <span class="feedback-modal-close" id="feedbackClose">&times;</span>
+      </div>
+      <p class="feedback-modal-sub">Questions, suggestions, or something we got wrong? Reach us at <a href="mailto:imakki@appliedmedical.com">imakki@appliedmedical.com</a>, or leave a note below and we'll open it up in your email app to send.</p>
+      <textarea class="feedback-textarea" id="feedbackText" rows="5" placeholder="Type your comments here..."></textarea>
+      <div class="feedback-modal-actions">
+        <button class="feedback-cancel-btn" id="feedbackCancel">Cancel</button>
+        <button class="feedback-send-btn" id="feedbackSend">Send</button>
+      </div>
+    </div>
   </div>
 
   <div class="matchup-preview-view" id="matchupPreviewView">
@@ -3524,6 +3654,34 @@ document.querySelectorAll(".history-photo-card img").forEach(img => {
 document.getElementById("photoLightbox").addEventListener("click", () => {
   document.getElementById("photoLightbox").classList.remove("show");
   document.getElementById("photoLightboxImg").src = "";
+});
+
+const feedbackOverlay = document.getElementById("feedbackOverlay");
+const feedbackText = document.getElementById("feedbackText");
+
+function openFeedbackModal(){
+  feedbackOverlay.classList.add("show");
+  feedbackText.focus();
+}
+function closeFeedbackModal(){
+  feedbackOverlay.classList.remove("show");
+}
+
+document.getElementById("feedbackFab").addEventListener("click", openFeedbackModal);
+document.getElementById("feedbackClose").addEventListener("click", closeFeedbackModal);
+document.getElementById("feedbackCancel").addEventListener("click", closeFeedbackModal);
+feedbackOverlay.addEventListener("click", (e) => {
+  if(e.target === feedbackOverlay) closeFeedbackModal();
+});
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape" && feedbackOverlay.classList.contains("show")) closeFeedbackModal();
+});
+document.getElementById("feedbackSend").addEventListener("click", () => {
+  const body = feedbackText.value.trim();
+  const mailto = `mailto:imakki@appliedmedical.com?subject=${encodeURIComponent("AMBL Website Feedback")}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+  feedbackText.value = "";
+  closeFeedbackModal();
 });
 </script>
 </body>
