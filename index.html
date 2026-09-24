@@ -3493,15 +3493,7 @@ function renderLeaders(){
 
   const statLeaders = document.getElementById("statLeaders");
   statLeaders.innerHTML = CATS.map(cat => {
-    let top = [...rows].sort((a,b) => b[cat.key]-a[cat.key]).slice(0,8);
-    if(cat.key === "bpg"){
-      const swapIdx = top.findIndex(r => r.name === "Daniel Nordstrom");
-      const makki = rows.find(r => r.name === "Imran Makki");
-      if(swapIdx !== -1 && makki && !top.some(r => r.name === "Imran Makki")){
-        top = [...top];
-        top[swapIdx] = makki;
-      }
-    }
+    const top = [...rows].sort((a,b) => b[cat.key]-a[cat.key]).slice(0,8);
     const rowsHTML = top.map((r,i) => `
       <div class="stat-row" data-team="${r.team}">
         <span class="stat-rank">${i+1}</span>
