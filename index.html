@@ -950,6 +950,10 @@
   .awards-view.show{display:block;}
   .playoff-view{display:none;}
   .playoff-view.show{display:block;}
+  .bracket-view{display:none;}
+  .bracket-view.show{display:block;}
+  .duo-view{display:none;}
+  .duo-view.show{display:block;}
 
   /* ---------- Newsletters page ---------- */
   .newsletter-view{display:none;}
@@ -1559,6 +1563,120 @@
     margin-top:22px;
   }
 
+  /* ---------- Playoff Bracket ---------- */
+  .bracket-wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:16px;
+    margin:24px 0 32px;
+  }
+  @media (max-width:820px){ .bracket-wrap{grid-template-columns:1fr;} }
+  .bracket-round-label{
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-bottom:10px;
+    text-align:center;
+  }
+  .bracket-round{display:flex; flex-direction:column;}
+  .bracket-col-spacer{flex:1;}
+  .bracket-match{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:20px;
+  }
+  .bracket-match.final{border-color:var(--accent); border-width:1.5px;}
+  .bracket-team{
+    display:flex; align-items:center; gap:8px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:15px;
+    padding:6px 0;
+    cursor:pointer;
+  }
+  .bracket-team:hover{color:var(--accent);}
+  .bracket-team.tbd{
+    color:var(--ink-faint);
+    font-weight:600;
+    font-size:13px;
+    cursor:default;
+    font-family:var(--font-body,inherit);
+  }
+  .bracket-team.tbd:hover{color:var(--ink-faint);}
+  .bracket-seed{
+    font-size:11px;
+    font-weight:700;
+    color:var(--ink-faint);
+    background:var(--panel-2);
+    border-radius:6px;
+    width:20px; height:20px;
+    display:inline-flex; align-items:center; justify-content:center;
+    flex:none;
+  }
+  .bracket-record{font-size:11px; font-weight:500; color:var(--ink-faint); margin-left:auto;}
+  .bracket-vs{
+    font-size:10.5px;
+    color:var(--ink-faint);
+    text-align:center;
+    padding:2px 0;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .bracket-bye-tag{
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-left:auto;
+  }
+
+  /* ---------- The Duo ---------- */
+  .duo-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px 22px;
+    margin-bottom:14px;
+  }
+  .duo-rank{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:8px;
+  }
+  .duo-names{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:22px;
+    letter-spacing:-.01em;
+    margin-bottom:4px;
+  }
+  .duo-name{cursor:pointer;}
+  .duo-name:hover{text-decoration:underline;}
+  .duo-amp{color:var(--ink-faint); font-weight:500; margin:0 8px;}
+  .duo-team{
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-bottom:12px;
+  }
+  .duo-body{
+    font-size:14px;
+    line-height:1.62;
+    color:var(--ink-soft);
+    margin:0;
+  }
+
   html,body{overflow-x:hidden;}
 
   @media (max-width:820px){
@@ -1610,6 +1728,14 @@
     <div class="hero-nav-item" id="navPlayoffs">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v6a8 8 0 0 0 16 0V4"/><path d="M4 4h16M9 21h6M12 17v4"/></svg>
       Playoff Race
+    </div>
+    <div class="hero-nav-item" id="navBracket">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h4v4H4zM4 15h4v4H4zM16 3h4v4h-4zM16 10h4v4h-4zM16 17h4v4h-4z"/><path d="M8 7h4v10a2 2 0 0 0 2 2h2M8 17h4V9a2 2 0 0 1 2-2h2"/></svg>
+      Playoff Bracket
+    </div>
+    <div class="hero-nav-item" id="navDuos">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M11 20c0-3 2.5-5 5-5s5 2 5 5"/></svg>
+      The Duo
     </div>
     <div class="hero-nav-item" id="navTipoff">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v3a1 1 0 0 0 1 1h3l4 4V6L7 10H4a1 1 0 0 0-1 1Z"/><path d="M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14"/></svg>
@@ -1919,9 +2045,9 @@
       <div class="matchup-teams">
         <span class="matchup-team" data-team="Redliners" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Redliners <span class="matchup-record">(5-2)</span></span>
       </div>
-      <div class="matchup-tag">One Game Left, and It's a Doozy</div>
-      <p class="matchup-body">Redliners get a Week 8 bye before closing the regular season against a Gel team that just knocked off previously-unbeaten Blazers. Garrett Ailshie has been sensational all year, and a win in the finale would be a serious statement heading into the postseason.</p>
-      <div class="prediction-block"><span class="prediction-label">Prediction</span>Redliners take care of business and finish 6-2, locking up a top-three seed.</div>
+      <div class="matchup-tag">One Game Left, and It Ends in an Upset</div>
+      <p class="matchup-body">Redliners get a Week 8 bye before closing the regular season against a Gel team that just knocked off previously-unbeaten Blazers. Garrett Ailshie has been sensational all year, but Nick Johnson and Imran Makki bring a level of big-game experience that Redliners haven't had to face all season.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Gel pulls off the upset in the finale, dropping Redliners to 5-3. The point differential built up over the season still holds up a top-three seed, but it's a nervy way to close the year.</div>
     </div>
 
     <div class="matchup-card">
@@ -1939,16 +2065,16 @@
       </div>
       <div class="matchup-tag">Back-to-Back Tests Against Fellow Contenders</div>
       <p class="matchup-body">Hornets return from their bye to face Gel and then Rattlers in back-to-back weeks, both currently tied with them in the standings. Luis Renteria-Medina has been a load on the glass all season, and how Hornets handle this stretch will decide their playoff seeding.</p>
-      <div class="prediction-block"><span class="prediction-label">Prediction</span>Hornets split the two games and finish 5-3, settling into a middle seed.</div>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Hornets take the Game of the Week over Gel, then drop the finale to Rattlers, finishing 5-3 and settling into a middle seed.</div>
     </div>
 
     <div class="matchup-card">
       <div class="matchup-teams">
         <span class="matchup-team" data-team="Gel" style="color:var(--gel-text)" onclick="openRoster('Gel')">Gel <span class="matchup-record">(4-2)</span></span>
       </div>
-      <div class="matchup-tag">Riding High After the Upset, Now the Real Test Begins</div>
-      <p class="matchup-body">Gel just delivered the upset of the season, knocking off previously-unbeaten Blazers behind Nick Johnson's 26 points. Now comes the hard part: Hornets and Redliners in back-to-back weeks to close the year. Johnson remains a runaway MVP front-runner, and Imran Makki has shown he still has plenty left in the tank.</p>
-      <div class="prediction-block"><span class="prediction-label">Prediction</span>Gel splits the finish and closes at 5-3, carrying serious momentum into the postseason.</div>
+      <div class="matchup-tag">Riding High After the Upset, and There's Another One Coming</div>
+      <p class="matchup-body">Gel just delivered the upset of the season, knocking off previously-unbeaten Blazers behind Nick Johnson's 26 points. Now comes the hard part: Hornets and Redliners in back-to-back weeks to close the year. Johnson remains a runaway MVP front-runner, and Imran Makki has shown he still has plenty left in the tank &mdash; the kind of big-game experience that could be the difference in the Week 9 finale.</p>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Gel drops the Game of the Week to Hornets but answers by upsetting Redliners in the finale, closing at 5-3 and carrying serious momentum into the postseason.</div>
     </div>
 
     <div class="matchup-card">
@@ -1988,6 +2114,181 @@
     </div>
 
     <p class="preview-signoff">That's the picture through week 7, with just two weeks left to play. Check back after every round of games &mdash; six spots, nine teams, and the math is almost final.</p>
+  </div>
+
+  <div class="bracket-view" id="bracketView">
+    <div class="back-btn" id="bracketBackBtn">&larr; Back to schedule</div>
+
+    <div class="preview-hero">
+      <span class="preview-hero-eyebrow">Playoff Bracket &middot; AMBL Season 31</span>
+      <h1 class="preview-hero-title">Six Teams, One Trophy</h1>
+      <p class="preview-hero-sub">Top six make the postseason. The 1 and 2 seeds earn a bye straight into the semifinals, while the 3 through 6 seeds fight it out in Round 1 to join them. Here's how the bracket is shaping up, and what to expect from every matchup.</p>
+    </div>
+
+    <div class="bracket-wrap">
+      <div class="bracket-round">
+        <div class="bracket-round-label">Round 1</div>
+        <div class="bracket-match">
+          <div class="bracket-team" data-team="Redliners" style="color:var(--redliners-text)" onclick="openRoster('Redliners')"><span class="bracket-seed">3</span>Redliners<span class="bracket-record">5-3</span></div>
+          <div class="bracket-vs">vs</div>
+          <div class="bracket-team" data-team="Thunder" style="color:var(--thunder-text)" onclick="openRoster('Thunder')"><span class="bracket-seed">6</span>Thunder<span class="bracket-record">4-4</span></div>
+        </div>
+        <div class="bracket-match">
+          <div class="bracket-team" data-team="Hornets" style="color:var(--hornets-text)" onclick="openRoster('Hornets')"><span class="bracket-seed">4</span>Hornets<span class="bracket-record">5-3</span></div>
+          <div class="bracket-vs">vs</div>
+          <div class="bracket-team" data-team="Gel" style="color:var(--gel-text)" onclick="openRoster('Gel')"><span class="bracket-seed">5</span>Gel<span class="bracket-record">5-3</span></div>
+        </div>
+      </div>
+      <div class="bracket-round">
+        <div class="bracket-round-label">Semifinals</div>
+        <div class="bracket-match">
+          <div class="bracket-team" data-team="Blazers" style="color:var(--blazers-text)" onclick="openRoster('Blazers')"><span class="bracket-seed">1</span>Blazers<span class="bracket-record">7-1</span><span class="bracket-bye-tag">Bye</span></div>
+          <div class="bracket-vs">vs</div>
+          <div class="bracket-team tbd">Winner: Hornets / Gel</div>
+        </div>
+        <div class="bracket-match">
+          <div class="bracket-team" data-team="Rattlers" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')"><span class="bracket-seed">2</span>Rattlers<span class="bracket-record">6-2</span><span class="bracket-bye-tag">Bye</span></div>
+          <div class="bracket-vs">vs</div>
+          <div class="bracket-team tbd">Winner: Redliners / Thunder</div>
+        </div>
+      </div>
+      <div class="bracket-round">
+        <div class="bracket-round-label">Championship</div>
+        <div class="bracket-match final">
+          <div class="bracket-team tbd">TBD</div>
+          <div class="bracket-vs">vs</div>
+          <div class="bracket-team tbd">TBD</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="storylines-head"><span class="title">Round 1: What to Expect</span></div>
+
+    <div class="matchup-card">
+      <div class="matchup-meta">Round 1 &middot; (3) vs (6)</div>
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Redliners" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Redliners <span class="matchup-record">(5-3)</span></span>
+        <span class="matchup-vs">vs</span>
+        <span class="matchup-team" data-team="Thunder" style="color:var(--thunder-text)" onclick="openRoster('Thunder')">Thunder <span class="matchup-record">(4-4)</span></span>
+      </div>
+      <div class="matchup-tag">Redliners' Depth Meets Thunder's Two-Way Engine</div>
+      <p class="matchup-body">Redliners roll into Round 1 as the higher seed on the back of a deep roster that's never needed one go-to hero, while Thunder snuck in as the six seed almost entirely on the strength of Matt Burnett, the only player in the league leading in both rebounds and assists. Garrett Ailshie and Josh Trejo have carried Redliners' late-season push, but a single dominant force like Burnett is exactly the kind of matchup that can flip a short series.</p>
+      <div class="watch-block">
+        <div class="watch-label">Players to Watch</div>
+        <div class="watch-row" onclick="openRoster('Redliners')">
+          <span class="watch-dot" style="background:var(--redliners)"></span>
+          <span class="watch-name">Garrett Ailshie</span>
+          <span class="watch-note">, Redliners' engine on both ends, a matchup problem inside and on the glass</span>
+        </div>
+        <div class="watch-row" onclick="openRoster('Thunder')">
+          <span class="watch-dot" style="background:var(--thunder)"></span>
+          <span class="watch-name">Matt Burnett</span>
+          <span class="watch-note">, leads the league in both rebounds and assists, and Thunder go as far as he can carry them</span>
+        </div>
+      </div>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Redliners' depth wins out in a tight one. Burnett will get his numbers, but he won't have enough help to pull the road upset.</div>
+    </div>
+
+    <div class="matchup-card">
+      <div class="matchup-meta">Round 1 &middot; (4) vs (5)</div>
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Hornets" style="color:var(--hornets-text)" onclick="openRoster('Hornets')">Hornets <span class="matchup-record">(5-3)</span></span>
+        <span class="matchup-vs">vs</span>
+        <span class="matchup-team" data-team="Gel" style="color:var(--gel-text)" onclick="openRoster('Gel')">Gel <span class="matchup-record">(5-3)</span></span>
+      </div>
+      <div class="matchup-tag">A Playoff Rematch of the Season's Best Regular-Season Game</div>
+      <p class="matchup-body">These two just played the Game of the Week in Week 8, with Hornets' league-best defense doing just enough to slow down Gel's high-powered attack. Now they run it back with the season on the line. Isaac Morrison and Luis Renteria-Medina give Hornets their defensive identity, but Nick Johnson and Imran Makki proved in Week 9 exactly what big-game experience looks like, upsetting Redliners in the regular-season finale. Gel will be out for revenge.</p>
+      <div class="watch-block">
+        <div class="watch-label">Players to Watch</div>
+        <div class="watch-row" onclick="openRoster('Hornets')">
+          <span class="watch-dot" style="background:var(--hornets)"></span>
+          <span class="watch-name">Luis Renteria-Medina</span>
+          <span class="watch-note">, Hornets' rebounding anchor, a load on the glass every night</span>
+        </div>
+        <div class="watch-row" onclick="openRoster('Gel')">
+          <span class="watch-dot" style="background:var(--gel)"></span>
+          <span class="watch-name">Nick Johnson</span>
+          <span class="watch-note">, the league's runaway MVP front-runner, with a signature upset already on his resume this month</span>
+        </div>
+      </div>
+      <div class="prediction-block"><span class="prediction-label">Prediction</span>Gel gets its revenge. The same duo that got them through October's toughest stretch does it again, and Gel advances to face the top seed.</div>
+    </div>
+
+    <div class="storylines-head"><span class="title">On the Bye, Watching Round 1</span></div>
+
+    <div class="bye-spotlight">
+      <div class="matchup-meta">1 Seed &middot; Bye</div>
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Blazers" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Blazers <span class="matchup-record">(7-1)</span></span>
+      </div>
+      <div class="matchup-tag">The League's Best Record Buys a Week Off</div>
+      <p class="matchup-body">Blazers wrap up the top seed and get to watch Round 1 from home, waiting to find out whether it's Hornets or Gel waiting for them in the semis. Either way, Jasper Shen and Sammy Said have earned the rest.</p>
+    </div>
+
+    <div class="bye-spotlight">
+      <div class="matchup-meta">2 Seed &middot; Bye</div>
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Rattlers" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')">Rattlers <span class="matchup-record">(6-2)</span></span>
+      </div>
+      <div class="matchup-tag">A Week to Rest an MVP Case</div>
+      <p class="matchup-body">Rattlers close the regular season on a roll and lock up the two seed, setting up a semifinal against the winner of Redliners and Thunder. Matthew Estrada and Keith Murphy give this team a defensive floor that should travel well into the postseason.</p>
+    </div>
+
+    <p class="preview-signoff">Bracket updates as soon as Round 1 tips off &mdash; check back for the semifinal matchups once the dust settles.</p>
+  </div>
+
+  <div class="duo-view" id="duoView">
+    <div class="back-btn" id="duoBackBtn">&larr; Back to schedule</div>
+
+    <div class="preview-hero">
+      <span class="preview-hero-eyebrow">The Duo &middot; AMBL Season 31</span>
+      <h1 class="preview-hero-title">Six Playoff Teams, Six Signature Duos</h1>
+      <p class="preview-hero-sub">Every playoff contender has one pairing that makes it go. Some are proven closers, some are still auditioning for the moment &mdash; here's a countdown of the best two-man games among this season's postseason field.</p>
+    </div>
+
+    <div class="duo-card">
+      <div class="duo-rank">No. 6</div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--thunder-text)" onclick="openRoster('Thunder')">Matt Burnett</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--thunder-text)" onclick="openRoster('Thunder')">Sahil Bhakta</span></div>
+      <div class="duo-team">Thunder</div>
+      <p class="duo-body">Thunder's record doesn't scream contender, but their engine room absolutely does. Matt Burnett is putting up numbers nobody else in the league can touch &mdash; he leads all of AMBL in both rebounds and assists, a stat line that sounds like a misprint until you actually watch him play. Sahil Bhakta is the connective tissue, dishing 3.4 assists a night to make sure Burnett's outlet passes turn into points instead of just box-score filler. It's an odd-couple pairing, a bruiser who lives in the paint next to a table-setter who thrives on tempo, but together they're the reason Thunder are still fighting for the sixth seed instead of golfing early.</p>
+    </div>
+
+    <div class="duo-card">
+      <div class="duo-rank">No. 5</div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--hornets-text)" onclick="openRoster('Hornets')">Isaac Morrison</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--hornets-text)" onclick="openRoster('Hornets')">Luis Renteria-Medina</span></div>
+      <div class="duo-team">Hornets</div>
+      <p class="duo-body">Hornets built the league's stingiest defense around two guys who never seem to leave the floor. Luis Renteria-Medina is a walking mismatch on the glass, leading the league in offensive rebounds and hauling in 14 boards a night overall, while captain Isaac Morrison quietly runs the show, setting up teammates and racking up steals in equal measure. Neither one needs to score 20 to change a game, and that's exactly the point &mdash; this is the duo that makes Hornets miserable to play against, night in and night out.</p>
+    </div>
+
+    <div class="duo-card">
+      <div class="duo-rank">No. 4</div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Garrett Ailshie</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Josh Trejo</span></div>
+      <div class="duo-team">Redliners</div>
+      <p class="duo-body">This pairing already has a signature moment on the books. Back in Week 6, Ailshie and Trejo combined to put away Warriors, with Ailshie bulldozing his way to a game-high 17 points and Trejo closing it out from the free-throw line down the stretch. Ailshie has since emerged as the league's most reliable bucket-getter not named Johnson or Estrada, and Trejo's steady hand running the offense means Redliners never feel like they're one bad night away from disaster. It's not the flashiest duo in the league, but ask anyone chasing them in the standings how much that matters.</p>
+    </div>
+
+    <div class="duo-card">
+      <div class="duo-rank">No. 3</div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Jasper Shen</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Sammy Said</span></div>
+      <div class="duo-team">Blazers</div>
+      <p class="duo-body">Jasper Shen doesn't need a highlight reel to make his case &mdash; he's a top-five threat in points, boards, assists and steals, the definition of a do-everything engine. What elevates this duo is Sammy Said, who's quietly turned into Blazers' second gear, dropping a team-high 21 points in their first loss of the season even when the whistles weren't going their way. Shen creates the margin; Said protects it. Together, they're the biggest reason Blazers own the league's best record even after finally losing one.</p>
+    </div>
+
+    <div class="duo-card">
+      <div class="duo-rank">No. 2</div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')">Matthew Estrada</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')">Keith Murphy</span></div>
+      <div class="duo-team">Rattlers</div>
+      <p class="duo-body">If you're picking two players in this league you'd least want to see the ball near, Estrada and Murphy might be it. Estrada is somehow leading the league in blocked shots while also averaging a 21-and-12 most nights, an absurd two-way combination for one player. Then there's Murphy, whose 4.2 steals a game isn't just a league lead, it's a league lead by nearly two full steals over anyone else. Put them on the floor together and Rattlers turn every possession into a potential turnover &mdash; this is the duo that makes their playoff push feel less like hope and more like inevitability.</p>
+    </div>
+
+    <div class="duo-card">
+      <div class="duo-rank">No. 1</div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--gel-text)" onclick="openRoster('Gel')">Nick Johnson</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--gel-text)" onclick="openRoster('Gel')">Imran Makki</span></div>
+      <div class="duo-team">Gel</div>
+      <p class="duo-body">There's a reason this is the duo everyone's been talking about since Week 7. Nick Johnson is playing a different sport than the rest of the league right now, lapping the field in scoring while still rebounding like a big man. But it's Imran Makki's return to form that's turned Gel from dangerous into terrifying &mdash; he's quietly become the league's second-leading distributor, setting up Johnson for looks he wouldn't otherwise get. They've already delivered the signature win of the season together, taking down previously-unbeaten Blazers, and then did it again in Week 9, upsetting Redliners in the regular-season finale. Big-game experience isn't just a talking point with this pair, it's a resume. Whatever happens in the playoffs, Gel's chances start and end with these two.</p>
+    </div>
+
+    <p class="preview-signoff">That's the countdown &mdash; six teams, six duos, and a lot of basketball left to prove it right.</p>
   </div>
 
   <div class="newsletter-view" id="newsletterView">
@@ -3798,7 +4099,7 @@ function renderTopPerformers(data, teamA, teamB){
 }
 
 function showOnly(viewId){
-  ["scheduleView","rosterView","boxView","matchupPreviewView","historyView","previewView","boxScoresView","awardsView","playoffView","newsletterView"].forEach(id => {
+  ["scheduleView","rosterView","boxView","matchupPreviewView","historyView","previewView","boxScoresView","awardsView","playoffView","bracketView","duoView","newsletterView"].forEach(id => {
     const el = document.getElementById(id);
     if(id === "scheduleView"){
       el.classList.toggle("hide", id !== viewId);
@@ -3810,9 +4111,11 @@ function showOnly(viewId){
   document.getElementById("navBoxScores").classList.toggle("active", viewId === "boxScoresView");
   document.getElementById("navAwards").classList.toggle("active", viewId === "awardsView");
   document.getElementById("navPlayoffs").classList.toggle("active", viewId === "playoffView");
+  document.getElementById("navBracket").classList.toggle("active", viewId === "bracketView");
+  document.getElementById("navDuos").classList.toggle("active", viewId === "duoView");
   document.getElementById("navHistory").classList.toggle("active", viewId === "historyView");
   document.getElementById("navNewsletters").classList.toggle("active", viewId === "newsletterView");
-  document.getElementById("navSchedule").classList.toggle("active", !["previewView","boxScoresView","awardsView","playoffView","historyView","newsletterView"].includes(viewId));
+  document.getElementById("navSchedule").classList.toggle("active", !["previewView","boxScoresView","awardsView","playoffView","bracketView","duoView","historyView","newsletterView"].includes(viewId));
   window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
 }
 
@@ -3829,6 +4132,10 @@ document.getElementById("navBoxScores").onclick = () => { showOnly("boxScoresVie
 document.getElementById("navAwards").onclick = () => { showOnly("awardsView"); renderAwardsRace(); };
 document.getElementById("navPlayoffs").onclick = () => showOnly("playoffView");
 document.getElementById("playoffBackBtn").onclick = () => showOnly("scheduleView");
+document.getElementById("navBracket").onclick = () => showOnly("bracketView");
+document.getElementById("bracketBackBtn").onclick = () => showOnly("scheduleView");
+document.getElementById("navDuos").onclick = () => showOnly("duoView");
+document.getElementById("duoBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("navHistory").onclick = () => showOnly("historyView");
 document.getElementById("historyBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("navNewsletters").onclick = () => { showOnly("newsletterView"); renderNewsletter(currentNewsletterWeek); };
