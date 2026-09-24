@@ -954,6 +954,10 @@
   .bracket-view.show{display:block;}
   .duo-view{display:none;}
   .duo-view.show{display:block;}
+  .players-hub-view{display:none;}
+  .players-hub-view.show{display:block;}
+  .player-detail-view{display:none;}
+  .player-detail-view.show{display:block;}
 
   /* ---------- Newsletters page ---------- */
   .newsletter-view{display:none;}
@@ -1677,6 +1681,118 @@
     margin:0;
   }
 
+  /* ---------- Player Stats hub & detail ---------- */
+  .player-search-wrap{
+    position:relative;
+    max-width:420px;
+    margin:20px 0 16px;
+  }
+  .player-search-input{
+    width:100%;
+    box-sizing:border-box;
+    font-family:inherit;
+    font-size:14.5px;
+    padding:12px 16px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--ink);
+    outline:none;
+  }
+  .player-search-input:focus{border-color:var(--accent);}
+  .player-search-dropdown{
+    display:none;
+    position:absolute;
+    top:calc(100% + 6px);
+    left:0; right:0;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    z-index:20;
+    box-shadow:0 12px 28px rgba(0,0,0,0.35);
+  }
+  .player-search-dropdown.show{display:block;}
+  .player-search-result{
+    padding:10px 16px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .player-search-result:last-child{border-bottom:none;}
+  .player-search-result:hover{background:var(--panel-2); color:var(--accent);}
+
+  .player-filter-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:18px;
+  }
+
+  .player-table-wrap{margin-bottom:24px;}
+  #playerStatsTable th[data-key]{cursor:pointer; user-select:none;}
+  #playerStatsTable th[data-key]:hover{color:var(--ink);}
+  #playerStatsTable th.sorted-asc::after{content:" \25B2"; font-size:9px;}
+  #playerStatsTable th.sorted-desc::after{content:" \25BC"; font-size:9px;}
+  #playerStatsTable td.pt-name{text-align:left; font-weight:600; cursor:pointer;}
+  #playerStatsTable{min-width:640px;}
+  #playerStatsTable th:first-child, #playerStatsTable td:first-child{width:22%;}
+  tr.player-row{cursor:pointer;}
+  tr.player-row:hover{background:var(--panel-2);}
+
+  .player-detail-banner{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:20px 0 22px;
+    margin-bottom:18px;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .player-detail-info{display:flex; flex-direction:column; gap:4px;}
+  .player-detail-name{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(22px,4vw,32px);
+    letter-spacing:-.01em;
+  }
+  .player-detail-team{
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .player-detail-team:hover{text-decoration:underline;}
+
+  .player-avg-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-bottom:26px;
+  }
+  @media (max-width:700px){ .player-avg-grid{grid-template-columns:repeat(3,1fr);} }
+  .player-avg-card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 8px;
+  }
+  .pa-val{font-family:var(--font-display); font-weight:700; font-size:20px;}
+  .pa-label{font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-faint);}
+
+  tr.gamelog-row{cursor:pointer;}
+  tr.gamelog-row:hover{background:var(--panel-2);}
+  .gl-win{color:var(--accent); font-weight:700;}
+  .gl-loss{color:var(--ink-faint); font-weight:700;}
+  table.gamelog-table{min-width:980px;}
+  table.gamelog-table th:first-child, table.gamelog-table td:first-child{width:5%; text-align:center; font-weight:400;}
+  table.gamelog-table th:nth-child(2), table.gamelog-table td:nth-child(2){width:11%; text-align:left; font-weight:600; white-space:normal;}
+  table.gamelog-table th:nth-child(3), table.gamelog-table td:nth-child(3){width:11%; white-space:normal;}
+
   html,body{overflow-x:hidden;}
 
   @media (max-width:820px){
@@ -1736,6 +1852,10 @@
     <div class="hero-nav-item" id="navDuos">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M11 20c0-3 2.5-5 5-5s5 2 5 5"/></svg>
       The Duo
+    </div>
+    <div class="hero-nav-item" id="navPlayers">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      Player Stats
     </div>
     <div class="hero-nav-item" id="navTipoff">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v3a1 1 0 0 0 1 1h3l4 4V6L7 10H4a1 1 0 0 0-1 1Z"/><path d="M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14"/></svg>
@@ -1903,35 +2023,35 @@
     <div class="storylines-head"><span class="title">MVP Race: The Case for Each Contender</span></div>
     <div class="candidate-grid">
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">1</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openRoster('Gel')">Nick Johnson</span><span class="candidate-stat">27.5 PPG / 11.5 RPG / 2.2 APG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">1</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openPlayerStats('Nick Johnson')">Nick Johnson</span><span class="candidate-stat">27.5 PPG / 11.5 RPG / 2.2 APG</span></div>
         <p class="candidate-body">Nick Johnson isn't just leading the league in scoring, he's lapping it &mdash; nobody else in AMBL is within six points of him. He proved it again in Week 7, dropping 26 to hand the league's last unbeaten team its first loss. At this point the MVP race isn't a race &mdash; it's Johnson, and then everybody chasing the taillights.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">2</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openRoster('Rattlers')">Matthew Estrada</span><span class="candidate-stat">21.2 PPG / 12.2 RPG / 1.3 APG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">2</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openPlayerStats('Matthew Estrada')">Matthew Estrada</span><span class="candidate-stat">21.2 PPG / 12.2 RPG / 1.3 APG</span></div>
         <p class="candidate-body">Matthew Estrada is putting up a stat line that would headline most seasons &mdash; 20-and-12 as a matter of routine &mdash; while also leading the league in blocked shots. Rattlers sit at 4-2 and squarely in the playoff picture, and every week Estrada's two-way dominance makes the case louder.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">3</span><span class="sp-dot" style="background:var(--blazers)"></span><span class="candidate-name" onclick="openRoster('Blazers')">Jasper Shen</span><span class="candidate-stat">16.2 PPG / 10.7 RPG / 3.0 APG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">3</span><span class="sp-dot" style="background:var(--blazers)"></span><span class="candidate-name" onclick="openPlayerStats('Jasper Shen')">Jasper Shen</span><span class="candidate-stat">16.2 PPG / 10.7 RPG / 3.0 APG</span></div>
         <p class="candidate-body">Jasper Shen is the engine behind the league's best record, and he does it without needing to dominate any single category &mdash; he's simply everywhere, a top-five threat in points, boards, assists and steals. Blazers' first loss of the season didn't change that; Shen still gives them a shot to win every single night.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">4</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openRoster('Redliners')">Garrett Ailshie</span><span class="candidate-stat">15.4 PPG / 8.6 RPG / 2.9 APG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">4</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openPlayerStats('Garrett Ailshie')">Garrett Ailshie</span><span class="candidate-stat">15.4 PPG / 8.6 RPG / 2.9 APG</span></div>
         <p class="candidate-body">Garrett Ailshie has become the steadiest bucket-getter on a Redliners team that's quietly climbed to 5-2 and second place. He doesn't need heavy volume to get there, either &mdash; Ailshie just shows up, every week, and Redliners keep winning.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">5</span><span class="sp-dot" style="background:var(--hornets)"></span><span class="candidate-name" onclick="openRoster('Hornets')">Luis Renteria-Medina</span><span class="candidate-stat">11.0 PPG / 14.0 RPG / 2.7 APG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">5</span><span class="sp-dot" style="background:var(--hornets)"></span><span class="candidate-name" onclick="openPlayerStats('Luis Renteria-Medina')">Luis Renteria-Medina</span><span class="candidate-stat">11.0 PPG / 14.0 RPG / 2.7 APG</span></div>
         <p class="candidate-body">Luis Renteria-Medina leads the entire league in offensive rebounding, and his overall board work is a huge reason Hornets are in the thick of the playoff race at 4-2. He won't lead the league in points, but ask anyone who's boxed him out how much that matters.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">6</span><span class="sp-dot" style="background:var(--thunder)"></span><span class="candidate-name" onclick="openRoster('Thunder')">Matt Burnett</span><span class="candidate-stat">11.0 PPG / 15.5 RPG / 4.2 APG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">6</span><span class="sp-dot" style="background:var(--thunder)"></span><span class="candidate-name" onclick="openPlayerStats('Matt Burnett')">Matt Burnett</span><span class="candidate-stat">11.0 PPG / 15.5 RPG / 4.2 APG</span></div>
         <p class="candidate-body">Forget the scoring average &mdash; Matt Burnett leads the entire league in both rebounds and assists, a genuinely rare combination. Thunder's 3-4 record is the only thing holding his case back, but no one else in AMBL is doing what he's doing on a nightly basis.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">7</span><span class="sp-dot" style="background:var(--warriors)"></span><span class="candidate-name" onclick="openRoster('Warriors')">Mario Bravo</span><span class="candidate-stat">12.0 PPG / 10.6 RPG / 2.4 APG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">7</span><span class="sp-dot" style="background:var(--warriors)"></span><span class="candidate-name" onclick="openPlayerStats('Mario Bravo')">Mario Bravo</span><span class="candidate-stat">12.0 PPG / 10.6 RPG / 2.4 APG</span></div>
         <p class="candidate-body">Mario Bravo's numbers would look at home on a top-four team, not a 1-5 one &mdash; which is exactly the problem with judging MVP purely on the standings. Bravo shows up in the box score every single night regardless of the scoreboard, and that kind of consistency deserves its own line in the conversation.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">8</span><span class="sp-dot" style="background:var(--blazers)"></span><span class="candidate-name" onclick="openRoster('Blazers')">Sammy Said</span><span class="candidate-stat">14.3 PPG / 4.2 RPG / 0.5 APG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">8</span><span class="sp-dot" style="background:var(--blazers)"></span><span class="candidate-name" onclick="openPlayerStats('Sammy Said')">Sammy Said</span><span class="candidate-stat">14.3 PPG / 4.2 RPG / 0.5 APG</span></div>
         <p class="candidate-body">Sammy Said has emerged as Blazers' second scoring option, and he proved it by leading the team in points during their first loss of the season, a tight two-possession game against Gel. On a team built around Jasper Shen doing everything, Said's scoring punch gives Blazers a second gear.</p>
       </div>
     </div>
@@ -1939,35 +2059,35 @@
     <div class="storylines-head"><span class="title">Defensive MVP Race: The Case for Each Contender</span></div>
     <div class="candidate-grid">
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">1</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openRoster('Rattlers')">Matthew Estrada</span><span class="candidate-stat">1.7 SPG / 3.2 BPG / 12.2 RPG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">1</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openPlayerStats('Matthew Estrada')">Matthew Estrada</span><span class="candidate-stat">1.7 SPG / 3.2 BPG / 12.2 RPG</span></div>
         <p class="candidate-body">Matthew Estrada leads the entire league in blocked shots, which is a wild fact for a player also putting up MVP-caliber scoring numbers. Rattlers' defense has a legitimate rim protector, and he happens to also be their best offensive weapon.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">2</span><span class="sp-dot" style="background:var(--warriors)"></span><span class="candidate-name" onclick="openRoster('Warriors')">Mario Bravo</span><span class="candidate-stat">2.4 SPG / 2.0 BPG / 10.6 RPG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">2</span><span class="sp-dot" style="background:var(--warriors)"></span><span class="candidate-name" onclick="openPlayerStats('Mario Bravo')">Mario Bravo</span><span class="candidate-stat">2.4 SPG / 2.0 BPG / 10.6 RPG</span></div>
         <p class="candidate-body">Mario Bravo doesn't just clog passing lanes, he ends possessions &mdash; steals, blocks, and boards all at once, from a Warriors team that needs every stop it can find. He's the total defensive package, and it's not close.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">3</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openRoster('Rattlers')">Keith Murphy</span><span class="candidate-stat">4.2 SPG / 0.0 BPG / 10.2 RPG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">3</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openPlayerStats('Keith Murphy')">Keith Murphy</span><span class="candidate-stat">4.2 SPG / 0.0 BPG / 10.2 RPG</span></div>
         <p class="candidate-body">Nobody in the league is getting their hands on the ball more than Keith Murphy, whose 4.2 steals a night is the single most disruptive number in AMBL this season. Add in double-digit rebounding, and Murphy is a walking turnover for whoever's unlucky enough to bring the ball up against Rattlers.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">4</span><span class="sp-dot" style="background:var(--blazers)"></span><span class="candidate-name" onclick="openRoster('Blazers')">Jasper Shen</span><span class="candidate-stat">2.5 SPG / 1.3 BPG / 10.7 RPG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">4</span><span class="sp-dot" style="background:var(--blazers)"></span><span class="candidate-name" onclick="openPlayerStats('Jasper Shen')">Jasper Shen</span><span class="candidate-stat">2.5 SPG / 1.3 BPG / 10.7 RPG</span></div>
         <p class="candidate-body">Jasper Shen's fingerprints are on both ends of Blazers' league-best record &mdash; he's the second-best thief in the league and still finds his way to double-digit boards. The best defenses usually have a guy like this; Blazers happen to have theirs also leading their offense.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">5</span><span class="sp-dot" style="background:var(--hornets)"></span><span class="candidate-name" onclick="openRoster('Hornets')">Luis Renteria-Medina</span><span class="candidate-stat">1.8 SPG / 1.2 BPG / 14.0 RPG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">5</span><span class="sp-dot" style="background:var(--hornets)"></span><span class="candidate-name" onclick="openPlayerStats('Luis Renteria-Medina')">Luis Renteria-Medina</span><span class="candidate-stat">1.8 SPG / 1.2 BPG / 14.0 RPG</span></div>
         <p class="candidate-body">Luis Renteria-Medina's rebounding numbers alone would carry a Defensive MVP case &mdash; he leads the league in offensive boards and isn't far off the overall lead either. Hornets' interior defense starts and ends with him.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">6</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openRoster('Redliners')">Garrett Ailshie</span><span class="candidate-stat">2.0 SPG / 1.3 BPG / 8.6 RPG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">6</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openPlayerStats('Garrett Ailshie')">Garrett Ailshie</span><span class="candidate-stat">2.0 SPG / 1.3 BPG / 8.6 RPG</span></div>
         <p class="candidate-body">Garrett Ailshie doing damage on both ends is exactly why Redliners have climbed to second place &mdash; he's a scoring engine who also shows up on the other end of the floor.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">7</span><span class="sp-dot" style="background:var(--thunder)"></span><span class="candidate-name" onclick="openRoster('Thunder')">Matt Burnett</span><span class="candidate-stat">0.8 SPG / 1.5 BPG / 15.5 RPG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">7</span><span class="sp-dot" style="background:var(--thunder)"></span><span class="candidate-name" onclick="openPlayerStats('Matt Burnett')">Matt Burnett</span><span class="candidate-stat">0.8 SPG / 1.5 BPG / 15.5 RPG</span></div>
         <p class="candidate-body">Matt Burnett's defensive r&eacute;sum&eacute; starts with the league's best rebounding number, full stop. Add in a steady stream of blocks, and Thunder's defense runs through the same player who runs their offense.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">8</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openRoster('Gel')">Nick Johnson</span><span class="candidate-stat">1.3 SPG / 1.5 BPG / 11.5 RPG</span></div>
+        <div class="candidate-head"><span class="candidate-rank">8</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openPlayerStats('Nick Johnson')">Nick Johnson</span><span class="candidate-stat">1.3 SPG / 1.5 BPG / 11.5 RPG</span></div>
         <p class="candidate-body">The league's runaway scoring leader also happens to be a top-five shot-blocker and elite rebounder. Nick Johnson's defensive numbers would be someone else's whole season; for him, they're a footnote to an MVP case.</p>
       </div>
     </div>
@@ -1975,35 +2095,35 @@
     <div class="storylines-head"><span class="title">X-Factor Race: The Case for Each Contender</span></div>
     <div class="candidate-grid">
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">1</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openRoster('Rattlers')">Keith Murphy</span><span class="candidate-stat">2.0 APG / 4.2 SPG / 3.0 OREB</span></div>
+        <div class="candidate-head"><span class="candidate-rank">1</span><span class="sp-dot" style="background:var(--rattlers)"></span><span class="candidate-name" onclick="openPlayerStats('Keith Murphy')">Keith Murphy</span><span class="candidate-stat">2.0 APG / 4.2 SPG / 3.0 OREB</span></div>
         <p class="candidate-body">Keith Murphy is the definition of a game-changer nobody's talking about enough &mdash; a league-leading thief who also creates second chances on the glass and finds teammates. Rattlers are firmly in the playoff race, and Murphy's fingerprints are on every key possession, on both ends.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">2</span><span class="sp-dot" style="background:var(--hornets)"></span><span class="candidate-name" onclick="openRoster('Hornets')">Isaac Morrison</span><span class="candidate-stat">3.5 APG / 2.2 SPG / 2.3 OREB</span></div>
+        <div class="candidate-head"><span class="candidate-rank">2</span><span class="sp-dot" style="background:var(--hornets)"></span><span class="candidate-name" onclick="openPlayerStats('Isaac Morrison')">Isaac Morrison</span><span class="candidate-stat">3.5 APG / 2.2 SPG / 2.3 OREB</span></div>
         <p class="candidate-body">Isaac Morrison is the connective tissue that makes Hornets' offense work, setting the table for everyone else while still causing havoc defensively. He's the kind of player whose value shows up in the standings before it shows up on a stat sheet.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">3</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openRoster('Redliners')">Andy Le</span><span class="candidate-stat">1.0 APG / 1.3 SPG / 3.7 OREB</span></div>
+        <div class="candidate-head"><span class="candidate-rank">3</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openPlayerStats('Andy Le')">Andy Le</span><span class="candidate-stat">1.0 APG / 1.3 SPG / 3.7 OREB</span></div>
         <p class="candidate-body">Andy Le might be the league's most persistent offensive rebounder, a guy who turns busted possessions into extra chances for a Redliners team that's climbed to second place on depth over stars. Second-chance points are hidden gold, and Le is mining them every week.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">4</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openRoster('Gel')">Nikolai Semerdjiev</span><span class="candidate-stat">2.3 APG / 1.8 SPG / 2.0 OREB</span></div>
+        <div class="candidate-head"><span class="candidate-rank">4</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openPlayerStats('Nikolai Semerdjiev')">Nikolai Semerdjiev</span><span class="candidate-stat">2.3 APG / 1.8 SPG / 2.0 OREB</span></div>
         <p class="candidate-body">Nikolai Semerdjiev's fingerprints are all over Gel's disruptive possessions &mdash; he's a constant presence chasing loose balls and creating extra chances off the bench. He didn't even check in until halftime of Gel's biggest win of the season, and still finished with a hand in the outcome.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">5</span><span class="sp-dot" style="background:var(--warriors)"></span><span class="candidate-name" onclick="openRoster('Warriors')">Afsheen Bazrafkan</span><span class="candidate-stat">2.0 APG / 1.2 SPG / 4.4 OREB</span></div>
+        <div class="candidate-head"><span class="candidate-rank">5</span><span class="sp-dot" style="background:var(--warriors)"></span><span class="candidate-name" onclick="openPlayerStats('Afsheen Bazrafkan')">Afsheen Bazrafkan</span><span class="candidate-stat">2.0 APG / 1.2 SPG / 4.4 OREB</span></div>
         <p class="candidate-body">Afsheen Bazrafkan does a little bit of everything for a Warriors team searching for answers, setting up teammates and fighting for extra possessions on the glass &mdash; his offensive rebounding trails only one player in the entire league. He's the kind of steady, all-around piece every X-Factor conversation should start with.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">6</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openRoster('Gel')">Matthew Wang</span><span class="candidate-stat">1.0 APG / 1.3 SPG / 3.7 OREB</span></div>
+        <div class="candidate-head"><span class="candidate-rank">6</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openPlayerStats('Matthew Wang')">Matthew Wang</span><span class="candidate-stat">1.0 APG / 1.3 SPG / 3.7 OREB</span></div>
         <p class="candidate-body">Matthew Wang doesn't chase the box score, but Gel's margins in close games often trace back to the extra possessions and hustle plays he provides. In a playoff race decided by inches, that kind of contribution matters more than ever.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">7</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openRoster('Gel')">Imran Makki</span><span class="candidate-stat">3.7 APG / 0.7 SPG / 0.0 OREB</span></div>
+        <div class="candidate-head"><span class="candidate-rank">7</span><span class="sp-dot" style="background:var(--gel)"></span><span class="candidate-name" onclick="openPlayerStats('Imran Makki')">Imran Makki</span><span class="candidate-stat">3.7 APG / 0.7 SPG / 0.0 OREB</span></div>
         <p class="candidate-body">Imran Makki has quietly become the league's second-leading distributor since returning to the Gel lineup, setting up Nick Johnson and company on a near-nightly basis. In a league full of scorers, Makki's value is in making sure the right guy gets the ball at the right time.</p>
       </div>
       <div class="candidate-card">
-        <div class="candidate-head"><span class="candidate-rank">8</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openRoster('Redliners')">Josh Trejo</span><span class="candidate-stat">2.9 APG / 1.7 SPG / 0.6 OREB</span></div>
+        <div class="candidate-head"><span class="candidate-rank">8</span><span class="sp-dot" style="background:var(--redliners)"></span><span class="candidate-name" onclick="openPlayerStats('Josh Trejo')">Josh Trejo</span><span class="candidate-stat">2.9 APG / 1.7 SPG / 0.6 OREB</span></div>
         <p class="candidate-body">Josh Trejo is the steady hand running Redliners' offense, distributing at a near-elite clip for a team that's climbed to second place without a go-to scorer. Trejo is the reason that formula works.</p>
       </div>
     </div>
@@ -2175,12 +2295,12 @@
       <p class="matchup-body">Rattlers currently hold the three seed on the strength of Matthew Estrada's two-way MVP case and Keith Murphy's league-leading steals, but Thunder are the kind of six seed nobody wants to see in Round 1: Matt Burnett is the only player in the league leading in both rebounds and assists, and a force like that is exactly what can flip a short series. Thunder still have work to do just to hold onto the six spot with two weeks left to play.</p>
       <div class="watch-block">
         <div class="watch-label">Players to Watch</div>
-        <div class="watch-row" onclick="openRoster('Rattlers')">
+        <div class="watch-row" onclick="openPlayerStats('Matthew Estrada')">
           <span class="watch-dot" style="background:var(--rattlers)"></span>
           <span class="watch-name">Matthew Estrada</span>
           <span class="watch-note">, a near 22-and-13 stat machine and the league's top shot-blocker</span>
         </div>
-        <div class="watch-row" onclick="openRoster('Thunder')">
+        <div class="watch-row" onclick="openPlayerStats('Matt Burnett')">
           <span class="watch-dot" style="background:var(--thunder)"></span>
           <span class="watch-name">Matt Burnett</span>
           <span class="watch-note">, leads the league in both rebounds and assists, and Thunder go as far as he can carry them</span>
@@ -2200,12 +2320,12 @@
       <p class="matchup-body">Hornets and Gel sit tied at 4-2, and fittingly, this is also the four-five matchup right now. It's a clash of styles: Hornets own the league's stingiest defense behind Isaac Morrison and Luis Renteria-Medina, while Gel counters with its most explosive offense, led by runaway MVP front-runner Nick Johnson. The two are also on tap to face off in Week 8's Game of the Week before the regular season is even done, so there's a good chance this preview writes itself twice over.</p>
       <div class="watch-block">
         <div class="watch-label">Players to Watch</div>
-        <div class="watch-row" onclick="openRoster('Hornets')">
+        <div class="watch-row" onclick="openPlayerStats('Luis Renteria-Medina')">
           <span class="watch-dot" style="background:var(--hornets)"></span>
           <span class="watch-name">Luis Renteria-Medina</span>
           <span class="watch-note">, Hornets' rebounding anchor, a load on the glass every night</span>
         </div>
-        <div class="watch-row" onclick="openRoster('Gel')">
+        <div class="watch-row" onclick="openPlayerStats('Nick Johnson')">
           <span class="watch-dot" style="background:var(--gel)"></span>
           <span class="watch-name">Nick Johnson</span>
           <span class="watch-note">, the league's runaway MVP front-runner, fresh off the upset of the season over Blazers</span>
@@ -2248,47 +2368,88 @@
 
     <div class="duo-card">
       <div class="duo-rank">No. 6</div>
-      <div class="duo-names"><span class="duo-name" style="color:var(--thunder-text)" onclick="openRoster('Thunder')">Matt Burnett</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--thunder-text)" onclick="openRoster('Thunder')">Sahil Bhakta</span></div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--thunder-text)" onclick="openPlayerStats('Matt Burnett')">Matt Burnett</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--thunder-text)" onclick="openPlayerStats('Sahil Bhakta')">Sahil Bhakta</span></div>
       <div class="duo-team">Thunder</div>
       <p class="duo-body">Thunder's record doesn't scream contender, but their engine room absolutely does. Matt Burnett is putting up numbers nobody else in the league can touch &mdash; he leads all of AMBL in both rebounds and assists, a stat line that sounds like a misprint until you actually watch him play. Sahil Bhakta is the connective tissue, dishing 3.4 assists a night to make sure Burnett's outlet passes turn into points instead of just box-score filler. It's an odd-couple pairing, a bruiser who lives in the paint next to a table-setter who thrives on tempo, but together they're the reason Thunder are still fighting for the sixth seed instead of golfing early.</p>
     </div>
 
     <div class="duo-card">
       <div class="duo-rank">No. 5</div>
-      <div class="duo-names"><span class="duo-name" style="color:var(--hornets-text)" onclick="openRoster('Hornets')">Isaac Morrison</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--hornets-text)" onclick="openRoster('Hornets')">Luis Renteria-Medina</span></div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--hornets-text)" onclick="openPlayerStats('Isaac Morrison')">Isaac Morrison</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--hornets-text)" onclick="openPlayerStats('Luis Renteria-Medina')">Luis Renteria-Medina</span></div>
       <div class="duo-team">Hornets</div>
       <p class="duo-body">Hornets built the league's stingiest defense around two guys who never seem to leave the floor. Luis Renteria-Medina is a walking mismatch on the glass, leading the league in offensive rebounds and hauling in 14 boards a night overall, while captain Isaac Morrison quietly runs the show, setting up teammates and racking up steals in equal measure. Neither one needs to score 20 to change a game, and that's exactly the point &mdash; this is the duo that makes Hornets miserable to play against, night in and night out.</p>
     </div>
 
     <div class="duo-card">
       <div class="duo-rank">No. 4</div>
-      <div class="duo-names"><span class="duo-name" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Garrett Ailshie</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Josh Trejo</span></div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--redliners-text)" onclick="openPlayerStats('Garrett Ailshie')">Garrett Ailshie</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--redliners-text)" onclick="openPlayerStats('Josh Trejo')">Josh Trejo</span></div>
       <div class="duo-team">Redliners</div>
       <p class="duo-body">This pairing already has a signature moment on the books. Back in Week 6, Ailshie and Trejo combined to put away Warriors, with Ailshie bulldozing his way to a game-high 17 points and Trejo closing it out from the free-throw line down the stretch. Ailshie has since emerged as the league's most reliable bucket-getter not named Johnson or Estrada, and Trejo's steady hand running the offense means Redliners never feel like they're one bad night away from disaster. It's not the flashiest duo in the league, but ask anyone chasing them in the standings how much that matters.</p>
     </div>
 
     <div class="duo-card">
       <div class="duo-rank">No. 3</div>
-      <div class="duo-names"><span class="duo-name" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Jasper Shen</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Sammy Said</span></div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--blazers-text)" onclick="openPlayerStats('Jasper Shen')">Jasper Shen</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--blazers-text)" onclick="openPlayerStats('Sammy Said')">Sammy Said</span></div>
       <div class="duo-team">Blazers</div>
       <p class="duo-body">Jasper Shen doesn't need a highlight reel to make his case &mdash; he's a top-five threat in points, boards, assists and steals, the definition of a do-everything engine. What elevates this duo is Sammy Said, who's quietly turned into Blazers' second gear, dropping a team-high 21 points in their first loss of the season even when the whistles weren't going their way. Shen creates the margin; Said protects it. Together, they're the biggest reason Blazers own the league's best record even after finally losing one.</p>
     </div>
 
     <div class="duo-card">
       <div class="duo-rank">No. 2</div>
-      <div class="duo-names"><span class="duo-name" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')">Matthew Estrada</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')">Keith Murphy</span></div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--rattlers-text)" onclick="openPlayerStats('Matthew Estrada')">Matthew Estrada</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--rattlers-text)" onclick="openPlayerStats('Keith Murphy')">Keith Murphy</span></div>
       <div class="duo-team">Rattlers</div>
       <p class="duo-body">If you're picking two players in this league you'd least want to see the ball near, Estrada and Murphy might be it. Estrada is somehow leading the league in blocked shots while also averaging a 21-and-12 most nights, an absurd two-way combination for one player. Then there's Murphy, whose 4.2 steals a game isn't just a league lead, it's a league lead by nearly two full steals over anyone else. Put them on the floor together and Rattlers turn every possession into a potential turnover &mdash; this is the duo that makes their playoff push feel less like hope and more like inevitability.</p>
     </div>
 
     <div class="duo-card">
       <div class="duo-rank">No. 1</div>
-      <div class="duo-names"><span class="duo-name" style="color:var(--gel-text)" onclick="openRoster('Gel')">Nick Johnson</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--gel-text)" onclick="openRoster('Gel')">Imran Makki</span></div>
+      <div class="duo-names"><span class="duo-name" style="color:var(--gel-text)" onclick="openPlayerStats('Nick Johnson')">Nick Johnson</span><span class="duo-amp">&amp;</span><span class="duo-name" style="color:var(--gel-text)" onclick="openPlayerStats('Imran Makki')">Imran Makki</span></div>
       <div class="duo-team">Gel</div>
       <p class="duo-body">There's a reason this is the duo everyone's been talking about since Week 7. Nick Johnson is playing a different sport than the rest of the league right now, lapping the field in scoring while still rebounding like a big man, all on his own merit. But it's Imran Makki's return to form that's turned Gel from dangerous into terrifying &mdash; he's quietly become the league's second-leading distributor, and the attention he commands out on the floor only adds to the gravity already pulling toward Johnson. They've already delivered the signature win of the season together, taking down previously-unbeaten Blazers, and with two weeks of the regular season left, don't be shocked if this pair has another statement game in them. Big-game experience isn't just a talking point with this duo, it's already a resume. Whatever happens in the playoffs, Gel's chances start with Johnson and get scarier with Makki next to him.</p>
     </div>
 
     <p class="preview-signoff">That's the countdown &mdash; six teams, six duos, and a lot of basketball left to prove it right.</p>
+  </div>
+
+  <div class="players-hub-view" id="playersHubView">
+    <div class="back-btn" id="playersHubBackBtn">&larr; Back to schedule</div>
+    <div class="section-head">
+      <span class="title">Player Stats</span>
+      <span class="sub">Every player in the league &middot; search, sort, and dig into any game log</span>
+    </div>
+
+    <div class="player-search-wrap">
+      <input type="text" id="playerSearchInput" class="player-search-input" placeholder="Search players by name&hellip;" autocomplete="off">
+      <div class="player-search-dropdown" id="playerSearchDropdown"></div>
+    </div>
+
+    <div class="player-filter-row" id="playerTeamFilters"></div>
+
+    <div class="box-table-wrap player-table-wrap">
+      <table class="box" id="playerStatsTable">
+        <thead>
+          <tr>
+            <th data-key="name" style="text-align:left;">Player</th>
+            <th data-key="team">Team</th>
+            <th data-key="gp">GP</th>
+            <th data-key="ppg">PPG</th>
+            <th data-key="rpg">RPG</th>
+            <th data-key="apg">APG</th>
+            <th data-key="spg">SPG</th>
+            <th data-key="bpg">BPG</th>
+            <th data-key="topg">TO</th>
+          </tr>
+        </thead>
+        <tbody id="playerStatsTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="player-detail-view" id="playerDetailView">
+    <div class="back-btn" id="playerDetailBackBtn">&larr; Back to schedule</div>
+    <div id="playerDetailHead"></div>
+    <div id="playerDetailAverages"></div>
+    <div id="playerDetailGamelog"></div>
   </div>
 
   <div class="newsletter-view" id="newsletterView">
@@ -2333,9 +2494,9 @@
         <div class="history-intro-text">
           <p>Two Applied Medical teams were formed and entered the SVUSD city league, representing the company against outside competition since no AMBL existed yet. Among those first players were names that would become part of AMBL lore:</p>
           <div class="history-roster-grid">
-            <span class="history-roster-chip" onclick="openRoster('Gel')">Imran Makki</span>
+            <span class="history-roster-chip" onclick="openPlayerStats('Imran Makki')">Imran Makki</span>
             <span class="history-roster-chip">Jad Allam</span>
-            <span class="history-roster-chip" onclick="openRoster('Gel')">Nick Johnson</span>
+            <span class="history-roster-chip" onclick="openPlayerStats('Nick Johnson')">Nick Johnson</span>
             <span class="history-roster-chip">Kazah Kantiok</span>
             <span class="history-roster-chip">Sam Orange</span>
             <span class="history-roster-chip">Alvin Ingente</span>
@@ -2376,12 +2537,12 @@
       <div class="legacy-grid">
         <div class="legacy-card">
           <div class="legacy-role">AMBL Commissioner</div>
-          <div class="legacy-name" onclick="openRoster('Redliners')">Josh Trejo</div>
+          <div class="legacy-name" onclick="openPlayerStats('Josh Trejo')">Josh Trejo</div>
           <p class="legacy-note">A longtime AMBL All-Star and current AMBL Commissioner, Josh has been a major part of the league's continued growth and operation.</p>
         </div>
         <div class="legacy-card">
           <div class="legacy-role">Rising Voice of AMBL</div>
-          <div class="legacy-name" onclick="openRoster('Hornets')">Isaac Morrison</div>
+          <div class="legacy-name" onclick="openPlayerStats('Isaac Morrison')">Isaac Morrison</div>
           <p class="legacy-note">A young defensive standout, Isaac represents the next generation of AMBL and brings his own energy and passion to the league.</p>
         </div>
       </div>
@@ -2414,22 +2575,22 @@
       <p class="matchup-body">Gel enters Week 8 as the hottest team in the league, having just done what nobody else could: hand Blazers their first loss of the season. Nick Johnson was the engine of that upset, dropping 26 points, and he's shown no signs of slowing down as the league's runaway MVP front-runner. This one also doubles as a clash of styles: Gel brings the league's most explosive offense at 47.7 points a game, while Hornets counter with the stingiest defense in AMBL, allowing just 32.8 a night. Something has to give. Hornets have won four of their last five and enter this one fresh off a Week 7 bye. Luis Renteria-Medina has been a load on the glass all season, and Isaac Morrison directs a Hornets offense that shares the ball as well as anyone in the league. Both teams sit right in the thick of the playoff race, and this one could go a long way toward deciding seeding down the stretch.</p>
       <div class="watch-block">
         <div class="watch-label">Players to Watch</div>
-        <div class="watch-row" onclick="openRoster('Gel')">
+        <div class="watch-row" onclick="openPlayerStats('Nick Johnson')">
           <span class="watch-dot" style="background:var(--gel)"></span>
           <span class="watch-name">Nick Johnson</span>
           <span class="watch-note">, fresh off a 26-point outburst that ended Blazers' unbeaten run, the league's runaway MVP front-runner</span>
         </div>
-        <div class="watch-row" onclick="openRoster('Hornets')">
+        <div class="watch-row" onclick="openPlayerStats('Luis Renteria-Medina')">
           <span class="watch-dot" style="background:var(--hornets)"></span>
           <span class="watch-name">Luis Renteria-Medina</span>
           <span class="watch-note">, Hornets' rebounding anchor, a load on the glass every night</span>
         </div>
-        <div class="watch-row" onclick="openRoster('Hornets')">
+        <div class="watch-row" onclick="openPlayerStats('Isaac Morrison')">
           <span class="watch-dot" style="background:var(--hornets)"></span>
           <span class="watch-name">Isaac Morrison</span>
           <span class="watch-note">, Hornets' steady floor general</span>
         </div>
-        <div class="watch-row" onclick="openRoster('Gel')">
+        <div class="watch-row" onclick="openPlayerStats('Imran Makki')">
           <span class="watch-dot" style="background:var(--gel)"></span>
           <span class="watch-name">Imran Makki</span>
           <span class="watch-note">, rounding into form now that he's got a few games back under his belt with Gel</span>
@@ -2448,12 +2609,12 @@
       <p class="matchup-body">Rattlers have won two of their last three and get a great opportunity against a Sonics team that's now fighting an uphill battle at 1-5. Matthew Estrada continues to put up MVP-caliber numbers, and a win keeps Rattlers rolling into the regular-season finale.</p>
       <div class="watch-block">
         <div class="watch-label">Players to Watch</div>
-        <div class="watch-row" onclick="openRoster('Rattlers')">
+        <div class="watch-row" onclick="openPlayerStats('Matthew Estrada')">
           <span class="watch-dot" style="background:var(--rattlers)"></span>
           <span class="watch-name">Matthew Estrada</span>
           <span class="watch-note">, a near 22-point, 13-rebound stat machine and the league's top shot-blocker</span>
         </div>
-        <div class="watch-row" onclick="openRoster('Sonics')">
+        <div class="watch-row" onclick="openPlayerStats('Daniel Nordstrom')">
           <span class="watch-dot" style="background:var(--sonics)"></span>
           <span class="watch-name">Daniel Nordstrom</span>
           <span class="watch-note">, Sonics' most consistent scoring option all season</span>
@@ -2472,12 +2633,12 @@
       <p class="matchup-body">Blazers are looking to bounce back after their first loss of the season, and Force, fresh off their first win, will try to keep the good vibes going. Jasper Shen and Sammy Said give Blazers plenty of firepower, but Force showed real fight in Week 7 and won't be an easy out.</p>
       <div class="watch-block">
         <div class="watch-label">Players to Watch</div>
-        <div class="watch-row" onclick="openRoster('Blazers')">
+        <div class="watch-row" onclick="openPlayerStats('Jasper Shen')">
           <span class="watch-dot" style="background:var(--blazers)"></span>
           <span class="watch-name">Jasper Shen</span>
           <span class="watch-note">, brilliant across the entire stat sheet, the engine behind Blazers' league-best record</span>
         </div>
-        <div class="watch-row" onclick="openRoster('Force')">
+        <div class="watch-row" onclick="openPlayerStats('Christopher Jung')">
           <span class="watch-dot" style="background:var(--force)"></span>
           <span class="watch-name">Christopher Jung</span>
           <span class="watch-note">, Force's leading scorer all season</span>
@@ -2496,12 +2657,12 @@
       <p class="matchup-body">Thunder need this one to keep pace in the race for the sixth seed, and Warriors, despite their record, have been more competitive than the standings suggest. Matt Burnett continues to lead the league in both rebounds and assists, and a win here keeps Thunder in firm control of a playoff spot.</p>
       <div class="watch-block">
         <div class="watch-label">Players to Watch</div>
-        <div class="watch-row" onclick="openRoster('Thunder')">
+        <div class="watch-row" onclick="openPlayerStats('Matt Burnett')">
           <span class="watch-dot" style="background:var(--thunder)"></span>
           <span class="watch-name">Matt Burnett</span>
           <span class="watch-note">, leads the league in both rebounds and assists, doing it every single night</span>
         </div>
-        <div class="watch-row" onclick="openRoster('Warriors')">
+        <div class="watch-row" onclick="openPlayerStats('Mario Bravo')">
           <span class="watch-dot" style="background:var(--warriors)"></span>
           <span class="watch-name">Mario Bravo</span>
           <span class="watch-note">, Warriors' do-it-all forward, elite across points, rebounds, steals and blocks</span>
@@ -2518,7 +2679,7 @@
       <p class="matchup-body">Redliners use their final bye of the season before closing out against a red-hot Gel team in Week 9. Garrett Ailshie has been sensational all year, and the extra rest could pay off in a season-defining finale.</p>
       <div class="watch-block">
         <div class="watch-label">Player to Watch</div>
-        <div class="watch-row" onclick="openRoster('Redliners')">
+        <div class="watch-row" onclick="openPlayerStats('Garrett Ailshie')">
           <span class="watch-dot" style="background:var(--redliners)"></span>
           <span class="watch-name">Garrett Ailshie</span>
           <span class="watch-note">, Redliners' engine on both ends, a matchup problem inside and on the glass</span>
@@ -2568,29 +2729,29 @@ const NEWSLETTER_CONTENT = {
           <div class="nl-score-block">
             <div class="nl-score-row"><span onclick="openRoster('Gel')" class="nl-player">3Pointers <i>(3-2)</i></span><b>57</b></div>
             <div class="nl-score-row"><span onclick="openRoster('Force')" class="nl-player">Force <i>(0-5)</i></span><b>30</b></div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Gel')">Nick Johnson</span> \u2014 21 PTS, 11 REB, 6 AST</div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Force')">Christian Halvorsen</span> \u2014 9 PTS, 5 REB, 2 STL</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Nick Johnson')">Nick Johnson</span> \u2014 21 PTS, 11 REB, 6 AST</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Christian Halvorsen')">Christian Halvorsen</span> \u2014 9 PTS, 5 REB, 2 STL</div>
           </div>
 
           <div class="nl-score-block">
             <div class="nl-score-row"><span onclick="openRoster('Redliners')" class="nl-player">Redliners <i>(4-2)</i></span><b>41</b></div>
             <div class="nl-score-row"><span onclick="openRoster('Warriors')" class="nl-player">Warriors <i>(1-4)</i></span><b>28</b></div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Redliners')">Garrett Ailshie</span> \u2014 17 PTS, 14 REB, 2 AST</div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Warriors')">Mario Bravo</span> \u2014 11 PTS, 9 REB, 2 STL</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Garrett Ailshie')">Garrett Ailshie</span> \u2014 17 PTS, 14 REB, 2 AST</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Mario Bravo')">Mario Bravo</span> \u2014 11 PTS, 9 REB, 2 STL</div>
           </div>
 
           <div class="nl-score-block">
             <div class="nl-score-row"><span onclick="openRoster('Hornets')" class="nl-player">Hornets <i>(4-2)</i></span><b>31</b></div>
             <div class="nl-score-row"><span onclick="openRoster('Thunder')" class="nl-player">Thunder <i>(3-3)</i></span><b>29 <i>OT</i></b></div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Hornets')">Luis Renteria-Medina</span> \u2014 16 PTS, 16 REB, 2 AST</div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Thunder')">Matt Burnett</span> \u2014 11 PTS, 11 REB, 2 AST</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Luis Renteria-Medina')">Luis Renteria-Medina</span> \u2014 16 PTS, 16 REB, 2 AST</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Matt Burnett')">Matt Burnett</span> \u2014 11 PTS, 11 REB, 2 AST</div>
           </div>
 
           <div class="nl-score-block">
             <div class="nl-score-row"><span onclick="openRoster('Sonics')" class="nl-player">Sonics <i>(1-4)</i></span><b>32</b></div>
             <div class="nl-score-row"><span onclick="openRoster('Blazers')" class="nl-player">Blazers <i>(5-0)</i></span><b>36</b></div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Sonics')">Tristan Jaeger</span> \u2014 12 PTS, 2 REB, 2 AST</div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Blazers')">Jasper Shen</span> \u2014 15 PTS, 5 REB, 3 AST</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Tristan Jaeger')">Tristan Jaeger</span> \u2014 12 PTS, 2 REB, 2 AST</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Jasper Shen')">Jasper Shen</span> \u2014 15 PTS, 5 REB, 3 AST</div>
           </div>
         </div>
 
@@ -2632,7 +2793,7 @@ const NEWSLETTER_CONTENT = {
           <img class="nl-feature-thumb" src="${NL_IMG6_POTW}" alt="Garrett Ailshie POTW photo">
           <div class="nl-feature-content">
             <h3><span>POTW</span> | GARRETT SEES RED</h3>
-            <p>\u201cWe've lost the last two games, enough is enough!\u201d This is what rookie intern <span class="nl-player" onclick="openRoster('Redliners')">Garrett Ailshie</span> said to his teammates before their game this week. He said that he'd go out there and score against anyone who stood in his way, he said he'd stop anyone who dared go at him, he said that this might be his only chance at the AMBL throne and he is going to take it! Well, he probably said something like that. I wasn't in the huddle and I'm not the best at lip reading but I do know that Garrett was unstoppable out there this week! He left the gym this week with 17 points, 14 rebounds, and 2 assists, all on top of limiting last season's MVP to only 11 points and 1/10 from 3. Let's say congrats to our Week 6 Player of the Week, Garrett!</p>
+            <p>\u201cWe've lost the last two games, enough is enough!\u201d This is what rookie intern <span class="nl-player" onclick="openPlayerStats('Garrett Ailshie')">Garrett Ailshie</span> said to his teammates before their game this week. He said that he'd go out there and score against anyone who stood in his way, he said he'd stop anyone who dared go at him, he said that this might be his only chance at the AMBL throne and he is going to take it! Well, he probably said something like that. I wasn't in the huddle and I'm not the best at lip reading but I do know that Garrett was unstoppable out there this week! He left the gym this week with 17 points, 14 rebounds, and 2 assists, all on top of limiting last season's MVP to only 11 points and 1/10 from 3. Let's say congrats to our Week 6 Player of the Week, Garrett!</p>
           </div>
         </div>
 
@@ -2640,7 +2801,7 @@ const NEWSLETTER_CONTENT = {
           <img class="nl-feature-thumb" src="${NL_IMG6_XFOTW}" alt="HyungCheol Kim defense photo">
           <div class="nl-feature-content">
             <h3><span>XFOTW</span> | HYUNGCHEOL KIM</h3>
-            <p><span class="nl-player" onclick="openRoster('Blazers')">HyungCheol Kim</span> has been an impactful contributor for the Blazers that has been flying under the radar this entire season so far. He is a player that has been covering the Blazers' weaknesses wherever he can and is eager to constantly improve. I don't know what happened this week, but he was ready to make his presence known. While his stats don't show it, HCK was full of energy the entire game, offensively limiting one of the Sonics' key contributors, <span class="nl-player" onclick="openRoster('Sonics')">Ali Awarke</span>, to only 4 points, while only having 1 foul. A big improvement to the DQ he suffered in week 1. In a very handsy and scrappy game where a tech was given to the Big Blazer, he gave the Blazers the momentum and security they desperately needed to win this matchup against the Sonics.</p>
+            <p><span class="nl-player" onclick="openPlayerStats('HyungCheol Kim')">HyungCheol Kim</span> has been an impactful contributor for the Blazers that has been flying under the radar this entire season so far. He is a player that has been covering the Blazers' weaknesses wherever he can and is eager to constantly improve. I don't know what happened this week, but he was ready to make his presence known. While his stats don't show it, HCK was full of energy the entire game, offensively limiting one of the Sonics' key contributors, <span class="nl-player" onclick="openPlayerStats('Ali Awarke')">Ali Awarke</span>, to only 4 points, while only having 1 foul. A big improvement to the DQ he suffered in week 1. In a very handsy and scrappy game where a tech was given to the Big Blazer, he gave the Blazers the momentum and security they desperately needed to win this matchup against the Sonics.</p>
           </div>
         </div>
 
@@ -2648,7 +2809,7 @@ const NEWSLETTER_CONTENT = {
           <img class="nl-feature-thumb" src="${NL_IMG6_MOTW}" alt="Andrew Soto game winner photo">
           <div class="nl-feature-content">
             <h3><span>MOTW</span> | WELCOME TO THE SOTO DOJO</h3>
-            <p>Shooters shoot. You think you have the mentality? Think again, it is not for the faint of heart. It's so much tougher than you can imagine. You grind all week. You put in the work. The game starts but the shots don't fall. You shoot, you miss. You shoot, you miss. You shoot\u2026 oohhhhh in and out, miss. You can't give up. You won't. Why? Because the pyramids weren't built in a day gosh darn it. Laying bricks takes time, it builds to something. Something only a few can achieve. The perfect ending, a game winning shot. You think you can handle that sort of pressure after so much heartbreak? Few can. <span class="nl-player" onclick="openRoster('Redliners')">Andrew Soto</span> did. 2 seconds left in OT?! You already know. Sotomatic, baby.</p>
+            <p>Shooters shoot. You think you have the mentality? Think again, it is not for the faint of heart. It's so much tougher than you can imagine. You grind all week. You put in the work. The game starts but the shots don't fall. You shoot, you miss. You shoot, you miss. You shoot\u2026 oohhhhh in and out, miss. You can't give up. You won't. Why? Because the pyramids weren't built in a day gosh darn it. Laying bricks takes time, it builds to something. Something only a few can achieve. The perfect ending, a game winning shot. You think you can handle that sort of pressure after so much heartbreak? Few can. <span class="nl-player" onclick="openPlayerStats('Andrew Soto')">Andrew Soto</span> did. 2 seconds left in OT?! You already know. Sotomatic, baby.</p>
           </div>
         </div>
       </div>
@@ -2659,7 +2820,7 @@ const NEWSLETTER_CONTENT = {
           <h3>MAKKI IS BACK</h3>
           <p class="nl-quote">\u201cPeople keep asking if I'm back and I haven't really had an answer. But now, yeah, I'm thinkin' I'm back.\u201d</p>
           <p class="nl-quote-attr">- John Wick after someone disrespected his dog</p>
-          <p>(And also <span class="nl-player" onclick="openRoster('Gel')">Imran Makki</span> after his performance with the Gel this week!)</p>
+          <p>(And also <span class="nl-player" onclick="openPlayerStats('Imran Makki')">Imran Makki</span> after his performance with the Gel this week!)</p>
           <p>After splashing 4 threes, dishing out 5 assists, and hitting his signature middy fadeaway, Imran was so ecstatic about his team's performance. Not only do the two AMBL GOATs seem to be back in the groove, but the entire roster also contributed to the score sheet! Nick found efficient scoring with 21 points on 50% from the field, Lance and Karina combined for 10 points, and their sneaky subs added 12 more.</p>
           <p>Maybe the Gel don't need a full roster after all... SIKE! Get back out here Matt, Alex, and Nikolai! We miss you!</p>
         </div>
@@ -2679,29 +2840,29 @@ const NEWSLETTER_CONTENT = {
           <div class="nl-score-block">
             <div class="nl-score-row"><span onclick="openRoster('Thunder')" class="nl-player">Thunder <i>(0-1)</i></span><b>29</b></div>
             <div class="nl-score-row"><span onclick="openRoster('Sonics')" class="nl-player">SuperSonics <i>(1-0)</i></span><b>35</b></div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Thunder')">Shayan Islam</span> \u2014 10 PTS, 7 REB, 1 AST</div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Sonics')">Ali Awarke</span> \u2014 17 PTS, 13 REB, 1 STL</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Shayan Islam')">Shayan Islam</span> \u2014 10 PTS, 7 REB, 1 AST</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Ali Awarke')">Ali Awarke</span> \u2014 17 PTS, 13 REB, 1 STL</div>
           </div>
 
           <div class="nl-score-block">
             <div class="nl-score-row"><span onclick="openRoster('Warriors')" class="nl-player">Warriors <i>(0-1)</i></span><b>37</b></div>
             <div class="nl-score-row"><span onclick="openRoster('Hornets')" class="nl-player">Hornets <i>(1-0)</i></span><b>42 <i>OT</i></b></div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Warriors')">Mario Bravo</span> \u2014 18 PTS, 8 REB, 3 AST</div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Hornets')">Luis Renteria-Medina</span> \u2014 15 PTS, 17 REB, 3 STL</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Mario Bravo')">Mario Bravo</span> \u2014 18 PTS, 8 REB, 3 AST</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Luis Renteria-Medina')">Luis Renteria-Medina</span> \u2014 15 PTS, 17 REB, 3 STL</div>
           </div>
 
           <div class="nl-score-block">
             <div class="nl-score-row"><span onclick="openRoster('Force')" class="nl-player">Force <i>(0-1)</i></span><b>32</b></div>
             <div class="nl-score-row"><span onclick="openRoster('Redliners')" class="nl-player">Redliners <i>(1-0)</i></span><b>36</b></div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Force')">Zaid Boukai</span> \u2014 14 PTS, 3 REB, 3 AST</div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Redliners')">Cameron De La Torre</span> \u2014 14 PTS, 5 REB, 1 STL</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Zaid Boukai')">Zaid Boukai</span> \u2014 14 PTS, 3 REB, 3 AST</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Cameron De La Torre')">Cameron De La Torre</span> \u2014 14 PTS, 5 REB, 1 STL</div>
           </div>
 
           <div class="nl-score-block">
             <div class="nl-score-row"><span onclick="openRoster('Rattlers')" class="nl-player">Rattlers <i>(1-0)</i></span><b>52</b></div>
             <div class="nl-score-row"><span onclick="openRoster('Gel')" class="nl-player">3Pointers <i>(0-1)</i></span><b>50</b></div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Rattlers')">Matthew Estrada</span> \u2014 21 PTS, 14 REB, 4 BLK</div>
-            <div class="nl-score-leader"><span class="nl-player" onclick="openRoster('Gel')">Nick Johnson</span> \u2014 45 PTS, 16 REB, 1 AST</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Matthew Estrada')">Matthew Estrada</span> \u2014 21 PTS, 14 REB, 4 BLK</div>
+            <div class="nl-score-leader"><span class="nl-player" onclick="openPlayerStats('Nick Johnson')">Nick Johnson</span> \u2014 45 PTS, 16 REB, 1 AST</div>
           </div>
         </div>
 
@@ -2774,7 +2935,7 @@ const NEWSLETTER_CONTENT = {
           <table class="nl-record-table">
             <tr><td colspan="3"><b>POINTS</b></td></tr>
             <tr><td>Richard Busaka</td><td>Season 18</td><td>45</td></tr>
-            <tr class="nl-highlight"><td onclick="openRoster('Gel')" class="nl-player">Nick Johnson</td><td>Season 31</td><td>45</td></tr>
+            <tr class="nl-highlight"><td onclick="openPlayerStats('Nick Johnson')" class="nl-player">Nick Johnson</td><td>Season 31</td><td>45</td></tr>
             <tr><td>Scott Majors</td><td>Season 23</td><td>43</td></tr>
             <tr><td>Kazah Kantiok</td><td>Season 3</td><td>42</td></tr>
             <tr><td>Mario Bravo</td><td>Season 28</td><td>40</td></tr>
@@ -2792,7 +2953,7 @@ const NEWSLETTER_CONTENT = {
             <tr><td>Andrew Soto</td><td>Season 30</td><td>11</td></tr>
             <tr><td>Richard Busaka</td><td>Season 11</td><td>10</td></tr>
             <tr><td>Richard Busaka</td><td>Season 18</td><td>10</td></tr>
-            <tr class="nl-highlight"><td onclick="openRoster('Gel')" class="nl-player">Nick Johnson</td><td>Season 31</td><td>10</td></tr>
+            <tr class="nl-highlight"><td onclick="openPlayerStats('Nick Johnson')" class="nl-player">Nick Johnson</td><td>Season 31</td><td>10</td></tr>
             <tr><td>Richard Busaka</td><td>Season 17</td><td>9</td></tr>
             <tr><td>Ryan Miller</td><td>Season 19</td><td>9</td></tr>
             <tr><td>7 TIED (Kazah K, Imran M, Ryan M x2, Mario B x2, Richard B)</td><td></td><td>8</td></tr>
@@ -3772,6 +3933,249 @@ function buildLeaderRows(){
   });
 }
 
+function aggregatePlayersFull(){
+  const players = {};
+  Object.values(BOXSCORES).forEach(game => {
+    Object.entries(game.teams).forEach(([team, t]) => {
+      t.players.forEach(row => {
+        const name = row[0];
+        if(!players[name]) players[name] = { team, gp:0, pts:0,fgm:0,fga:0,tpm:0,tpa:0,ftm:0,fta:0,oreb:0,reb:0,ast:0,stl:0,blk:0,to:0,pf:0,dq:0 };
+        const isSub = row.length > 16 && row[16] === true;
+        if(isSub) return;
+        players[name].team = team;
+        if(row[1] === "DNP") return;
+        const [pts,fgm,fga,tpm,tpa,ftm,fta,oreb,reb,ast,stl,blk,to,pf,dq] = row.slice(1);
+        const p = players[name];
+        p.gp += 1; p.pts+=pts; p.fgm+=fgm; p.fga+=fga; p.tpm+=tpm; p.tpa+=tpa; p.ftm+=ftm; p.fta+=fta;
+        p.oreb+=oreb; p.reb+=reb; p.ast+=ast; p.stl+=stl; p.blk+=blk; p.to+=to; p.pf+=pf; p.dq+=dq;
+      });
+    });
+  });
+  return players;
+}
+
+function buildFullPlayerRows(){
+  const players = aggregatePlayersFull();
+  return Object.entries(players).filter(([,s]) => s.gp > 0).map(([name, s]) => ({
+    name, team: s.team, gp: s.gp,
+    ppg: s.pts/s.gp, rpg: s.reb/s.gp, apg: s.ast/s.gp, spg: s.stl/s.gp, bpg: s.blk/s.gp,
+    topg: s.to/s.gp, pfpg: s.pf/s.gp, orebpg: s.oreb/s.gp,
+    fgpct: s.fga>0 ? s.fgm/s.fga : 0, tppct: s.tpa>0 ? s.tpm/s.tpa : 0, ftpct: s.fta>0 ? s.ftm/s.fta : 0,
+    totals: s
+  }));
+}
+
+function playerGameLog(name){
+  const games = [];
+  let team = null;
+  Object.keys(BOXSCORES).sort((a,b) => {
+    const [wa,ta] = a.split("-"); const [wb,tb] = b.split("-");
+    return Number(wa)-Number(wb) || ta.localeCompare(tb);
+  }).forEach(key => {
+    const game = BOXSCORES[key];
+    const [wkStr, time] = key.split("-");
+    const wk = Number(wkStr);
+    const teamNames = Object.keys(game.teams);
+    teamNames.forEach(t => {
+      const row = game.teams[t].players.find(r => r[0] === name);
+      if(!row) return;
+      team = t;
+      const opp = teamNames.find(x => x !== t);
+      const ownScore = game.teams[t].score, oppScore = game.teams[opp].score;
+      const win = ownScore > oppScore;
+      const isSub = row.length > 16 && row[16] === true;
+      const dnp = row[1] === "DNP";
+      games.push({ wk, time, team: t, opp, ownScore, oppScore, win, isSub, dnp, stats: dnp ? null : row.slice(1,16) });
+    });
+  });
+  return { team, games };
+}
+
+function playerSearchNames(){
+  return Object.keys(aggregatePlayersFull());
+}
+
+function playerSearchMatches(query){
+  const q = query.trim().toLowerCase();
+  if(!q) return [];
+  return playerSearchNames()
+    .filter(n => n.toLowerCase().includes(q))
+    .sort((a,b) => {
+      const aStarts = a.toLowerCase().startsWith(q) ? 0 : 1;
+      const bStarts = b.toLowerCase().startsWith(q) ? 0 : 1;
+      return aStarts - bStarts || a.localeCompare(b);
+    })
+    .slice(0,8);
+}
+
+function openPlayerStats(name){
+  if(!name) return;
+  const { team, games } = playerGameLog(name);
+  if(!team) return;
+
+  showOnly("playerDetailView");
+
+  const season = buildFullPlayerRows().find(r => r.name === name);
+  const isCaptain = ROSTERS[team] && ROSTERS[team].captain === name;
+
+  document.getElementById("playerDetailHead").innerHTML = `
+    <div class="player-detail-banner">
+      ${crestBadge(team,"crest-xl")}
+      <span class="player-detail-info">
+        <span class="player-detail-name">${name}${isCaptain ? '<span class="captain-badge" style="margin-left:8px;">CAPTAIN</span>' : ""}</span>
+        <span class="player-detail-team" style="color:var(${teamTextVar(team)})" onclick="openRoster('${team}')">${team}</span>
+      </span>
+    </div>
+  `;
+
+  document.getElementById("playerDetailAverages").innerHTML = season ? `
+    <div class="player-avg-grid">
+      <div class="player-avg-card"><span class="pa-val">${season.gp}</span><span class="pa-label">GP</span></div>
+      <div class="player-avg-card"><span class="pa-val">${season.ppg.toFixed(1)}</span><span class="pa-label">PPG</span></div>
+      <div class="player-avg-card"><span class="pa-val">${season.rpg.toFixed(1)}</span><span class="pa-label">RPG</span></div>
+      <div class="player-avg-card"><span class="pa-val">${season.apg.toFixed(1)}</span><span class="pa-label">APG</span></div>
+      <div class="player-avg-card"><span class="pa-val">${season.spg.toFixed(1)}</span><span class="pa-label">SPG</span></div>
+      <div class="player-avg-card"><span class="pa-val">${season.bpg.toFixed(1)}</span><span class="pa-label">BPG</span></div>
+      <div class="player-avg-card"><span class="pa-val">${season.topg.toFixed(1)}</span><span class="pa-label">TO</span></div>
+      <div class="player-avg-card"><span class="pa-val">${(season.fgpct*100).toFixed(1)}%</span><span class="pa-label">FG%</span></div>
+      <div class="player-avg-card"><span class="pa-val">${(season.tppct*100).toFixed(1)}%</span><span class="pa-label">3P%</span></div>
+      <div class="player-avg-card"><span class="pa-val">${(season.ftpct*100).toFixed(1)}%</span><span class="pa-label">FT%</span></div>
+    </div>
+  ` : `<p class="matchup-body">No season stats yet &mdash; check back once this player logs some minutes.</p>`;
+
+  const headerRow = `<tr><th>Wk</th><th>Opponent</th><th>Result</th><th>PTS</th><th>FG</th><th>FGA</th><th>FG%</th><th>3FG</th><th>3FGA</th><th>3FG%</th><th>FT</th><th>FTA</th><th>FT%</th><th>OREB</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>TO</th><th>PF</th></tr>`;
+  const bodyRows = games.map(g => {
+    const rowClick = `onclick="openBoxScore(${g.wk}, '${g.time}', '${g.team}', '${g.opp}')"`;
+    if(g.dnp){
+      return `<tr class="dnp gamelog-row" ${rowClick}><td>${g.wk}</td><td>${g.opp}</td><td colspan="18">DNP</td></tr>`;
+    }
+    const [pts,fgm,fga,tpm,tpa,ftm,fta,oreb,reb,ast,stl,blk,to,pf] = g.stats;
+    const cells = [pts,fgm,fga,pct(fgm,fga),tpm,tpa,pct(tpm,tpa),ftm,fta,pct(ftm,fta),oreb,reb,ast,stl,blk,to,pf];
+    const resultLabel = `${g.win ? "W" : "L"} ${g.ownScore}-${g.oppScore}` + (g.isSub ? ' <span style="color:var(--ink-faint); font-style:italic; font-size:10px;">(sub)</span>' : "");
+    return `<tr class="gamelog-row" ${rowClick}>
+      <td>${g.wk}</td>
+      <td>${g.opp}</td>
+      <td class="${g.win ? "gl-win" : "gl-loss"}">${resultLabel}</td>
+      ${cells.map(c=>`<td>${c}</td>`).join("")}
+    </tr>`;
+  }).join("");
+
+  document.getElementById("playerDetailGamelog").innerHTML = games.length ? `
+    <div class="box-table-wrap">
+      <div class="box-table-head">Game Log</div>
+      <table class="box gamelog-table">
+        <thead>${headerRow}</thead>
+        <tbody>${bodyRows}</tbody>
+      </table>
+    </div>
+  ` : `<p class="matchup-body">No games played yet.</p>`;
+
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+}
+
+let playerHubSort = { key:"ppg", dir:"desc" };
+let playerHubTeamFilter = "All";
+
+function renderPlayersHubTable(){
+  let rows = buildFullPlayerRows();
+  if(playerHubTeamFilter !== "All") rows = rows.filter(r => r.team === playerHubTeamFilter);
+  const { key, dir } = playerHubSort;
+  rows.sort((a,b) => {
+    const av = a[key], bv = b[key];
+    if(typeof av === "string") return dir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
+    return dir === "asc" ? av - bv : bv - av;
+  });
+  const body = document.getElementById("playerStatsTableBody");
+  body.innerHTML = rows.map(r => `
+    <tr class="player-row" onclick="openPlayerStats('${r.name.replace(/'/g,"\\'")}')">
+      <td class="pt-name">${r.name}</td>
+      <td style="color:var(${teamTextVar(r.team)});">${r.team}</td>
+      <td>${r.gp}</td>
+      <td>${r.ppg.toFixed(1)}</td>
+      <td>${r.rpg.toFixed(1)}</td>
+      <td>${r.apg.toFixed(1)}</td>
+      <td>${r.spg.toFixed(1)}</td>
+      <td>${r.bpg.toFixed(1)}</td>
+      <td>${r.topg.toFixed(1)}</td>
+    </tr>`).join("");
+  document.querySelectorAll("#playerStatsTable th[data-key]").forEach(th => {
+    th.classList.toggle("sorted-asc", th.dataset.key === key && dir === "asc");
+    th.classList.toggle("sorted-desc", th.dataset.key === key && dir === "desc");
+  });
+}
+
+function renderPlayersHub(){
+  playerHubSort = { key:"ppg", dir:"desc" };
+  playerHubTeamFilter = "All";
+
+  const filtersEl = document.getElementById("playerTeamFilters");
+  filtersEl.innerHTML = ["All", ...TEAMS].map(t => `
+    <div class="chip ${t==='All' ? 'all active' : ''}" data-team="${t}">
+      ${t !== "All" ? `<span class="dot" style="background:var(${COLOR_VAR[t]})"></span>` : ""}${t}
+    </div>`).join("");
+  filtersEl.querySelectorAll(".chip").forEach(chip => {
+    chip.onclick = () => {
+      playerHubTeamFilter = chip.dataset.team;
+      filtersEl.querySelectorAll(".chip").forEach(c => c.classList.toggle("active", c === chip));
+      renderPlayersHubTable();
+    };
+  });
+
+  document.querySelectorAll("#playerStatsTable th[data-key]").forEach(th => {
+    th.onclick = () => {
+      const key = th.dataset.key;
+      if(playerHubSort.key === key){ playerHubSort.dir = playerHubSort.dir === "asc" ? "desc" : "asc"; }
+      else { playerHubSort = { key, dir: (key === "name" || key === "team") ? "asc" : "desc" }; }
+      renderPlayersHubTable();
+    };
+  });
+
+  renderPlayersHubTable();
+
+  const input = document.getElementById("playerSearchInput");
+  const dropdown = document.getElementById("playerSearchDropdown");
+  if(input) input.value = "";
+  if(dropdown){ dropdown.innerHTML = ""; dropdown.classList.remove("show"); }
+}
+
+function wirePlayerSearch(){
+  const input = document.getElementById("playerSearchInput");
+  const dropdown = document.getElementById("playerSearchDropdown");
+  if(!input || input.dataset.wired) return;
+  input.dataset.wired = "true";
+
+  const renderDropdown = () => {
+    const matches = playerSearchMatches(input.value);
+    if(matches.length === 0){ dropdown.classList.remove("show"); dropdown.innerHTML = ""; return; }
+    dropdown.innerHTML = matches.map(n => `<div class="player-search-result" data-name="${n.replace(/"/g,"&quot;")}">${n}</div>`).join("");
+    dropdown.classList.add("show");
+    dropdown.querySelectorAll(".player-search-result").forEach(el => {
+      el.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        openPlayerStats(el.dataset.name);
+        input.value = "";
+        dropdown.classList.remove("show");
+      });
+    });
+  };
+
+  input.addEventListener("input", renderDropdown);
+  input.addEventListener("keydown", (e) => {
+    if(e.key === "Enter"){
+      const matches = playerSearchMatches(input.value);
+      if(matches.length > 0){
+        openPlayerStats(matches[0]);
+        input.value = "";
+        dropdown.classList.remove("show");
+      }
+    } else if(e.key === "Escape"){
+      dropdown.classList.remove("show");
+    }
+  });
+  input.addEventListener("focus", () => { if(input.value) renderDropdown(); });
+  input.addEventListener("blur", () => { setTimeout(() => dropdown.classList.remove("show"), 150); });
+}
+
 // ---------- style helpers ----------
 function swatch(team){ return `--swatch:var(${COLOR_VAR[team]});`; }
 function teamTextVar(team){ return `${COLOR_VAR[team]}-text`; }
@@ -3796,7 +4200,7 @@ function renderLeaders(){
   statLeaders.innerHTML = CATS.map(cat => {
     const top = [...rows].sort((a,b) => b[cat.key]-a[cat.key]).slice(0,8);
     const rowsHTML = top.map((r,i) => `
-      <div class="stat-row" data-team="${r.team}">
+      <div class="stat-row" data-team="${r.team}" data-name="${r.name}">
         <span class="stat-rank">${i+1}</span>
         <span class="stat-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
         <span class="stat-name">${r.name}</span>
@@ -3818,7 +4222,7 @@ function renderLeaders(){
   document.getElementById("mvpCard").innerHTML = `
     <div class="spotlight-head"><div class="sp-title">MVP Watch</div></div>
     ${mvpTop.map((r,i) => `
-      <div class="sp-row" data-team="${r.team}">
+      <div class="sp-row" data-team="${r.team}" data-name="${r.name}">
         <span class="sp-rank">${i===0 ? "&#9733;" : i+1}</span>
         <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
         <div class="sp-body">
@@ -3831,7 +4235,7 @@ function renderLeaders(){
   document.getElementById("radarCard").innerHTML = `
     <div class="spotlight-head"><div class="sp-title">MVP Bubble Watch</div></div>
     ${underRadarTop.map((r,i) => `
-      <div class="sp-row" data-team="${r.team}">
+      <div class="sp-row" data-team="${r.team}" data-name="${r.name}">
         <span class="sp-rank">${i+6}</span>
         <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
         <div class="sp-body">
@@ -3847,7 +4251,7 @@ function renderLeaders(){
   document.getElementById("defCard").innerHTML = `
     <div class="spotlight-head"><div class="sp-title">Defensive MVP</div></div>
     ${defTop.map((r,i) => `
-      <div class="sp-row" data-team="${r.team}">
+      <div class="sp-row" data-team="${r.team}" data-name="${r.name}">
         <span class="sp-rank">${i+1}</span>
         <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
         <div class="sp-body">
@@ -3865,7 +4269,7 @@ function renderLeaders(){
   document.getElementById("xfCard").innerHTML = `
     <div class="spotlight-head"><div class="sp-title">X-Factor Watch</div></div>
     ${xfTop.map((r,i) => `
-      <div class="sp-row" data-team="${r.team}">
+      <div class="sp-row" data-team="${r.team}" data-name="${r.name}">
         <span class="sp-rank">${i+1}</span>
         <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
         <div class="sp-body">
@@ -3876,7 +4280,7 @@ function renderLeaders(){
   `;
 
   document.querySelectorAll("#leadersSection [data-team]").forEach(el => {
-    el.addEventListener("click", () => openRoster(el.dataset.team));
+    el.addEventListener("click", () => openPlayerStats(el.dataset.name));
   });
 }
 
@@ -3890,7 +4294,7 @@ function renderAwardsRace(){
   if(rows.length === 0) return;
 
   const raceRowsHTML = (list, lineFn) => list.map((r,i) => `
-    <div class="sp-row" data-team="${r.team}">
+    <div class="sp-row" data-team="${r.team}" data-name="${r.name}">
       <span class="sp-rank">${i===0 ? "&#9733;" : i+1}</span>
       <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
       <div class="sp-body">
@@ -3922,7 +4326,7 @@ function renderAwardsRace(){
     r => `${r.apg.toFixed(1)} APG / ${r.spg.toFixed(1)} SPG / ${r.orebpg.toFixed(1)} OREB`);
 
   document.querySelectorAll("#awardsView [data-team]").forEach(el => {
-    el.addEventListener("click", () => openRoster(el.dataset.team));
+    el.addEventListener("click", () => openPlayerStats(el.dataset.name));
   });
 }
 
@@ -3964,12 +4368,12 @@ function openRoster(team){
 
 function statRow(row, isCaptain){
   if(row[1] === "DNP"){
-    return `<tr class="dnp"><td>${row[0]}</td><td colspan="18">DNP</td></tr>`;
+    return `<tr class="dnp"><td onclick="openPlayerStats('${row[0]}')" style="cursor:pointer;">${row[0]}</td><td colspan="18">DNP</td></tr>`;
   }
   const isSub = row.length > 16 && row[16] === true;
   const [name,pts,fgm,fga,tpm,tpa,ftm,fta,oreb,reb,ast,stl,blk,to,pf,dq] = row;
   const cells = [pts,fgm,fga,pct(fgm,fga),tpm,tpa,pct(tpm,tpa),ftm,fta,pct(ftm,fta),oreb,reb,ast,stl,blk,to,pf,dq];
-  const label = name + (isSub ? ' <span style="color:var(--ink-faint); font-style:italic; font-size:10px;">(sub)</span>' : "");
+  const label = `<span onclick="openPlayerStats('${name}')" style="cursor:pointer;">${name}</span>` + (isSub ? ' <span style="color:var(--ink-faint); font-style:italic; font-size:10px;">(sub)</span>' : "");
   return `<tr class="${isCaptain ? "captain-row" : ""}"><td>${label}</td>${cells.map(c=>`<td>${c}</td>`).join("")}</tr>`;
 }
 
@@ -4061,7 +4465,7 @@ function openMatchupPreview(wk, time, teamA, teamB){
     <div class="watch-block">
       <div class="watch-label">Players to Watch</div>
       ${preview.watchers.map(w => `
-        <div class="watch-row" onclick="openRoster('${w.team}')">
+        <div class="watch-row" onclick="openPlayerStats('${w.name}')">
           <span class="watch-dot" style="background:var(${COLOR_VAR[w.team]})"></span>
           <span class="watch-name">${w.name}</span>
           <span class="watch-note">, ${w.note}</span>
@@ -4087,7 +4491,7 @@ function renderTopPerformers(data, teamA, teamB){
     if(p.stl >= 2) stats.push(`${p.stl} STL`);
     if(p.blk >= 2) stats.push(`${p.blk} BLK`);
     return `
-      <div class="tp-row" onclick="openRoster('${p.team}')">
+      <div class="tp-row" onclick="openPlayerStats('${p.name}')">
         ${crestBadge(p.team,"crest-sm") || `<span class="tp-dot" style="background:var(${COLOR_VAR[p.team]})"></span>`}
         <span class="tp-name">${p.name}</span>
         <span class="tp-team">${p.team}</span>
@@ -4099,7 +4503,7 @@ function renderTopPerformers(data, teamA, teamB){
 }
 
 function showOnly(viewId){
-  ["scheduleView","rosterView","boxView","matchupPreviewView","historyView","previewView","boxScoresView","awardsView","playoffView","bracketView","duoView","newsletterView"].forEach(id => {
+  ["scheduleView","rosterView","boxView","matchupPreviewView","historyView","previewView","boxScoresView","awardsView","playoffView","bracketView","duoView","playersHubView","playerDetailView","newsletterView"].forEach(id => {
     const el = document.getElementById(id);
     if(id === "scheduleView"){
       el.classList.toggle("hide", id !== viewId);
@@ -4113,9 +4517,10 @@ function showOnly(viewId){
   document.getElementById("navPlayoffs").classList.toggle("active", viewId === "playoffView");
   document.getElementById("navBracket").classList.toggle("active", viewId === "bracketView");
   document.getElementById("navDuos").classList.toggle("active", viewId === "duoView");
+  document.getElementById("navPlayers").classList.toggle("active", viewId === "playersHubView" || viewId === "playerDetailView");
   document.getElementById("navHistory").classList.toggle("active", viewId === "historyView");
   document.getElementById("navNewsletters").classList.toggle("active", viewId === "newsletterView");
-  document.getElementById("navSchedule").classList.toggle("active", !["previewView","boxScoresView","awardsView","playoffView","bracketView","duoView","historyView","newsletterView"].includes(viewId));
+  document.getElementById("navSchedule").classList.toggle("active", !["previewView","boxScoresView","awardsView","playoffView","bracketView","duoView","playersHubView","playerDetailView","historyView","newsletterView"].includes(viewId));
   window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
 }
 
@@ -4136,6 +4541,9 @@ document.getElementById("navBracket").onclick = () => showOnly("bracketView");
 document.getElementById("bracketBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("navDuos").onclick = () => showOnly("duoView");
 document.getElementById("duoBackBtn").onclick = () => showOnly("scheduleView");
+document.getElementById("navPlayers").onclick = () => { showOnly("playersHubView"); renderPlayersHub(); wirePlayerSearch(); };
+document.getElementById("playersHubBackBtn").onclick = () => showOnly("scheduleView");
+document.getElementById("playerDetailBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("navHistory").onclick = () => showOnly("historyView");
 document.getElementById("historyBackBtn").onclick = () => showOnly("scheduleView");
 document.getElementById("navNewsletters").onclick = () => { showOnly("newsletterView"); renderNewsletter(currentNewsletterWeek); };
