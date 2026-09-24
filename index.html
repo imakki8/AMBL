@@ -4480,7 +4480,8 @@ function renderTopPerformers(data, teamA, teamB){
     data.teams[team].players.forEach(row => {
       if(row[1] === "DNP") return;
       const [name,pts,fgm,fga,tpm,tpa,ftm,fta,oreb,reb,ast,stl,blk,to,pf,dq] = row;
-      const impact = pts + reb*0.8 + ast*1.3 + stl*1.8 + blk*1.8;
+      const dreb = reb - oreb;
+      const impact = pts + fgm*0.4 - fga*0.7 - (fta-ftm)*0.4 + oreb*0.7 + dreb*0.3 + stl*1.0 + ast*0.7 + blk*0.7 - pf*0.4 - to*1.0;
       pool.push({name, team, pts, reb, ast, stl, blk, impact});
     });
   });
