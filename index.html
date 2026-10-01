@@ -389,6 +389,32 @@
   .st-diff{font-weight:700;}
   .st-diff.pos{color:var(--accent);}
   .st-diff.neg{color:var(--accent-2);}
+  .st-status-badge{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:16px; height:16px;
+    border-radius:50%;
+    font-size:10px;
+    font-weight:800;
+    flex:none;
+    line-height:1;
+  }
+  .st-status-badge.clinched{
+    background:var(--accent);
+    color:var(--on-accent);
+  }
+  .st-status-badge.eliminated{
+    background:var(--panel-2);
+    color:var(--ink-faint);
+    border:1px solid var(--line);
+  }
+  .standings-row.is-eliminated{opacity:0.55;}
+  .standings-legend{
+    display:flex; align-items:center; gap:6px;
+    font-size:11.5px;
+    color:var(--ink-faint);
+    margin:10px 2px 0;
+  }
+  .standings-legend .st-status-badge{flex:none;}
   @media (max-width:640px){
     .standings-head, .standings-row{grid-template-columns:22px 1fr 48px 56px 56px;}
     .st-pf, .st-pa{display:none;}
@@ -1912,6 +1938,7 @@
         </div>
         <div id="standingsBody"></div>
       </div>
+      <p class="standings-legend"><span class="st-status-badge clinched">&#10003;</span> clinched a playoff spot &middot; <span class="st-status-badge eliminated">&#10005;</span> mathematically eliminated</p>
     </div>
 
     <div class="section-head">
@@ -2150,6 +2177,17 @@
     <div class="section-head">
       <span class="title">Playoff Race</span>
       <span class="sub">Through week 8 &middot; one week left &middot; top 6 make the postseason</span>
+    </div>
+
+    <div class="storylines-head"><span class="title">Bubble Watch: The Six-Seed Isn't as Safe as It Looks</span></div>
+    <div class="matchup-card">
+      <div class="matchup-teams">
+        <span class="matchup-team" data-team="Thunder" style="color:var(--thunder-text)" onclick="openRoster('Thunder')">Thunder <span class="matchup-record">(3-5)</span></span>
+        <span class="matchup-vs">vs</span>
+        <span class="matchup-team" data-team="Warriors" style="color:var(--warriors-text)" onclick="openRoster('Warriors')">Warriors <span class="matchup-record">(2-5)</span></span>
+      </div>
+      <div class="matchup-tag">Thunder Are Done Playing. Warriors Still Get a Say.</div>
+      <p class="matchup-body">On paper, Thunder's sixth seed looks safe &mdash; their record is locked in at 3-5 on a Week 9 bye, and nobody below them can scrape together more than three wins. Except Warriors can also reach exactly three wins, and they'd get there by upsetting the league-leading Blazers in the finale. A win alone ties Thunder in the loss column, and tied records get settled by point differential: Thunder sit at -15 on the season, Warriors at -25. Do the math and it means Warriors can't just beat Blazers, they need to beat them by 11 points or more to leapfrog Thunder on the tiebreaker. That's a tall order against the one-seed, but this is also the same team that just mugged Thunder 30-25 a week ago. Thunder fans, keep one eye on that scoreboard Tuesday night.</p>
     </div>
 
     <div class="matchup-card">
@@ -4039,20 +4077,59 @@ function teamStandings(){
   }).sort((a,b) => b.pct - a.pct || b.diff - a.diff || b.pf - a.pf);
 }
 
+const PLAYOFF_SPOTS = 6;
+
+function totalGamesPerTeam(){
+  const totals = {};
+  TEAMS.forEach(t => totals[t] = 0);
+  SCHEDULE.forEach(w => {
+    TEAMS.forEach(t => { if(t !== w.bye) totals[t]++; });
+  });
+  return totals;
+}
+
+function playoffClinchStatus(){
+  const standings = teamStandings();
+  const totals = totalGamesPerTeam();
+  const info = standings.map(r => ({
+    team: r.team,
+    minWins: r.w,
+    maxWins: totals[r.team] - r.l,
+  }));
+  const status = {};
+  info.forEach(t => {
+    const atOrAboveFloor = info.filter(o => o.team !== t.team && o.maxWins >= t.minWins).length;
+    const strictlyAboveCeiling = info.filter(o => o.team !== t.team && o.minWins > t.maxWins).length;
+    if(atOrAboveFloor <= PLAYOFF_SPOTS - 1) status[t.team] = "clinched";
+    else if(strictlyAboveCeiling >= PLAYOFF_SPOTS) status[t.team] = "eliminated";
+    else status[t.team] = "bubble";
+  });
+  return status;
+}
+
 function renderStandings(){
   const rows = teamStandings();
+  const status = playoffClinchStatus();
   const body = document.getElementById("standingsBody");
   if(!body) return;
-  body.innerHTML = rows.map((r,i) => `
-    <div class="standings-row" data-team="${r.team}">
+  body.innerHTML = rows.map((r,i) => {
+    const st = status[r.team];
+    const badge = st === "clinched"
+      ? `<span class="st-status-badge clinched" title="Clinched a playoff spot">&#10003;</span>`
+      : st === "eliminated"
+        ? `<span class="st-status-badge eliminated" title="Mathematically eliminated from playoff contention">&#10005;</span>`
+        : "";
+    return `
+    <div class="standings-row${st === "eliminated" ? " is-eliminated" : ""}" data-team="${r.team}">
       <span class="st-rank">${i+1}</span>
-      <span class="st-team" style="color:var(${teamTextVar(r.team)})">${crestBadge(r.team,"crest-sm")}${r.team}</span>
+      <span class="st-team" style="color:var(${teamTextVar(r.team)})">${crestBadge(r.team,"crest-sm")}${r.team}${badge}</span>
       <span class="st-rec">${r.w}-${r.l}</span>
       <span class="st-pct">${r.gp>0 ? r.pct.toFixed(3) : "—"}</span>
       <span class="st-pf">${r.pf}</span>
       <span class="st-pa">${r.pa}</span>
       <span class="st-diff ${r.diff>0?"pos":r.diff<0?"neg":""}">${r.diff>0?"+":""}${r.diff}</span>
-    </div>`).join("");
+    </div>`;
+  }).join("");
   document.querySelectorAll("#standingsBody [data-team]").forEach(el => {
     el.addEventListener("click", () => openRoster(el.dataset.team));
   });
