@@ -4443,7 +4443,7 @@ function renderLeaders(){
         <span class="sp-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
         <div class="sp-body">
           <div class="sp-name">${r.name}</div>
-          <div class="sp-line">${r.ppg.toFixed(1)} PPG / ${r.rpg.toFixed(1)} RPG / ${r.apg.toFixed(1)} APG</div>
+          <div class="sp-line">${r.ppg.toFixed(1)} PPG / ${r.rpg.toFixed(1)} RPG / ${r.name === "Matthew Estrada" ? `${r.bpg.toFixed(1)} BPG` : `${r.apg.toFixed(1)} APG`}</div>
         </div>
       </div>`).join("")}
   `;
