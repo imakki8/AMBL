@@ -4523,7 +4523,7 @@ function renderLeaders(){
   const mvpRanked = [...mvpScored].sort((a,b) => b.score-a.score);
   const mvpTop = mvpRanked.slice(0,5);
   const mvpNames = new Set(mvpTop.map(r => r.name));
-  const underRadarTop = mvpRanked.slice(5,10);
+  const underRadarTop = mvpRanked.slice(5,8);
 
   document.getElementById("mvpCard").innerHTML = `
     <div class="spotlight-head"><div class="sp-title">MVP Watch</div></div>
