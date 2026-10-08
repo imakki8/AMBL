@@ -4168,15 +4168,28 @@ function totalGamesPerTeam(){
 function playoffClinchStatus(){
   const standings = teamStandings();
   const totals = totalGamesPerTeam();
+  const rankIndex = {};
+  standings.forEach((r,i) => { rankIndex[r.team] = i; });
   const info = standings.map(r => ({
     team: r.team,
     minWins: r.w,
     maxWins: totals[r.team] - r.l,
+    done: r.gp === totals[r.team],
   }));
   const status = {};
   info.forEach(t => {
-    const atOrAboveFloor = info.filter(o => o.team !== t.team && o.maxWins >= t.minWins).length;
-    const strictlyAboveCeiling = info.filter(o => o.team !== t.team && o.minWins > t.maxWins).length;
+    const atOrAboveFloor = info.filter(o => {
+      if(o.team === t.team) return false;
+      if(o.maxWins > t.minWins) return true;
+      if(o.maxWins === t.minWins && o.done && t.done) return rankIndex[o.team] < rankIndex[t.team];
+      return o.maxWins === t.minWins && !(o.done && t.done);
+    }).length;
+    const strictlyAboveCeiling = info.filter(o => {
+      if(o.team === t.team) return false;
+      if(o.minWins > t.maxWins) return true;
+      if(o.minWins === t.maxWins && o.done && t.done) return rankIndex[o.team] < rankIndex[t.team];
+      return false;
+    }).length;
     if(atOrAboveFloor <= PLAYOFF_SPOTS - 1) status[t.team] = "clinched";
     else if(strictlyAboveCeiling >= PLAYOFF_SPOTS) status[t.team] = "eliminated";
     else status[t.team] = "bubble";
