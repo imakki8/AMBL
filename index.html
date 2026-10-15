@@ -823,6 +823,10 @@
   @media (max-width:1000px){ .leaders-grid{grid-template-columns:repeat(3,1fr);} }
   @media (max-width:620px){ .leaders-grid{grid-template-columns:repeat(2,1fr);} }
 
+  .leaders-grid.cols-6{grid-template-columns:repeat(6,1fr);}
+  @media (max-width:1100px){ .leaders-grid.cols-6{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:620px){ .leaders-grid.cols-6{grid-template-columns:repeat(2,1fr);} }
+
   .stat-card{
     background:var(--panel);
     border:1px solid var(--line);
@@ -1629,6 +1633,7 @@
     cursor:pointer;
   }
   .bracket-team:hover{color:var(--accent);}
+  .bracket-team.winner::after{content:"▸"; margin-left:4px; font-size:12px;}
   .bracket-team.tbd{
     color:var(--ink-faint);
     font-weight:600;
@@ -1913,7 +1918,7 @@
     <div class="preview-banner" id="previewBanner">
       <div class="preview-banner-left">
         <span class="preview-banner-eyebrow">The Tip-Off</span>
-        <span class="preview-banner-title">The regular season is over — Round 1 preview is up</span>
+        <span class="preview-banner-title">Quarterfinals are done — Semifinals preview is up</span>
       </div>
       <span class="preview-banner-arrow">&rarr;</span>
     </div>
@@ -2280,34 +2285,34 @@
     <div class="preview-hero">
       <span class="preview-hero-eyebrow">Playoff Bracket &middot; AMBL Season 31</span>
       <h1 class="preview-hero-title">Six Teams, One Trophy</h1>
-      <p class="preview-hero-sub">The regular season is complete. Top six make the postseason, and the 1 and 2 seeds earn a bye straight into the semifinals while the rest open with a win-or-go-home game. Here's the official bracket heading into Round 1.</p>
+      <p class="preview-hero-sub">Quarterfinals are in the books. Redliners and Gel advance to the semifinals, joining Blazers and Rattlers, who had first-round byes. Here's the updated bracket heading into next week.</p>
     </div>
 
     <div class="bracket-wrap">
       <div class="bracket-round">
-        <div class="bracket-round-label">Round 1</div>
+        <div class="bracket-round-label">Quarterfinals</div>
         <div class="bracket-match">
-          <div class="bracket-team" data-team="Gel" style="color:var(--gel-text)" onclick="openRoster('Gel')"><span class="bracket-seed">3</span>Gel<span class="bracket-record">6-2</span></div>
+          <div class="bracket-team winner" data-team="Gel" style="color:var(--gel-text)" onclick="openPlayoffBoxScore('QF','7:00','Gel','Thunder')"><span class="bracket-seed">3</span>Gel<span class="bracket-record">46</span></div>
           <div class="bracket-vs">vs</div>
-          <div class="bracket-team" data-team="Thunder" style="color:var(--thunder-text)" onclick="openRoster('Thunder')"><span class="bracket-seed">6</span>Thunder<span class="bracket-record">3-5</span></div>
+          <div class="bracket-team" data-team="Thunder" style="color:var(--thunder-text)" onclick="openPlayoffBoxScore('QF','7:00','Gel','Thunder')"><span class="bracket-seed">6</span>Thunder<span class="bracket-record">32</span></div>
         </div>
         <div class="bracket-match">
-          <div class="bracket-team" data-team="Redliners" style="color:var(--redliners-text)" onclick="openRoster('Redliners')"><span class="bracket-seed">4</span>Redliners<span class="bracket-record">5-3</span></div>
+          <div class="bracket-team winner" data-team="Redliners" style="color:var(--redliners-text)" onclick="openPlayoffBoxScore('QF','6:00','Redliners','Hornets')"><span class="bracket-seed">4</span>Redliners<span class="bracket-record">55</span></div>
           <div class="bracket-vs">vs</div>
-          <div class="bracket-team" data-team="Hornets" style="color:var(--hornets-text)" onclick="openRoster('Hornets')"><span class="bracket-seed">5</span>Hornets<span class="bracket-record">4-4</span></div>
+          <div class="bracket-team" data-team="Hornets" style="color:var(--hornets-text)" onclick="openPlayoffBoxScore('QF','6:00','Redliners','Hornets')"><span class="bracket-seed">5</span>Hornets<span class="bracket-record">35</span></div>
         </div>
       </div>
       <div class="bracket-round">
-        <div class="bracket-round-label">Semifinals</div>
+        <div class="bracket-round-label">Semifinals &middot; 20 OCT</div>
         <div class="bracket-match">
           <div class="bracket-team" data-team="Blazers" style="color:var(--blazers-text)" onclick="openRoster('Blazers')"><span class="bracket-seed">1</span>Blazers<span class="bracket-record">6-2</span><span class="bracket-bye-tag">Bye</span></div>
           <div class="bracket-vs">vs</div>
-          <div class="bracket-team tbd">Winner: Redliners / Hornets</div>
+          <div class="bracket-team" data-team="Redliners" style="color:var(--redliners-text)" onclick="openRoster('Redliners')"><span class="bracket-seed">4</span>Redliners<span class="bracket-record">1-0</span></div>
         </div>
         <div class="bracket-match">
           <div class="bracket-team" data-team="Rattlers" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')"><span class="bracket-seed">2</span>Rattlers<span class="bracket-record">6-2</span><span class="bracket-bye-tag">Bye</span></div>
           <div class="bracket-vs">vs</div>
-          <div class="bracket-team tbd">Winner: Gel / Thunder</div>
+          <div class="bracket-team" data-team="Gel" style="color:var(--gel-text)" onclick="openRoster('Gel')"><span class="bracket-seed">3</span>Gel<span class="bracket-record">1-0</span></div>
         </div>
       </div>
       <div class="bracket-round">
@@ -2320,79 +2325,84 @@
       </div>
     </div>
 
-    <div class="storylines-head"><span class="title">Round 1: What to Expect</span></div>
+    <div class="storylines-head"><span class="title">Playoff Stat Leaders</span></div>
+    <div class="leaders-grid cols-6" id="playoffStatLeaders"></div>
 
-    <div class="matchup-card">
-      <div class="matchup-meta">Round 1 &middot; (3) vs (6)</div>
+    <div class="storylines-head"><span class="title">Quarterfinals Recap</span></div>
+
+    <div class="matchup-card" onclick="openPlayoffBoxScore('QF','7:00','Gel','Thunder')" style="cursor:pointer;">
+      <div class="matchup-meta">Quarterfinals &middot; (3) vs (6)</div>
       <div class="matchup-teams">
-        <span class="matchup-team" data-team="Gel" style="color:var(--gel-text)" onclick="openRoster('Gel')">Gel <span class="matchup-record">(6-2)</span></span>
-        <span class="matchup-vs">vs</span>
-        <span class="matchup-team" data-team="Thunder" style="color:var(--thunder-text)" onclick="openRoster('Thunder')">Thunder <span class="matchup-record">(3-5)</span></span>
+        <span class="matchup-team" data-team="Gel" style="color:var(--gel-text)">Gel <span class="matchup-record">46</span></span>
+        <span class="matchup-vs">def.</span>
+        <span class="matchup-team" data-team="Thunder" style="color:var(--thunder-text)">Thunder <span class="matchup-record">32</span></span>
       </div>
-      <div class="matchup-tag">Gel's Firepower Meets Thunder's Lone Engine</div>
-      <p class="matchup-body">Gel closed the regular season as the hottest team in the league, winning its final two games over Blazers and Redliners to lock up the three seed. Nick Johnson remains the MVP front-runner, and Imran Makki, who sat out the finale, could be back for the postseason. Thunder snuck into the six seed around Matt Burnett's historic two-way season, but they'll need a lot more help than one player to pull this one off.</p>
+      <div class="matchup-tag">Nick Johnson's 27 Points Power Gel Into the Semis</div>
+      <p class="matchup-body">Gel never trailed, riding 27 points and 13 rebounds from Nick Johnson and a 10-point return from Imran Makki, back in the lineup after sitting out the finale. Cordero Nuanez's 18 points off the bench kept Thunder within shouting distance, but Matt Burnett was held to just 8 on a quiet shooting night, and Gel pulled away for good in the second half.</p>
       <div class="watch-block">
-        <div class="watch-label">Players to Watch</div>
-        <div class="watch-row" onclick="openPlayerStats('Nick Johnson')">
+        <div class="watch-label">Game Leaders</div>
+        <div class="watch-row" onclick="event.stopPropagation(); openPlayerStats('Nick Johnson')">
           <span class="watch-dot" style="background:var(--gel)"></span>
           <span class="watch-name">Nick Johnson</span>
-          <span class="watch-note">, the MVP front-runner, closing the regular season on an eight-game heater</span>
+          <span class="watch-note">, 27 PTS, 13 REB, 4 AST on 8-of-18 shooting</span>
         </div>
-        <div class="watch-row" onclick="openPlayerStats('Matt Burnett')">
+        <div class="watch-row" onclick="event.stopPropagation(); openPlayerStats('Cordero Nuanez')">
           <span class="watch-dot" style="background:var(--thunder)"></span>
-          <span class="watch-name">Matt Burnett</span>
-          <span class="watch-note">, leads the league in both rebounds and assists, and Thunder go as far as he can carry them</span>
+          <span class="watch-name">Cordero Nuanez</span>
+          <span class="watch-note">, 18 PTS on 9-of-18 shooting off the bench for Thunder</span>
         </div>
       </div>
-      <div class="prediction-block"><span class="prediction-label">Prediction</span>Gel's firepower should be too much for Thunder's thinner supporting cast to handle.</div>
     </div>
 
-    <div class="matchup-card">
-      <div class="matchup-meta">Round 1 &middot; (4) vs (5)</div>
+    <div class="matchup-card" onclick="openPlayoffBoxScore('QF','6:00','Redliners','Hornets')" style="cursor:pointer;">
+      <div class="matchup-meta">Quarterfinals &middot; (4) vs (5)</div>
       <div class="matchup-teams">
-        <span class="matchup-team" data-team="Redliners" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Redliners <span class="matchup-record">(5-3)</span></span>
-        <span class="matchup-vs">vs</span>
-        <span class="matchup-team" data-team="Hornets" style="color:var(--hornets-text)" onclick="openRoster('Hornets')">Hornets <span class="matchup-record">(4-4)</span></span>
+        <span class="matchup-team" data-team="Redliners" style="color:var(--redliners-text)">Redliners <span class="matchup-record">55</span></span>
+        <span class="matchup-vs">def.</span>
+        <span class="matchup-team" data-team="Hornets" style="color:var(--hornets-text)">Hornets <span class="matchup-record">35</span></span>
       </div>
-      <div class="matchup-tag">A Defensive Staring Contest to Open the Postseason</div>
-      <p class="matchup-body">Redliners enter off a finale loss to Gel, but Garrett Ailshie and a deep, balanced roster have been a problem for everyone all season. Hornets own the league's stingiest defense, and Luis Renteria-Medina is fresh off a 24-point explosion to close the regular season, giving Hornets a matchup nightmare of their own on the glass.</p>
+      <div class="matchup-tag">Trejo and Ailshie Combine for 35, Redliners Roll</div>
+      <p class="matchup-body">Redliners never let this one get close, with Josh Trejo pouring in a game-high 20 points and Garrett Ailshie filling the stat sheet with 15 points, 14 rebounds, 7 assists and 6 steals. Hornets got 11 points from Luis Renteria-Medina and 10 from Andrew Soto, but shot just 25.5% as a team and couldn't keep pace.</p>
       <div class="watch-block">
-        <div class="watch-label">Players to Watch</div>
-        <div class="watch-row" onclick="openPlayerStats('Garrett Ailshie')">
+        <div class="watch-label">Game Leaders</div>
+        <div class="watch-row" onclick="event.stopPropagation(); openPlayerStats('Josh Trejo')">
+          <span class="watch-dot" style="background:var(--redliners)"></span>
+          <span class="watch-name">Josh Trejo</span>
+          <span class="watch-note">, 20 PTS on 7-of-15 shooting</span>
+        </div>
+        <div class="watch-row" onclick="event.stopPropagation(); openPlayerStats('Garrett Ailshie')">
           <span class="watch-dot" style="background:var(--redliners)"></span>
           <span class="watch-name">Garrett Ailshie</span>
-          <span class="watch-note">, Redliners' engine on both ends, a matchup problem inside and on the glass</span>
-        </div>
-        <div class="watch-row" onclick="openPlayerStats('Luis Renteria-Medina')">
-          <span class="watch-dot" style="background:var(--hornets)"></span>
-          <span class="watch-name">Luis Renteria-Medina</span>
-          <span class="watch-note">, fresh off a 24-point, 10-rebound night to close the regular season</span>
+          <span class="watch-note">, 15 PTS, 14 REB, 7 AST, 6 STL &mdash; a complete two-way night</span>
         </div>
       </div>
-      <div class="prediction-block"><span class="prediction-label">Prediction</span>A tight, defensive-minded series that could come down to whoever gets the better individual matchup on the glass.</div>
     </div>
 
-    <div class="storylines-head"><span class="title">On the Bye, Watching Round 1</span></div>
+    <div class="storylines-head"><span class="title">Next Up: The Semifinals</span></div>
 
     <div class="bye-spotlight">
-      <div class="matchup-meta">1 Seed &middot; Bye</div>
+      <div class="matchup-meta">6pm &middot; 20 OCT &middot; Lake Forest Sports Park</div>
       <div class="matchup-teams">
-        <span class="matchup-team" data-team="Blazers" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Blazers <span class="matchup-record">(6-2)</span></span>
+        <span class="matchup-team" data-team="Blazers" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Blazers <span class="matchup-record">(1 seed)</span></span>
+        <span class="matchup-vs">vs</span>
+        <span class="matchup-team" data-team="Redliners" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Redliners <span class="matchup-record">(4 seed)</span></span>
       </div>
-      <div class="matchup-tag">The League's Best Record Earns a Week Off</div>
-      <p class="matchup-body">Blazers closed the regular season 6-2, even with a finale upset loss to Warriors, and still lock up the top seed on point differential, waiting to find out whether Redliners or Hornets awaits in the semis.</p>
+      <div class="matchup-tag">The League's Best Record Meets the League's Deepest Roster</div>
+      <p class="matchup-body">Blazers were idle for the quarterfinals and get a Redliners team that just dismantled Hornets behind a complete team effort. Jasper Shen and Sammy Said against Josh Trejo and Garrett Ailshie should be one of the better two-way chess matches of the postseason.</p>
     </div>
 
     <div class="bye-spotlight">
-      <div class="matchup-meta">2 Seed &middot; Bye</div>
+      <div class="matchup-meta">7pm &middot; 20 OCT &middot; Lake Forest Sports Park</div>
       <div class="matchup-teams">
-        <span class="matchup-team" data-team="Rattlers" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')">Rattlers <span class="matchup-record">(6-2)</span></span>
+        <span class="matchup-team" data-team="Rattlers" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')">Rattlers <span class="matchup-record">(2 seed)</span></span>
+        <span class="matchup-vs">vs</span>
+        <span class="matchup-team" data-team="Gel" style="color:var(--gel-text)" onclick="openRoster('Gel')">Gel <span class="matchup-record">(3 seed)</span></span>
       </div>
-      <div class="matchup-tag">A Gritty Finish Locks Up the Two Seed</div>
-      <p class="matchup-body">Rattlers closed the regular season with a 43-41 escape over Hornets to finish 6-2, tied atop the standings but holding the two seed on point differential, setting up a semifinal against the winner of Gel and Thunder.</p>
+      <div class="matchup-tag">The Rubber Match Nobody Wanted to Wait For</div>
+      <p class="matchup-body">Rattlers rested up while Gel rolled past Thunder behind another vintage Nick Johnson performance. Matthew Estrada and Keith Murphy's defensive identity against Johnson and a re-energized Imran Makki is as good a semifinal matchup as this league could draw up.</p>
     </div>
 
-    <p class="preview-signoff">That's the official bracket. Round 1 tips off soon &mdash; six teams, one trophy.</p>
+    <p class="preview-signoff">That's the updated bracket. Semifinals tip off 20 OCT at Lake Forest Sports Park &mdash; four teams left, one trophy.</p>
   </div>
 
   <div class="duo-view" id="duoView">
@@ -2598,77 +2608,59 @@
 
     <div class="preview-hero">
       <span class="preview-hero-eyebrow">The Tip-Off &middot; AMBL Season 31</span>
-      <h1 class="preview-hero-title">Round 1: The Playoffs Begin</h1>
-      <p class="preview-hero-sub">The regular season is in the books. Six teams, two byes, and two win-or-go-home games to open the postseason.</p>
+      <h1 class="preview-hero-title">Semifinals: Four Teams Left</h1>
+      <p class="preview-hero-sub">The quarterfinals are done. Redliners and Gel punched their tickets with road-grader wins, and now face the two teams that spent the week resting up.</p>
     </div>
 
     <div class="matchup-card">
-      <div class="matchup-meta">Round 1 &middot; (3) vs (6)</div>
+      <div class="matchup-meta">Semifinals &middot; (1) vs (4) &middot; 6pm, 20 OCT</div>
       <div class="matchup-teams">
-        <span class="matchup-team" data-team="Gel" style="color:var(--gel-text)" onclick="openRoster('Gel')">Gel <span class="matchup-record">(6-2)</span></span>
+        <span class="matchup-team" data-team="Blazers" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Blazers <span class="matchup-record">(6-2)</span></span>
         <span class="matchup-vs">vs</span>
-        <span class="matchup-team" data-team="Thunder" style="color:var(--thunder-text)" onclick="openRoster('Thunder')">Thunder <span class="matchup-record">(3-5)</span></span>
-      </div>
-      <div class="matchup-tag">Gel's Firepower Meets Thunder's Lone Engine</div>
-      <p class="matchup-body">Gel enters the playoffs as the hottest team in the league, closing the regular season with back-to-back statement wins over Blazers and Redliners. Nick Johnson remains the MVP front-runner, and Imran Makki, who sat out the finale, could be back in the mix for the postseason. Thunder snuck into the six seed on the back of Matt Burnett's historic two-way season &mdash; he's the only player in the league leading in both rebounds and assists &mdash; but they'll need a lot more help than that to pull the upset.</p>
-      <div class="watch-block">
-        <div class="watch-label">Players to Watch</div>
-        <div class="watch-row" onclick="openPlayerStats('Nick Johnson')">
-          <span class="watch-dot" style="background:var(--gel)"></span>
-          <span class="watch-name">Nick Johnson</span>
-          <span class="watch-note">, the MVP front-runner, closing the regular season on an eight-game heater</span>
-        </div>
-        <div class="watch-row" onclick="openPlayerStats('Matt Burnett')">
-          <span class="watch-dot" style="background:var(--thunder)"></span>
-          <span class="watch-name">Matt Burnett</span>
-          <span class="watch-note">, leads the league in both rebounds and assists, and Thunder go as far as he can carry them</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="matchup-card">
-      <div class="matchup-meta">Round 1 &middot; (4) vs (5)</div>
-      <div class="matchup-teams">
         <span class="matchup-team" data-team="Redliners" style="color:var(--redliners-text)" onclick="openRoster('Redliners')">Redliners <span class="matchup-record">(5-3)</span></span>
-        <span class="matchup-vs">vs</span>
-        <span class="matchup-team" data-team="Hornets" style="color:var(--hornets-text)" onclick="openRoster('Hornets')">Hornets <span class="matchup-record">(4-4)</span></span>
       </div>
-      <div class="matchup-tag">A Defensive Staring Contest to Open the Postseason</div>
-      <p class="matchup-body">Redliners enter off a tough finale loss to Gel, but Garrett Ailshie and a deep, balanced roster have been a problem for everyone all season. Hornets own the league's stingiest defense and get a crack at a Redliners team still finding its footing. Luis Renteria-Medina is fresh off a 24-point explosion in the finale and gives Hornets a matchup nightmare of their own on the glass.</p>
+      <div class="matchup-tag">The League's Best Record Meets the League's Deepest Roster</div>
+      <p class="matchup-body">Blazers were idle for the quarterfinals and now get a Redliners team riding a 55-point outburst over Hornets, led by Josh Trejo's 20 and a do-everything line from Garrett Ailshie. Jasper Shen and Sammy Said against Trejo and Ailshie should be one of the better two-way chess matches of the postseason.</p>
       <div class="watch-block">
         <div class="watch-label">Players to Watch</div>
+        <div class="watch-row" onclick="openPlayerStats('Jasper Shen')">
+          <span class="watch-dot" style="background:var(--blazers)"></span>
+          <span class="watch-name">Jasper Shen</span>
+          <span class="watch-note">, well-rested off the bye, a top-five threat in points, boards, assists and steals all season</span>
+        </div>
         <div class="watch-row" onclick="openPlayerStats('Garrett Ailshie')">
           <span class="watch-dot" style="background:var(--redliners)"></span>
           <span class="watch-name">Garrett Ailshie</span>
-          <span class="watch-note">, Redliners' engine on both ends, a matchup problem inside and on the glass</span>
-        </div>
-        <div class="watch-row" onclick="openPlayerStats('Luis Renteria-Medina')">
-          <span class="watch-dot" style="background:var(--hornets)"></span>
-          <span class="watch-name">Luis Renteria-Medina</span>
-          <span class="watch-note">, fresh off a 24-point, 10-rebound night to close the regular season</span>
+          <span class="watch-note">, fresh off 15 PTS, 14 REB, 7 AST, 6 STL in the quarterfinal win</span>
         </div>
       </div>
     </div>
 
-    <div class="bye-spotlight">
-      <div class="matchup-meta">1 Seed &middot; Bye</div>
-      <div class="matchup-teams">
-        <span class="matchup-team" data-team="Blazers" style="color:var(--blazers-text)" onclick="openRoster('Blazers')">Blazers <span class="matchup-record">(6-2)</span></span>
-      </div>
-      <div class="matchup-tag">The League's Best Record Earns a Week Off</div>
-      <p class="matchup-body">Blazers closed the regular season 6-2, even with a finale upset loss to Warriors, and still lock up the top seed on point differential. Jasper Shen and Sammy Said wait to find out whether Gel or Thunder awaits in the semis.</p>
-    </div>
-
-    <div class="bye-spotlight">
-      <div class="matchup-meta">2 Seed &middot; Bye</div>
+    <div class="matchup-card">
+      <div class="matchup-meta">Semifinals &middot; (2) vs (3) &middot; 7pm, 20 OCT</div>
       <div class="matchup-teams">
         <span class="matchup-team" data-team="Rattlers" style="color:var(--rattlers-text)" onclick="openRoster('Rattlers')">Rattlers <span class="matchup-record">(6-2)</span></span>
+        <span class="matchup-vs">vs</span>
+        <span class="matchup-team" data-team="Gel" style="color:var(--gel-text)" onclick="openRoster('Gel')">Gel <span class="matchup-record">(6-2)</span></span>
       </div>
-      <div class="matchup-tag">A Gritty Finish Locks Up the Two Seed</div>
-      <p class="matchup-body">Rattlers closed the regular season with a 43-41 escape over Hornets to finish 6-2, tied atop the standings but holding the two seed on point differential. Matthew Estrada and Keith Murphy give this team a defensive identity that should travel well into the postseason.</p>
+      <div class="matchup-tag">The Rubber Match Nobody Wanted to Wait For</div>
+      <p class="matchup-body">Rattlers rested while Gel rolled past Thunder behind another vintage Nick Johnson performance &mdash; 27 points, 13 rebounds &mdash; and the return of Imran Makki, back after sitting out the finale. Matthew Estrada and Keith Murphy's defensive identity against Johnson and a re-energized Makki is as good a semifinal matchup as this league could draw up.</p>
+      <div class="watch-block">
+        <div class="watch-label">Players to Watch</div>
+        <div class="watch-row" onclick="openPlayerStats('Matthew Estrada')">
+          <span class="watch-dot" style="background:var(--rattlers)"></span>
+          <span class="watch-name">Matthew Estrada</span>
+          <span class="watch-note">, the league's top shot-blocker, anchoring a Rattlers defense that's had Gel's number before</span>
+        </div>
+        <div class="watch-row" onclick="openPlayerStats('Nick Johnson')">
+          <span class="watch-dot" style="background:var(--gel)"></span>
+          <span class="watch-name">Nick Johnson</span>
+          <span class="watch-note">, fresh off 27 PTS, 13 REB in the quarterfinal win, now with Makki back alongside him</span>
+        </div>
+      </div>
     </div>
 
-    <p class="preview-signoff">That's the bracket. Round 1 tips off soon &mdash; six teams, one trophy, and the real season starts now.</p>
+    <p class="preview-signoff">That's the semifinal slate. Four teams left, one trophy, and the winners meet in the championship.</p>
   </div>
 
 </div>
@@ -4101,6 +4093,187 @@ const BOXSCORES = {
 
 function boxKey(wk, time){ return `${wk}-${time}`; }
 
+// ---- Playoffs ----
+const PLAYOFF_ROUNDS = {
+  QF: { label:"Quarterfinals", date:"13 OCT" },
+  SF: { label:"Semifinals", date:"20 OCT" },
+  F:  { label:"Championship", date:"27 OCT" },
+};
+function playoffBoxKey(round, time){ return `${round}-${time}`; }
+
+const PLAYOFF_BOXSCORES = {
+  "QF-6:00": {
+    ot:false,
+    teams:{
+      Redliners:{ sponsor:"XtraFlo Redliners", score:55, captain:"Cameron De La Torre", players:[
+        ["Josh Trejo",20,7,15,3,9,3,6,1,4,1,0,0,4,3,0],
+        ["Garrett Ailshie",15,6,16,1,3,2,6,9,14,7,6,1,1,0,0],
+        ["Andy Le",4,2,5,0,0,0,0,2,11,0,0,0,1,2,0],
+        ["Natalia Willis","DNP"],
+        ["Cameron De La Torre",6,3,9,0,2,0,0,4,7,3,1,0,1,0,0],
+        ["Benjamin Palacio",2,1,2,0,1,0,0,0,3,0,0,0,1,0,0],
+        ["Jaryd Flores",8,4,13,0,2,0,2,7,9,0,0,0,0,1,0],
+      ]},
+      Hornets:{ sponsor:"Aerostat Hornets", score:35, captain:"Isaac Morrison", players:[
+        ["Isaac Morrison",4,2,4,0,0,0,0,2,5,6,0,0,0,2,0],
+        ["Sean Whitaker",8,3,11,2,7,0,0,3,9,0,3,0,3,1,0],
+        ["Luis Renteria-Medina",11,4,22,1,13,2,2,2,5,1,0,1,3,4,0],
+        ["Andrew Soto",10,4,13,2,8,0,0,0,0,0,0,0,1,0,0],
+        ["Joseph Pascual",2,1,1,0,0,0,0,0,1,0,0,0,0,1,0],
+        ["Asher Foy",0,0,1,0,1,0,0,4,7,1,0,0,1,0,0],
+        ["Christian Rivera",0,0,3,0,3,0,0,0,0,0,0,0,1,0,0],
+      ]},
+    }
+  },
+  "QF-7:00": {
+    ot:false,
+    teams:{
+      Gel:{ sponsor:"Gel(3)Pointers", score:46, captain:"Nick Johnson", players:[
+        ["Imran Makki",10,4,12,2,9,0,0,0,7,3,1,0,0,0,0],
+        ["Nick Johnson",27,8,18,5,13,6,7,1,13,4,0,0,1,1,0],
+        ["Lance Taylor",2,1,3,0,0,0,0,4,7,1,0,0,3,1,0],
+        ["Matthew Wang",4,1,11,0,3,2,4,4,9,3,1,0,2,0,0],
+        ["Nikolai Semerdjiev",1,0,6,0,2,1,2,2,2,0,0,0,3,1,0],
+        ["Alex Avila",0,0,4,0,1,0,0,3,7,0,0,0,2,1,0],
+        ["Karina Duran",2,1,6,0,3,0,0,2,3,0,0,0,0,3,0],
+      ]},
+      Thunder:{ sponsor:"Voyant Thunder", score:32, captain:"Sahil Bhakta", players:[
+        ["Shayan Islam",0,0,12,0,7,0,0,0,6,2,1,3,1,1,0],
+        ["Sahil Bhakta","DNP"],
+        ["Matt Burnett",8,2,12,1,5,3,4,2,10,6,1,1,0,1,0],
+        ["Adarsh Kalyampudi",4,2,9,0,2,0,0,3,8,1,0,0,1,3,0],
+        ["Cordero Nuanez",18,9,18,0,5,0,0,4,6,0,1,0,3,2,0],
+        ["Yousif Alomari",0,0,2,0,0,0,0,0,4,0,0,0,0,0,0],
+        ["Greg Del Vecchio",2,1,5,0,1,0,2,1,2,0,3,2,1,2,0],
+      ]},
+    }
+  },
+};
+
+const PLAYOFF_RECAPS = {
+  "QF-6:00": {
+    headline: "Josh Trejo and Garrett Ailshie Combine for 35, Redliners Roll Past Hornets 55-35",
+    paragraphs: [
+      "Redliners opened the postseason the way they played most of the regular season &mdash; balanced, deep, and never really threatened. Josh Trejo led all scorers with 20 points on 7-of-15 shooting, and Garrett Ailshie was his usual complete self with 15 points, 14 rebounds, 7 assists and 6 steals.",
+      "Hornets got 11 points from Luis Renteria-Medina and 10 from Andrew Soto, but couldn't find enough consistent offense to keep pace, shooting just 25.5% from the floor as a team. Redliners advance to face top-seeded Blazers in the semifinals.",
+    ]
+  },
+  "QF-7:00": {
+    headline: "Nick Johnson Drops 27, Gel Cruises Past Thunder 46-32",
+    paragraphs: [
+      "Nick Johnson picked up right where the regular season left off, pouring in 27 points on 8-of-18 shooting with 13 rebounds to lead Gel into the semifinals. Imran Makki added 10 points, back in the lineup after sitting out the finale.",
+      "Thunder got 18 points from Cordero Nuanez off the bench, but Matt Burnett was held to just 8 points on a quiet shooting night, and Thunder could never cut into Gel's lead. Gel advances to face two-seed Rattlers in the semifinals.",
+    ]
+  },
+};
+
+function aggregatePlayoffPlayers(){
+  const players = {};
+  Object.values(PLAYOFF_BOXSCORES).forEach(game => {
+    Object.entries(game.teams).forEach(([team, t]) => {
+      t.players.forEach(row => {
+        const name = row[0];
+        if(!players[name]) players[name] = { team, gp:0, pts:0,fgm:0,fga:0,tpm:0,tpa:0,ftm:0,fta:0,oreb:0,reb:0,ast:0,stl:0,blk:0,to:0,pf:0,dq:0 };
+        players[name].team = team;
+        if(row[1] === "DNP") return;
+        const [pts,fgm,fga,tpm,tpa,ftm,fta,oreb,reb,ast,stl,blk,to,pf,dq] = row.slice(1);
+        const p = players[name];
+        p.gp += 1; p.pts+=pts; p.fgm+=fgm; p.fga+=fga; p.tpm+=tpm; p.tpa+=tpa; p.ftm+=ftm; p.fta+=fta;
+        p.oreb+=oreb; p.reb+=reb; p.ast+=ast; p.stl+=stl; p.blk+=blk; p.to+=to; p.pf+=pf; p.dq+=dq;
+      });
+    });
+  });
+  return Object.entries(players).filter(([,s]) => s.gp > 0).map(([name,s]) => ({
+    name, team:s.team, gp:s.gp,
+    ppg:s.pts/s.gp, rpg:s.reb/s.gp, apg:s.ast/s.gp, spg:s.stl/s.gp, bpg:s.blk/s.gp,
+    tpm:s.tpm,
+  }));
+}
+
+function renderPlayoffStatLeaders(){
+  const el = document.getElementById("playoffStatLeaders");
+  if(!el) return;
+  const rows = aggregatePlayoffPlayers();
+  const CATS = [
+    { key:"ppg", label:"PPG" },
+    { key:"tpm", label:"3FG" },
+    { key:"rpg", label:"RPG" },
+    { key:"apg", label:"APG" },
+    { key:"spg", label:"SPG" },
+    { key:"bpg", label:"BPG" },
+  ];
+  el.innerHTML = CATS.map(cat => {
+    const top = [...rows].sort((a,b) => b[cat.key]-a[cat.key]).slice(0,10);
+    const rowsHTML = top.map((r,i) => `
+      <div class="stat-row" data-team="${r.team}" data-name="${r.name}">
+        <span class="stat-rank">${i+1}</span>
+        <span class="stat-dot" style="background:var(${COLOR_VAR[r.team]})"></span>
+        <span class="stat-name">${r.name}</span>
+        <span class="stat-val">${r[cat.key].toFixed(1)}</span>
+      </div>`).join("");
+    return `
+      <div class="stat-card">
+        <div class="stat-card-head">${cat.label}</div>
+        ${rowsHTML}
+      </div>`;
+  }).join("");
+  el.querySelectorAll("[data-name]").forEach(e => {
+    e.style.cursor = "pointer";
+    e.onclick = () => openPlayerStats(e.dataset.name);
+  });
+}
+
+function openPlayoffBoxScore(round, time, teamA, teamB){
+  const data = PLAYOFF_BOXSCORES[playoffBoxKey(round,time)];
+  if(!data) return;
+
+  showOnly("boxView");
+
+  const tA = data.teams[teamA], tB = data.teams[teamB];
+  const winnerA = tA.score > tB.score, winnerB = tB.score > tA.score;
+
+  document.getElementById("boxHead").innerHTML = `
+    <div class="matchup">
+      <span style="display:flex; align-items:center; gap:10px; color:var(${teamTextVar(teamA)})">${crestBadge(teamA,"crest-lg")}${teamA}${winnerA ? " ▸" : ""}</span>
+      <span class="score">${tA.score}–${tB.score}</span>
+      <span style="display:flex; align-items:center; gap:10px; color:var(${teamTextVar(teamB)})">${winnerB ? "◂ " : ""}${teamB}${crestBadge(teamB,"crest-lg")}</span>
+    </div>
+    <div class="sub">${PLAYOFF_ROUNDS[round].label} &middot; ${PLAYOFF_ROUNDS[round].date} &middot; ${time} PM court at Lake Forest Sports Park${data.ot ? " &middot; OT" : ""}</div>
+  `;
+
+  document.getElementById("topPerformers").innerHTML = renderTopPerformers(data, teamA, teamB);
+
+  const recap = PLAYOFF_RECAPS[playoffBoxKey(round, time)];
+  document.getElementById("gameRecap").innerHTML = recap ? `
+    <div class="game-recap">
+      <div class="recap-eyebrow">Game Recap</div>
+      <div class="recap-headline">${recap.headline}</div>
+      ${recap.paragraphs.map(p => `<p>${p}</p>`).join("")}
+    </div>
+  ` : "";
+
+  const headerRow = `<tr><th>Player</th><th>PTS</th><th>FG</th><th>FGA</th><th>FG%</th><th>3FG</th><th>3FGA</th><th>3FG%</th><th>FT</th><th>FTA</th><th>FT%</th><th>OREB</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>TO</th><th>PF</th><th>DQ</th></tr>`;
+
+  const tables = [teamA, teamB].map(team => {
+    const t = data.teams[team];
+    const rows = t.players.map(r => statRow(r, r[0] === t.captain)).join("");
+    const totals = teamTotals(t.players);
+    const totalsRow = `<tr class="totals-row"><td>TEAM</td>${totals.map(c=>`<td>${c}</td>`).join("")}</tr>`;
+    return `
+      <div class="box-table-wrap">
+        <div class="box-table-head" style="color:var(${teamTextVar(team)})">
+          ${crestBadge(team,"crest-md")}${team} <span style="opacity:.7;font-weight:500;font-size:12.5px;color:var(--ink-faint);">&nbsp;&mdash; ${t.sponsor}</span>
+        </div>
+        <table class="box">
+          <thead>${headerRow}</thead>
+          <tbody>${rows}${totalsRow}</tbody>
+        </table>
+      </div>`;
+  }).join("");
+
+  document.getElementById("boxTables").innerHTML = tables;
+}
+
 function aggregatePlayers(){
   const players = {};
   Object.values(BOXSCORES).forEach(game => {
@@ -5201,9 +5374,10 @@ function renderHeroExtras(){
 // ---------- Auto-scrolling schedule ticker ----------
 function buildTicker(){
   const items = [
-    `<span class="ticker-item"><span class="tk-wk">R1</span><b>Gel</b>&nbsp;vs&nbsp;<b>Thunder</b></span>`,
-    `<span class="ticker-item"><span class="tk-wk">R1</span><b>Redliners</b>&nbsp;vs&nbsp;<b>Hornets</b></span>`,
-    `<span class="ticker-item"><span class="tk-wk">BYE</span><b>Blazers</b> &amp; <b>Rattlers</b> advance to the semis</span>`,
+    `<span class="ticker-item"><span class="tk-wk">QF</span><b>Gel</b>&nbsp;46,&nbsp;<b>Thunder</b>&nbsp;32</span>`,
+    `<span class="ticker-item"><span class="tk-wk">QF</span><b>Redliners</b>&nbsp;55,&nbsp;<b>Hornets</b>&nbsp;35</span>`,
+    `<span class="ticker-item"><span class="tk-wk">SF</span><b>Blazers</b>&nbsp;vs&nbsp;<b>Redliners</b></span>`,
+    `<span class="ticker-item"><span class="tk-wk">SF</span><b>Rattlers</b>&nbsp;vs&nbsp;<b>Gel</b></span>`,
   ];
   const html = items.join("");
   document.getElementById("tickerTrack").innerHTML = html + html;
@@ -5220,6 +5394,7 @@ renderStandings();
 decorateStaticLogos();
 renderHeroExtras();
 buildTicker();
+renderPlayoffStatLeaders();
 
 document.querySelectorAll(".history-photo-card img").forEach(img => {
   img.addEventListener("click", () => {
